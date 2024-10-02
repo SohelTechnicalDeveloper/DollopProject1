@@ -1,0 +1,14 @@
+
+@media only screen and (max-width: 320px) {
+    .container {
+
+        width: 100vw !important;
+    }
+  }
+
+.input-color::placeholder{
+ 
+        color: #07284B;
+        opacity: 1;
+        font-weight: 500;
+}

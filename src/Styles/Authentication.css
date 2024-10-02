@@ -1,0 +1,9 @@
+
+@media only screen and (max-width: 600px) {
+    .card-auth {
+
+        padding: 0px;
+         /* background-image: none; */
+         /* background-color: #0f1e54; */
+    }
+  }

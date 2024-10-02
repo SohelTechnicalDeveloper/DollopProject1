@@ -1,0 +1,12 @@
+/* .card-img-top{
+   height:"4rem" !important;
+   width:"20%" !important;
+   overflow: hidden;
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-position: center;
+} */
+ 
+ h5::first-letter {
+    text-transform: capitalize;
+}

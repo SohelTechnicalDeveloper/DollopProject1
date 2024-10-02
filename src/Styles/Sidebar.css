@@ -1,0 +1,43 @@
+.nav-link:hover{
+    background: linear-gradient(to left, #e2e0e000, #ffffff72) !important;
+    border-radius: 5%;
+}
+.nav-link .fa{
+    transition:all 1s ease-in-out;
+}
+
+.nav-link:hover .fa{
+    transform:rotate(360deg);
+}
+.navbar-togglercross{
+    width: 250px !important;
+    position: fixed  !important;
+    
+
+}
+.offcanvas-backdrop.show { 
+    opacity: .0; 
+}
+.navbar-opencross{
+    display: none !important;
+}
+.navbar-btn{
+    display: none !important;
+}
+@media only screen and (max-width:900px){
+        .navbar-togglercross{
+        width: 0px !important;
+        display: none !important;
+        transition: all 0.5s ease-in-out;
+    }
+    .navbar-opencross{
+        display: block !important;
+    }
+    .navbar-btn{
+        display: block !important;
+    }
+    .navbar-logo{
+        display: none !important;
+    }
+}
+
