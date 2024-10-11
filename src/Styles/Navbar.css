@@ -7,17 +7,22 @@
         position: sticky !important;
         top: 0 !important;
         width: 100% !important;
+        background-color: #07284B;
 }
 .user-logout{
         transform:rotate(267deg);
         cursor: pointer;
+        color: #fff !important;
     }
 .logo-section{
 
         font-size: 2.3rem;
+
     }
     .arrow-profile{
             display: none !important;
+            color: #fff !important;
+
     }
 .drop-down{
 
@@ -28,13 +33,15 @@
     background-color: antiquewhite !important;
 }
 .navbar-dropbtn{
-    color: #0f0404;
+    color: #000000 !important;
     font-size: 25px;
     font-weight: bold;
     margin-top: -15px ;
 }
 .user-profile{
     cursor: pointer !important;
+    color: #fff !important;
+
 }
 
 @media only screen and (max-width:500px)
@@ -47,8 +54,8 @@
 
         display: none;
     }
-    .user-logout{
+    /* .user-logout{
         display: none;
-    }
+    } */
         
 }

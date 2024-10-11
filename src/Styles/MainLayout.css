@@ -7,9 +7,8 @@
 }
 .contain{
     width: calc(100% - 20%) !important;
-    /* z-index: 1000; */
     position: sticky !important;
-    /* border: 2px solid    rgb(28, 48, 175) !important; */
+
 }
 .mainlayout-children{
     overflow-y: scroll !important;

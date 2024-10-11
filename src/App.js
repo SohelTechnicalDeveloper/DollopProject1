@@ -13,14 +13,13 @@ import Home from './Componetns/Home';
 import Sidebar from './Componetns/Sidebar';
 import Userdata from './Componetns/Userdata';
 import AgencyRoom from './Componetns/AgencyRoom';
+import EmailFunctionality from './Componetns/EmailFunctionality';
 
 
 function App() {
   return (
     <div >
-
       <Router>
-       
               <Routes>
             <Route path='/register' element={<Register/>}></Route>
             <Route path='/' element={<Login/>}></Route>
@@ -31,6 +30,7 @@ function App() {
             <Route path='/home' element={<Home/>}></Route>
             <Route path='/userdata' element={<Userdata/>}></Route>
             <Route path='/agencyRoom' element={<AgencyRoom/>}></Route>
+            <Route path='/email' element={<EmailFunctionality/>}></Route>
           </Routes>
       </Router> 
     </div>
