@@ -1,13 +1,19 @@
 .mainlayout-sidebar{
-
+    z-index: 100;
     width: calc(100% - 80%) !important;
+   
     /* border: 2px solid red !important; */
 
 }
 .contain{
-    width: calc(100% - 20px) !important;
+    width: calc(100% - 20%) !important;
+    /* z-index: 1000; */
+    position: sticky !important;
     /* border: 2px solid    rgb(28, 48, 175) !important; */
+}
+.mainlayout-children{
     overflow-y: scroll !important;
+
 }
 @media  screen and (max-width:700px) 
 {

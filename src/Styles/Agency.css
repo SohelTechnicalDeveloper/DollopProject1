@@ -1,0 +1,15 @@
+.btn-sidebar{
+    color: #1b0404 !important;
+    font-size: 28px;
+    font-weight: bold;
+}
+.label-name{
+    font-weight: 600;
+    color: #000;
+}
+.input-color::placeholder{
+ 
+    color: #07284B;
+    opacity: 1;
+    font-weight: 500;
+}

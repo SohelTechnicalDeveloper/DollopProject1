@@ -10,9 +10,12 @@
     transform:rotate(360deg);
 }
 .navbar-togglercross{
-    width: 250px !important;
+    width: 300px !important;
+    overflow: hidden;
+    top: 0 !important;
     position: fixed  !important;
-    
+    display: block;
+    transform: translateX(0);
 
 }
 .offcanvas-backdrop.show { 
@@ -24,15 +27,44 @@
 .navbar-btn{
     display: none !important;
 }
-@media only screen and (max-width:900px){
+.btn-sidebar{
+    display: none;
+    position: relative;
+    left: 15rem;
+    bottom: 10px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+}
+@media (min-width: 2500px){
+    .navbar-togglercross{
+        width: 20% !important;
+        overflow: hidden;
+        top: 0 !important;
+        position: fixed  !important;
+        display: block;
+        transform: translateX(0);
+    
+    }
+}
+
+@media (max-width:900px)  {
+
+    .navbar-togglercross.open{
+        transform: translateX(0);
+        display: block !important;
+        transition: all 0.5s ease-in-out;
+        
+    }
         .navbar-togglercross{
-        width: 0px !important;
-        display: none !important;
+        transform: translateX(-100%);
+        display: block !important;
         transition: all 0.5s ease-in-out;
     }
     .navbar-opencross{
         display: block !important;
     }
+   
     .navbar-btn{
         display: block !important;
     }
@@ -41,3 +73,10 @@
     }
 }
 
+@media (max-width:890px){
+    .btn-sidebar{
+        display: block !important;
+
+    }
+    
+}

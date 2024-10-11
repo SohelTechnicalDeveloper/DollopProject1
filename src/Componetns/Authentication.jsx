@@ -13,12 +13,16 @@ const Authentication = () => {
   const[loader,setLoader] = useState(true)
  
   
+
+  
+  
   const changePassword = async (e)=>{
     setLoader(false)
+
       if(email==="")
-    {
-      setEmail("email is required")
-     }
+      {
+        setEmail("email is required")
+       }
     e.preventDefault()
     try {
       setError(!error)
@@ -30,16 +34,20 @@ const Authentication = () => {
    
     if(response.status===201)
       {     
-     
+        
         toast.success('Send OTP Success')
+        setTimeout(()=>{
+          
           navigate('/otpSend',{state :{
                 email:email
               }
             })
-    }
-   }
-  }
+        },2000)
+         }
+       }
+     }
  catch (error) {
+
     toast.error('Invalid User ID')
        
   }
@@ -82,11 +90,11 @@ const Authentication = () => {
                       id="form3Example3"
                       onChange={(e) => setEmail(e.target.value)}
                       className="form-control  input-color rounded-0"
-                      placeholder=" Email"
+                      placeholder="Email"
                     />   
-                  <p className='text-danger'>{email}</p>
+                  {/* <p className='text-danger'>{email}</p> */}
 
-                {/* { error && !email ? <label className="form-label text-danger " style={{position:'absolute'}} > Email Is Required </label> : "" } <br /> */}
+                { error && !email ? <label className="form-label text-danger " style={{position:'absolute'}} > Email Is Required </label> : "" } <br />
                   </div>
                 
                 {loader ?  <button
@@ -97,11 +105,11 @@ const Authentication = () => {
                   Send OTP
                   </button>
                   :   <CirclesWithBar height="40" width="90" color="#4fa94d" outerCircleColor="#4fa94d" innerCircleColor="#4fa94d"
-  barColor="#4fa94d"
-  ariaLabel="circles-with-bar-loading"
-  wrapperStyle={{}}
+                            barColor="#4fa94d"
+                          ariaLabel="circles-with-bar-loading"
+                           wrapperStyle={{}}
  
-  />}
+                       />}
                   <ToastContainer />
                 </form>
              

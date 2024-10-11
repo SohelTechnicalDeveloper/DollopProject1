@@ -4,8 +4,7 @@
         justify-content: end;
         align-items: center;
         z-index: 1;
-        overflow: hidden;
-        position: fixed !important;
+        position: sticky !important;
         top: 0 !important;
         width: 100% !important;
 }
@@ -23,6 +22,19 @@
 .drop-down{
 
     z-index: 1;
+}
+.logout-btn{
+    padding: 21px !important;
+    background-color: antiquewhite !important;
+}
+.navbar-dropbtn{
+    color: #0f0404;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: -15px ;
+}
+.user-profile{
+    cursor: pointer !important;
 }
 
 @media only screen and (max-width:500px)

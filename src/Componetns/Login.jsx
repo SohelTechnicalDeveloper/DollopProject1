@@ -30,8 +30,7 @@ const Home = () => {
 
       if (response.status === 200) {
         setLoader(false)
-        localStorage.setItem(
-          "user",
+        localStorage.setItem(  "user",
           JSON.stringify(response.data.data, response.data.token)
         );
     
@@ -80,7 +79,8 @@ const Home = () => {
                       className="form-control  input-color rounded-0"
                       placeholder=" Email"
                     /> 
-               { error && !email ? <label className="form-label text-danger " style={{position:'absolute'}} > Email Is Required </label> :"" }         
+                    
+               { error && !email ? <label className="form-label text-danger " style={{position:'absolute'}} > Field can't be empty! </label> :"" }         
            </div>
                   {/* Password input */}
                   <div className="form-outline mb-4">
@@ -91,13 +91,13 @@ const Home = () => {
                       className="form-control  input-color rounded-0"
                       placeholder=" Password"
                     />
-                     { error && !password ?   <label className="form-label text-danger" style={{position:'absolute'}} > Password Is Required </label> : " "}
+                     { error && !password ?   <label className="form-label text-danger" style={{position:'fixed'}} >Field can't be empty! </label> : " "}
 
                     <div className="text-end">
                       <Link
                         to="/authentication"
                         style={{ color: "#067D83" }}
-                        className="text-decoration-none "
+                        className="text-decoration-none mb-2 "
                       >
                         Forget Password
                       </Link>

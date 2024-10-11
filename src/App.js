@@ -12,6 +12,7 @@ import MainLayout from './MainLayout';
 import Home from './Componetns/Home';
 import Sidebar from './Componetns/Sidebar';
 import Userdata from './Componetns/Userdata';
+import AgencyRoom from './Componetns/AgencyRoom';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path='/mainlayout' element={<MainLayout/>}> </Route>
             <Route path='/home' element={<Home/>}></Route>
             <Route path='/userdata' element={<Userdata/>}></Route>
+            <Route path='/agencyRoom' element={<AgencyRoom/>}></Route>
           </Routes>
       </Router> 
     </div>
