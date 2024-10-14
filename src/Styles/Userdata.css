@@ -7,6 +7,16 @@
    background-position: center;
 } */
  
+.card-style{
+   box-shadow: 3px 4px 10px rgba(149, 112, 112, 0.7);
+   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+.card-style:hover{
+   transform: translateY(-10px);
+   box-shadow: 0 8px 16px rgba(60, 52, 52, 0.2);
+
+}
  h5::first-letter {
     text-transform: capitalize;
 }

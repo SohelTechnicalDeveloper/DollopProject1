@@ -7,13 +7,14 @@ import './Styles/Layout.css'
 import Otp from './Componetns/Otp';
 import ForgetPass from './Componetns/ForgetPass';
 import './App.css'
-import Navbar from './Componetns/Navbar';
+// import Navbar from './Componetns/Navbar';
 import MainLayout from './MainLayout';
 import Home from './Componetns/Home';
-import Sidebar from './Componetns/Sidebar';
+// import Sidebar from './Componetns/Sidebar';
 import Userdata from './Componetns/Userdata';
 import AgencyRoom from './Componetns/AgencyRoom';
 import EmailFunctionality from './Componetns/EmailFunctionality';
+import Campigns from './Componetns/Campigns';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path='/userdata' element={<Userdata/>}></Route>
             <Route path='/agencyRoom' element={<AgencyRoom/>}></Route>
             <Route path='/email' element={<EmailFunctionality/>}></Route>
+            <Route path='/campaigns' element={<Campigns/>}></Route>
           </Routes>
       </Router> 
     </div>

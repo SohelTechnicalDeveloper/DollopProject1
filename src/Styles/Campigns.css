@@ -1,0 +1,24 @@
+.page-hover:hover{
+    background-color: #07284B !important;
+    color: #fff !important;
+}
+.th-bg{
+
+    background-color: #D3E3FD !important;
+}
+.input-color::placeholder{
+ 
+    color: #07284B !important;
+    opacity: 1 !important;
+    font-weight: 500 !important;
+}
+/* .form-control{
+    border: none;
+}
+.form-control:focus{
+    box-shadow: none !important;
+}
+input:focus{
+    outline: none;
+
+ } */

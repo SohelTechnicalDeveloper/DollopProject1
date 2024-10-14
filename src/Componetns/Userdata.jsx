@@ -37,14 +37,14 @@ const Userdata = () => {
         <div className="row mt-5 mx-3">
           {data.map((item) => {
             return (
-              <div className="col-md-3 col-sm-3 p-2">
-                <div className="card d-flex justify-content-center align-items-center ">
+              <div className="col-md-4 col-lg-3 col-sm-6 p-2">
+                <div className="card d-flex justify-content-center align-items-center card-style"   >
                   <img
                     className="card-img-top p-3 "
                     alt="userImage"
                     src={userImage}
                   />
-                  <div className="card-body  justify-content-center align-content-center text-center">
+                  <div className="card-body  justify-content-center align-content-center text-center" >
                     <h5 className="card-title">{item.name}</h5>
                     <p className="card-text text-center">Female</p>
                     <p

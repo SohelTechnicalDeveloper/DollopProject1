@@ -417,41 +417,43 @@ const AgencyRoom = () => {
           )}
         </div>
 
-        <h2 style={{ color: "#07284B", marginLeft: "25px" }}>Users</h2>
 
-        <div
-          className="form-group d-flex justify-content-end mx-5 mt-4"
-          style={{ fontFamily: "Gill Sans, sans-serif" }}
-        >
-          <div className="mx-4">
-            <input
-              type="text"
-              className="form-control input-color"
-              placeholder="Search"
-              onChange={(e) => searchUser(e)}
-            />
-          </div>
-          <button
-            onClick={() => addShowModel()}
-            className="btn text-truncate"
-            style={{
-              backgroundColor: "#21b7b5",
-              color: "#fff",
-              fontSize: "18px",
-            }}
-          >
-            {" "}
-            <span className="fs-5">+</span>Add Users
-          </button>
-        </div>
+        <div className="m-4 ">
+              <h2>User Data</h2>
 
-        <div className="container mt-5">
+              <div className=" d-flex gap-3 justify-content-end text-center align-items-center">
+                <div>
+                  <input
+                    id="input1"
+                    type="search"
+                    className="form-control w-100"
+                    onChange={(e) => {
+                      searchUser(e);
+                    }}
+                    placeholder="Search User"
+                  />
+                </div>
+                <button
+                  id="btn"
+                  className="btn btn-primary my-3 text-truncate"
+                  onClick={() => addShowModel()}
+                 
+                >
+                 <span className="fs-5">+</span>Add Users
+                </button>
+
+               
+              </div>
+            </div>
+       
+
+        <div className=" mt-5 p-3 overflow-y-scroll">
           <table
             border={1}
             cellPadding={10}
             className="table  table-bordered p-3"
           >
-            <thead className="table-success">
+            <thead className="table-success text-center">
               <tr>
                 <th scope="col">User Image</th>
                 <th scope="col">User Name</th>
@@ -546,6 +548,7 @@ const AgencyRoom = () => {
             </tbody>
           </table>
         </div>
+
         <nav aria-label="Page navigation example">
           <ul className="pagination justify-content-center mt-4">
             <li className="page-item">

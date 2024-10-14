@@ -42,20 +42,21 @@ const Authentication = () => {
       }
     } catch (error) {
       toast.error("Invalid User ID");
-    } finally {
+    } 
+    finally {
       setLoader(true);
     }
   };
 
   return (
-    <div>
-      <Layout>
-        <div className="row container ">
-          <div className="col-md-6 d-xs-none d-block"></div>
+    <Layout>
+        <div className="container-fluid d-flex flex-column vh-100">
+        <div className="row flex-grow-1 ">
+          <div className=" col-12 col-md-6 d-none d-md-block"></div>
 
-          <div className=" col-md-6 d-flex justify-content-end">
-            <div className="p-2" style={{ backgroundColor: "#07284B" }}>
-              <div className=" mx-4  mt-4">
+          <div className=" col-12 col-md-6 d-flex align-items-center justify-content-end p-5  ">
+            <div className="p-3 p-md-5" style={{ backgroundColor: "#07284B" }}>
+              <div className="mx-4  mt-4">
                 <Link to="/">
                   {" "}
                   <IoIosArrowBack
@@ -67,7 +68,7 @@ const Authentication = () => {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <form className="p-5" onSubmit={changePassword}>
+              <form className="px-4 py-5" onSubmit={changePassword}>
                 <p className="text-white fw-bold " style={{ fontSize: "4vh" }}>
                   Forgot Password
                 </p>
@@ -124,8 +125,8 @@ const Authentication = () => {
             </div>
           </div>
         </div>
-      </Layout>
     </div>
+      </Layout>
   );
 };
 

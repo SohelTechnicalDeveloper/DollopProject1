@@ -50,14 +50,14 @@ const Otp = () => {
   };
 
   return (
-    <div>
-      <Layout>
-        <div className="row  container">
-          <div className="col-md-6 d-xs-none d-block"></div>
+    <Layout>
+           <div className="container-fluid d-flex flex-column vh-100">
+        <div className="row  flex-grow-1">
+          <div className=" col-12  col-md-6 d-none d-md-block"></div>
 
-          <div className=" col-md-6 d-flex justify-content-end">
-            <div className="p-2" style={{ backgroundColor: "#07284B" }}>
-              <div className="mx-4 p-2 mt-2">
+          <div className=" col-12  col-md-6 d-flex align-items-center justify-content-end p-5">
+            <div className="p-3 p-md-5" style={{ backgroundColor: "#07284B" }}>
+              <div className="mx-4  mt-4">
                 <Link to="/authentication">
                   {" "}
                   <IoIosArrowBack
@@ -66,7 +66,7 @@ const Otp = () => {
                   />{" "}
                 </Link>
               </div>
-              <form className="p-5" onSubmit={sendOTP}>
+              <form className="px-4 py-5" onSubmit={sendOTP}>
                 <p className="text-white fw-bold " style={{ fontSize: "4vh" }}>
                   Verify OTP
                 </p>
@@ -87,6 +87,7 @@ const Otp = () => {
 
                 <div className="form-outline mb-4">
                   <OtpInput
+                     id="form3Example3"
                     className="form-control border border-0"
                     inputStyle={{
                       width: "2.5rem",
@@ -136,57 +137,9 @@ const Otp = () => {
             </div>
           </div>
         </div>
-      </Layout>
-      {/*       
-       <Layout>
-        <div className="row container ">
-          <div className="col-md-6 d-xs-none d-block"></div>
-
-          <div className=" col-md-6  d-flex  justify-content-start"  style={{ backgroundColor: "#07284B"}}>
-                   <div className='p-2 mt-2'>
-                        <Link to="/authentication"> <IoIosArrowBack style={{ color: "#49a8bf" }} className="fs-1 " /> </Link>
-                   </div> 
-                 
-                <form className="p-5" onSubmit={sendOTP}>
-
-                  <p className="text-white fw-bold " style={{ fontSize: "4vh" }} >
-                     Verify OTP
-                  </p>
-                  <p className="text-white" style={{ fontSize: "1.0rem" }}>
-                  Enter the Varification Code Send on 
-                 <br />{email}   &nbsp;    <Link to="/authentication" style={{ color: "#49a8bf" }}>Edit here</Link>{" "}
-                  </p> <br />
-                  <div className="form-outline mb-4">
-                    
-                  <OtpInput  className="form-control border border-0" inputStyle={{ width: "2.5rem", height: "5vh",border:"0px" }}
-             value={OTP}
-             onChange={setOTP}
-             numInputs={4}
-             renderSeparator={<span> -- </span>}
-             renderInput={(props) => <input {...props} />}
-             />
-               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          { error && !OTP ?   <label className="form-label text-danger" style={{position:'absolute'}} > OTP Is Required </label> : " "}
-
-                  </div>
-                { loader ?
-                  <button type="submit" className="btn rounded-0 "  style={{ backgroundColor: "#49a8bf", color: "#fff" }} >
-                     Verify
-                  </button> :   <CirclesWithBar height="40" width="90" color="#4fa94d" outerCircleColor="#4fa94d" innerCircleColor="#4fa94d"
-  barColor="#4fa94d"
-  ariaLabel="circles-with-bar-loading"
-  wrapperStyle={{}}
- 
-  />}
-                  <ToastContainer />
-                </form>
-             
-            </div>
-        </div>
-      </Layout> */}
     </div>
+      </Layout>
+      
   );
 };
 

@@ -46,13 +46,13 @@ const ForgetPass = () => {
   };
 
   return (
-    <div>
-      <Layout>
-        <div className="row container ">
-          <div className="col-md-6 d-xs-none d-block"></div>
+    <Layout>
+        <div className="container-fluid d-flex flex-column vh-100">
+        <div className="row  flex-grow-1">
+          <div className=" col-12 col-md-6 d-none d-md-block"></div>
 
-          <div className=" col-md-6 d-flex justify-content-end">
-            <div className="p-2" style={{ backgroundColor: "#07284B" }}>
+          <div className=" col-12 col-md-6 d-flex align-items-center justify-content-end p-5">
+            <div className="p-3 p-md-5" style={{ backgroundColor: "#07284B" }}>
               <div className="mx-4 p-2 mt-2 ">
                 <Link to="/">
                   {" "}
@@ -62,7 +62,7 @@ const ForgetPass = () => {
                   />{" "}
                 </Link>
               </div>
-              <form className="p-5" onSubmit={updatePassword}>
+              <form className="px-4 py-5" onSubmit={updatePassword}>
                 <p className="text-white fw-bold " style={{ fontSize: "4vh" }}>
                   New Password
                 </p>
@@ -76,7 +76,7 @@ const ForgetPass = () => {
                     type="password"
                     id="form3Example3"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="form-control w-75 input-color rounded-0"
+                    className="form-control  input-color rounded-0"
                     placeholder="New Password"
                   />
                   {error && !password ? (
@@ -96,7 +96,7 @@ const ForgetPass = () => {
                     type="password"
                     id="form3Example3"
                     onChange={(e) => setConfPassword(e.target.value)}
-                    className="form-control w-75 input-color rounded-0"
+                    className="form-control  input-color rounded-0"
                     placeholder="Confirm Password"
                   />
                   {error && !confPassword ? (
@@ -137,8 +137,8 @@ const ForgetPass = () => {
             </div>
           </div>
         </div>
-      </Layout>
     </div>
+      </Layout>
   );
 };
 

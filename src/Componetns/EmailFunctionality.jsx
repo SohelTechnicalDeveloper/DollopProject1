@@ -7,7 +7,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import "../Styles/Emailfunc.css";
 import { IoArrowRedoOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
-import { CirclesWithBar } from "react-loader-spinner";
+// import { CirclesWithBar } from "react-loader-spinner";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { MdCloseFullscreen } from "react-icons/md";
@@ -39,6 +39,7 @@ const EmailFunctionality = () => {
 
       if (response.status === 200) {
         setUserData(response.data.data);
+        setUserInfo(response.data.data[0])
       }
     } catch (error) {}
   };
@@ -58,13 +59,13 @@ const EmailFunctionality = () => {
       }
     } catch (error) {}
   };
-  useEffect(() => {
+  useEffect(() =>{
     getUser();
-  }, []);
+  });
   return (
     <div>
       <MainLayout >
-        <div className="mt-2">
+        <div className="mt-2 p-3">
           <div className="row user-email " style={{ marginRight: "0px" }}>
             <div className="col-md-4 col-sm-4   col-lg-4">
               <div className="d-flex justify-content-around align-items-center p-3 ">
@@ -75,7 +76,7 @@ const EmailFunctionality = () => {
                   alt="User"
                   className=" me-2"
                 />
-                <div className="d-flex " style={{ color: "#07284B" }}>
+                <div className="d-flex justify-content-center align-items-center " style={{ color: "#07284B" }}>
                   <h5>Inbox</h5>{" "}
                   <IoIosArrowDown
                     className="dropdown-toggle "
@@ -173,7 +174,7 @@ const EmailFunctionality = () => {
                   <div>
                     <div className="d-flex justify-content-between ">
                       <h6 className="mb-1">{userInfo.name}</h6>
-                      <span className="text-muted ">{userInfo.createdAt}
+                      <span className="text-muted ">{userInfo.createdAt ? userInfo.createdAt.toString().slice(11, 19) : ''}
                     </span>
                     </div>
                     <p>{userInfo.email}</p>
