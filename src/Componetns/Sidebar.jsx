@@ -16,106 +16,7 @@ const Sidebar = () => {
 
   return (
    
-    // <div className="mainlayout-sidebar">
-    //   <IoListOutline
-    //     className="navbar-opencross"
-    //     style={{
-    //       position: "fixed",
-    //       top: "2px",
-    //       zIndex: "100",
-    //       left: "30px",
-    //       fontSize: "2rem",
-    //       color: "#fff",
-    //     }}
-    //     onClick={() => setOpen(!Open)}
-    //   />
-    //   <div className={`navbar-togglercross ${Open ? "open" : ""} `}>
-    //     <div className="fs-3 mx-5 mt-3 p-4 text-white text-truncate">
-
-    //     {/* <span className="fs-3 mx-5 mt-3 p-4 text-white"> */}
-    //       e Candidate
-    //     {/* </span> */}
-    //     </div>
-
-    //     <RxCross1 className="btn-side" onClick={() => setOpen(!Open)} />
-
-    //     <ul className="nav mb-auto p-2 flex-column">
-    //       <li className="nav-item">
-    //         <Link className="text-decoration-none text-white nav-link active">
-    //           <RxDashboard className="fs-2 fa me-3" />
-    //           <span className="">DashBoard</span>
-    //         </Link>
-    //       </li>
-    //     </ul>
-
-    //     <ul className="nav mb-auto p-2  flex-column">
-    //       <li className="nav-item ">
-    //         <Link className="text-decoration-none text-white nav-link active">
-    //           <HiOutlineCursorClick className="fs-2 fa me-3" />
-    //           <span className="">Campaigns</span>
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //     <ul className="nav mb-auto p-2  flex-column">
-    //       <li className="nav-item ">
-    //         <Link className="text-decoration-none text-white nav-link active">
-    //           <FaHome className="fs-2 me-3 fa" />
-    //           <span className="">Tasks / Calender</span>
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //     <ul className="nav mb-auto p-2  flex-column">
-    //       <li className="nav-item ">
-    //         <Link
-    //           className="text-decoration-none text-white nav-link active"
-    //           to="/email"
-    //         >
-    //           <MdOutlineMarkEmailUnread className="fs-2 me-3 fa" />
-    //           <span className="">Email Functionality</span>
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //     <ul className="nav mb-auto p-2  flex-column">
-    //       <li className="nav-item ">
-    //         <Link
-    //           className="text-decoration-none text-white nav-link active"
-    //           to="/agencyRoom"
-    //         >
-    //           <FaHome className="fs-2 me-3 fa" />
-
-    //           <span className="">Users Room</span>
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //     <ul className="nav mb-auto p-2  flex-column">
-    //       <li className="nav-item ">
-    //         <Link className="text-decoration-none text-white nav-link active">
-    //           <FaRocketchat className="fs-2 me-3 fa" />
-    //           <span className="">Chat</span>
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //     <ul className="nav mb-auto p-2  flex-column">
-    //       <li className="nav-item ">
-    //         <Link className="text-decoration-none text-white nav-link active">
-    //           <LuGitBranchPlus className="fs-2 me-3 fa" />
-    //           <span className="">Branches</span>
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //     <ul className="nav mb-auto p-2  flex-column">
-    //       <li className="nav-item ">
-    //         <Link
-    //           className="text-decoration-none text-white nav-link active"
-    //           to="/userdata"
-    //         >
-    //           <FaUsers className="fs-2 me-3 fa" />
-    //           <span className="">User</span>
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //   </div>
-    // </div>
+    
     <div className="mainlayout-sidebar">
   <HiOutlineViewList
     className="navbar-opencross"
@@ -141,7 +42,7 @@ const Sidebar = () => {
 
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">
-        <Link className="text-decoration-none text-white nav-link active">
+        <Link className="text-decoration-none text-white nav-link active" to='/dashboard'>
           <RxDashboard className="fs-2 fa me-3" />
           <span>DashBoard</span>
         </Link>

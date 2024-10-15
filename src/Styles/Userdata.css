@@ -20,3 +20,19 @@
  h5::first-letter {
     text-transform: capitalize;
 }
+.carousel-img{
+   /* background-size: cover !important;
+   background-repeat: no-repeat !important;
+   background-position: center !important;
+   height: 100vh !important;
+   width: 100% ;
+   overflow: hidden !important; */
+}
+@media  screen and (min-width:2000px) 
+{
+    .carousel-image{
+        height: 1000px !important;
+        transition: all 0.8s ease-in-out
+    }
+    
+}

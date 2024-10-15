@@ -66,7 +66,7 @@ const Campigns = () => {
               <div className="card  bg-light rounded-4">
                 <div className="card-body">
                   <p className="text-black fw-bolder">Total Amount Earned</p>
-                  <p className="fs-2 text-primary fw-bold">₹ 10000</p>
+                  <p className="fs-2 text-primary fw-bold">₹ 12000</p>
                 </div>
               </div>
             </div>
@@ -74,7 +74,7 @@ const Campigns = () => {
               <div className="card bg-light  rounded-4">
                 <div className="card-body">
                   <p className="text-black fw-bolder">Payment Done</p>
-                  <p className="fs-2 text-primary fw-bold">₹ 15000</p>
+                  <p className="fs-2 text-primary fw-bold">₹ 8000</p>
                 </div>
               </div>
             </div>
@@ -82,7 +82,7 @@ const Campigns = () => {
               <div className="card bg-light  rounded-4">
                 <div className="card-body">
                   <p className="text-black fw-bolder" >Balance</p>
-                  <p className="fs-2 text-primary fw-bold">₹ 20000</p>
+                  <p className="fs-2 text-primary fw-bold">₹ 4000</p>
                 </div>
               </div>
             </div>
@@ -90,7 +90,7 @@ const Campigns = () => {
           {/* Request List and payment status detai/ls */}
           <div className="card mb-4 border-0 ">
             <div className="card-body">
-              <div className="overflow-x-scroll" >
+              <div className="table-scroller" >
               <h5 className="card-title text-black fw-bold">Request List</h5>
                   <table className="table  bg-success text-center">
                 <thead >
@@ -184,8 +184,8 @@ const Campigns = () => {
               </li>
             </ul>
           </nav>
-          <div className="card border-0  mb-2">
-          <div  className="overflow-x-scroll">
+          <div className="card border-0  mb-1">
+          <div  className="table-scroller">
             <div className="card-body">
               <div className=" d-flex justify-content-between">
                 <h5 className="card-title mt-4">Payout History</h5>

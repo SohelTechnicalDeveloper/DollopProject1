@@ -15,6 +15,7 @@ import Userdata from './Componetns/Userdata';
 import AgencyRoom from './Componetns/AgencyRoom';
 import EmailFunctionality from './Componetns/EmailFunctionality';
 import Campigns from './Componetns/Campigns';
+import Dashboard from './Componetns/Dashboard';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <Route path='/agencyRoom' element={<AgencyRoom/>}></Route>
             <Route path='/email' element={<EmailFunctionality/>}></Route>
             <Route path='/campaigns' element={<Campigns/>}></Route>
+            <Route path='/dashboard' element={<Dashboard/>}></Route>
           </Routes>
       </Router> 
     </div>

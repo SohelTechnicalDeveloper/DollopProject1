@@ -12,6 +12,14 @@
     opacity: 1 !important;
     font-weight: 500 !important;
 }
+@media screen and  (max-width:800px) 
+{
+    .table-scroller{
+        
+        overflow-x: scroll;
+    }
+    
+}
 /* .form-control{
     border: none;
 }
