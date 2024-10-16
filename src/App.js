@@ -16,6 +16,7 @@ import AgencyRoom from './Componetns/AgencyRoom';
 import EmailFunctionality from './Componetns/EmailFunctionality';
 import Campigns from './Componetns/Campigns';
 import Dashboard from './Componetns/Dashboard';
+import Tasks from './Componetns/Tasks';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path='/email' element={<EmailFunctionality/>}></Route>
             <Route path='/campaigns' element={<Campigns/>}></Route>
             <Route path='/dashboard' element={<Dashboard/>}></Route>
+            <Route path='/task' element={<Tasks/>}></Route>
           </Routes>
       </Router> 
     </div>

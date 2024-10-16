@@ -19,6 +19,9 @@ const EmailFunctionality = () => {
   const auth = JSON.parse(localStorage.getItem("user"));
   const [addBtn, setAddBtne] = useState(false);
   const[userInfo,setUserInfo] = useState({})
+  const baseUrl = process.env.REACT_APP_BASE_URL
+  // console.log(baseUrl);
+
 
   const addShowModel = () => {
     setAddBtne(true);
@@ -31,7 +34,7 @@ const EmailFunctionality = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/user/getUser`, {
+      const response = await axios.get(`${baseUrl}/user/getUser`, {
         headers: {
           Authorization: `bearer ${auth.token}`,
         },
@@ -49,7 +52,7 @@ const EmailFunctionality = () => {
       const key = e.target.value;
       if (key) {
         const response = await axios.get(
-          `http://localhost:8000/user/findUserbyName/${key}`
+          `${baseUrl}/user/findUserbyName/${key}`
         );
         if (response.status === 200) {
           setUserData(response.data.data);
@@ -61,7 +64,7 @@ const EmailFunctionality = () => {
   };
   useEffect(() =>{
     getUser();
-  });
+  },[]);
   return (
     <div>
       <MainLayout >

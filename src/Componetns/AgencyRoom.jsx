@@ -32,6 +32,8 @@ const AgencyRoom = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   console.log([...Array(totalPages)]);
+  const baseUrl = process.env.REACT_APP_BASE_URL
+
 
   // const totalPages  = [1,2,3,4,5,6];
 
@@ -63,7 +65,7 @@ const AgencyRoom = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/user/getUser`, {
+      const response = await axios.get(`${baseUrl}/user/getUser`, {
         headers: {
           Authorization: `bearer ${auth.token}`,
         },
@@ -83,7 +85,7 @@ const AgencyRoom = () => {
   const getUserById = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/user/getUserById/${id}`
+        `${baseUrl}/user/getUserById/${id}`
       );
       if (response.status === 200) {
         setName(response.data.data.name);
@@ -101,7 +103,7 @@ const AgencyRoom = () => {
     // window.confirm('Are sure want to delete this user')
     try {
       const response = await axios.delete(
-        `http://localhost:8000/user/deleteUser/${id}`
+        `${baseUrl}/user/deleteUser/${id}`
       );
 
       if (response.status === 200) {
@@ -150,7 +152,7 @@ const AgencyRoom = () => {
       const key = e.target.value;
       if (key) {
         const response = await axios.get(
-          `http://localhost:8000/user/findUserbyName/${key}`
+          `${baseUrl}/user/findUserbyName/${key}`
         );
         if (response.status === 200) {
           setUserData(response.data.data);
@@ -166,7 +168,7 @@ const AgencyRoom = () => {
 
     try {
       const response = await axios.patch(
-        `http://localhost:8000/user/updateUserStatus/${id}`,
+        `${baseUrl}/user/updateUserStatus/${id}`,
         {
           status: !status,
         }
@@ -195,7 +197,7 @@ const AgencyRoom = () => {
         image !== ""
       ) {
         const response = await axios.post(
-          `http://localhost:8000/user/register`,
+          `${baseUrl}/user/register`,
           {
             name: name,
             email: email,
@@ -221,7 +223,7 @@ const AgencyRoom = () => {
   const handleUpdateImage = async (e) => {
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
-    let response = await fetch(`http://localhost:8000/user/uploadImage`, {
+    let response = await fetch(`${baseUrl}/user/uploadImage`, {
       method: "post",
       body: formData,
       dataType: "jsonp",

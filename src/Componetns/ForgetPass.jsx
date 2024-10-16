@@ -14,15 +14,17 @@ const ForgetPass = () => {
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const baseUrl = process.env.REACT_APP_BASE_URL
 
   const updatePassword = async (e) => {
+
     e.preventDefault();
 
     try {
       setError(!error);
       if (password !== "" && confPassword !== "") {
         const response = await axios.patch(
-          `http://localhost:8000/user/updateUserPassword`,
+          `${baseUrl}/user/updateUserPassword`,
           {
             email: email,
             password: password,

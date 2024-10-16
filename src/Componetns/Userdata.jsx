@@ -9,16 +9,21 @@ import Dashboard from "./Dashboard";
 const Userdata = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_BASE_URL
+console.log(baseUrl);
+
 
   const auth = JSON.parse(localStorage.getItem("user"));
-
+ 
   const getUser = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/user/getUser`, {
+      const response = await axios.get(`${baseUrl}/user/getUser`, {
         headers: {
           Authorization: `bearer ${auth.token}`,
         },
       });
+      console.log(response,"hello");
+      
       if (response.status === 200) {
         setData(response.data.data);
       }

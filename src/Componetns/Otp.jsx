@@ -14,15 +14,17 @@ const Otp = () => {
   const { email } = location.state || {};
   const [loader, setLoader] = useState(true);
   const [error, setError] = useState(false);
+  const baseUrl = process.env.REACT_APP_BASE_URL
 
   const sendOTP = async (e) => {
     e.preventDefault();
+
 
     setError(true);
     try {
       if (OTP !== "") {
         const response = await axios.post(
-          `http://localhost:8000/user/submitOtp`,
+          `${baseUrl}/user/submitOtp`,
           {
             otp: OTP,
             email: email,

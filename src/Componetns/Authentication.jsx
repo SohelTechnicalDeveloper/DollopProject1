@@ -11,6 +11,8 @@ const Authentication = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loader, setLoader] = useState(true);
+  const baseUrl = process.env.REACT_APP_BASE_URL
+
 
   const changePassword = async (e) => {
     setLoader(false);
@@ -23,7 +25,7 @@ const Authentication = () => {
       setError(!error);
       if (email !== "") {
         const response = await axios.post(
-          `http://localhost:8000/user/sendOtp`,
+          `${baseUrl}/user/sendOtp`,
           {
             email: email,
           }
