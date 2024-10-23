@@ -28,3 +28,23 @@
            
           </button>
         </div> */}
+
+
+      //  button for the total question no
+
+      
+        // {Array.from({ length: totalQuestions }).map((_, index) => (
+        //   <button
+        //     key={index}
+        //     className={`btn m-1  ${
+        //       questionStatus[index] === 'answered'
+        //         ? 'btn-success'
+        //         : questionStatus[index] === 'notAnswered'
+        //         ? 'btn-warning'
+        //         : 'btn-secondary'
+        //     }`}
+        //     onClick={() => handleQuestionClick(index)}
+        //   >
+        //     {index + 1}
+        //   </button>
+        // ))}

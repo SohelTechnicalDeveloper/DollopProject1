@@ -87,9 +87,9 @@ const Sidebar = () => {
 
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">
-        <Link className="text-decoration-none text-white nav-link active">
+        <Link className="text-decoration-none text-white nav-link active" to='/mockTest'>
           <FaRocketchat className="fs-2 me-3 fa" />
-          <span>Chat</span>
+          <span>Mock Test</span>
         </Link>
       </li>
     </ul>

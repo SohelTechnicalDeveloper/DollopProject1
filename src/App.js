@@ -17,6 +17,7 @@ import EmailFunctionality from './Componetns/EmailFunctionality';
 import Campigns from './Componetns/Campigns';
 import Dashboard from './Componetns/Dashboard';
 import Tasks from './Componetns/Tasks';
+import Test from './Componetns/Test';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path='/campaigns' element={<Campigns/>}></Route>
             <Route path='/dashboard' element={<Dashboard/>}></Route>
             <Route path='/task' element={<Tasks/>}></Route>
+            <Route path='/mockTest' element={<Test/>}></Route>
           </Routes>
       </Router> 
     </div>

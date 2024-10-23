@@ -6,34 +6,37 @@ import "../Styles/Tasks.css";
 import stopWatch from "../images/stopwatch.png";
 import { IoBulbSharp } from "react-icons/io5";
 import { IoMdArrowDropright } from "react-icons/io";
+import parse from "html-react-parser";
+import { CirclesWithBar } from "react-loader-spinner";
 
 const Tasks = () => {
   const [data, setData] = useState([]);
-  const [select, setSelectSub] = useState(null);
+  const [select, setSelectSub]   = useState(null);
   const [question, setQuestion] = useState([]);
   const [subjectId, setSubjectId] = useState();
   const [active, setActive] = useState();
+  const [loader, setLoader] = useState(false);
+
   console.log(subjectId + "subjectid");
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcwMDExZWYzZjM4MmE4OTg2MmU0OGI0IiwiaWF0IjoxNzI5MDgwODg2LCJleHAiOjE3MjkxNjcyODZ9.iu0qT6knP42s8fAPt4AObPKe2NFnwk3olBUPNaQNhd4";
-
+  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjZhYTJmYmI3NTNkODA1YTlhYTAzNzkwIiwiaWF0IjoxNzI5NjY2OTk5LCJleHAiOjE3Mjk3NTMzOTl9.dVv_tNg3lQle8bbJTiGIQCQ4h2y7O216McjlUXsJcwg`;
   const getUserTest = async () => {
     try {
+      setLoader(true);
       const response = await axios.get(
-        `http://13.235.121.38:5001/mockTest/viewresult/`,
+        `http://192.168.0.15:5003/mockTest/viewResult/`,
         {
+          params: {
+            mockTest_id: "66d99c5778fcecd7f027d081",
+            mockTestSubmissions_id: "6708d56a39bd1c847d7b97f3",
+            subject_id: subjectId,
+          },
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          params: {
-            mockTest_id: "67000a073f382a89862e47cb",
-            mockTestSubmissions_id: "670d11801c7b3db481d25cbd",
-            subject_id: subjectId,
-          },
         }
       );
-      // console.log(response.data.data);
+      // console.log("res" + response.data.data);
       if (response.status === 200) {
         setData(response.data.data);
         setSelectSub(select ? select : response.data.data.subjects[0]);
@@ -41,33 +44,14 @@ const Tasks = () => {
 
         console.log(data.subjects.length);
 
-        // if(data.subjects.length>0 && subjectId===null )
-        //   {
-        //     console.log("heello data");
-
-        //   const result = await axios.get(`http://13.235.121.38:5001/mockTest/viewresult/`,
-        //     {
-        //       headers: {
-        //         Authorization: `Bearer ${token}`,
-        //       },
-        //       params:{
-        //         mockTest_id:'67000a073f382a89862e47cb',
-        //         mockTestSubmissions_id:'670d11801c7b3db481d25cbd',
-        //         subject_id:subjectId
-        //     }
-        //     }
-        //   );
-        //   setData(result.data.data);
-        //   setSubjectId(result.data.data.subjects.subjectId)
-        //   setSelectSub(result.data.data.subjects)
-        // }
-
         // setQuestion(response.data.data.questions)
       } else {
         console.error("Data is not an array", response.data);
       }
     } catch (error) {
       console.error("Error fetching data", error);
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -81,6 +65,38 @@ const Tasks = () => {
     getUserTest();
   }, [subjectId]);
 
+  const options = {
+    replace: (domNode) => {
+      // Handle <img> tags
+      if (domNode.name === "img") {
+        const { src } = domNode.attribs;
+        return (
+          <img
+            src={src}
+            width={500}
+            height={400}
+            className="img-fluid"
+            alt="Content Image"
+          />
+        );
+      }
+      // Handle <oembed> for videos
+      if (domNode.name === "oembed") {
+        const videoUrl = domNode.attribs.url;
+        const embedUrl = videoUrl.replace("youtu.be/", "youtube.com/embed/");
+        return (
+          <iframe
+            className="emded"
+            src={embedUrl}
+            title="YouTube video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        );
+      }
+    },
+  };
   return (
     <div>
       <MainLayout>
@@ -336,137 +352,327 @@ const Tasks = () => {
             </div>
           </div>
 
-          {data.questions?.map((quest, index) => {
-            return (
-              <div className="card mb-4" key={index}>
-                <div className="card-body">
-                  <p>
-                    <strong>
-                      Question {index + 1}
-                      {true === true ? (
-                        <span className="fw-bold" style={{ color: "#23bc23" }}>
-                          &nbsp; (+2 Marks)
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </strong>
-                  </p>
+          {loader ? (
+            <div className="d-flex justify-content-center align-content-center align-items-center">
+              <CirclesWithBar
+                height="100"
+                width="200"
+                color="#4fa94d"
+                outerCircleColor="#4fa94d"
+                innerCircleColor="#4fa94d"
+                barColor="#4fa94d"
+                ariaLabel="circles-with-bar-loading"
+                wrapperStyle={{}}
+              />
+            </div>
+          ) : (
+            <>
+              {data.questions?.map((quest, index) => {
+                return (
+                  <div className="px-2 " key={index}>
+                    <div className="card-body">
+                      <p>
+                        <strong>
+                          Question {index + 1}
+                          {quest.subQuestions.length ? (
+                            ""
+                          ) : quest.selectedOption !== null ? (
+                            quest.correctOption === quest.selectedOption ? (
+                              <label
+                                className="ps-1"
+                                style={{ color: "rgb(84 231 86)" }}
+                              >
+                                (+2 Marks)
+                              </label>
+                            ) : (
+                              <label className=" text-danger ps-1">
+                                {" "}
+                                (0.5 Marks)
+                              </label>
+                            )
+                          ) : (
+                            <label className=" text-danger ps-1">
+                              {" "}
+                              Not Answered
+                            </label>
+                          )}
+                        </strong>
+                      </p>
 
-                  <p>{quest.question.replace(/<[^>]*>/g, "")}</p>
-                   
-
-                  {
-                    (
-                      quest.subQuestions?.map((subQuestion, optIndex) => {
-                        return (
-                          <>
-                            <p>
-                    <strong>
-                      Question {optIndex + 1}
-                      {true === true ? (
-                        <span className="fw-bold" style={{ color: "#23bc23" }}>
-                          &nbsp; (+2 Marks)
-                        </span>
-                      ) : (
-                        ""
-                      )}
-                    </strong>
-                  </p>
-                            {" "}
-                            <p>{subQuestion.question.replace(/<[^>]*>/g, "")}</p>
-                            <form>
-                              {subQuestion.options?.map((option, optIndex) => (
-                                <div className="form-check" key={optIndex}>
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    checked={
-                                      subQuestion.correctOption === optIndex
-                                        ? true
-                                        : false
-                                    }
-                                    name={`question${subQuestion.questionId}`}
-                                    id={`option${optIndex}${subQuestion.questionId}`}
-                                  />
-                                  <label className="form-check-label">
-                                    {String.fromCharCode(65 + optIndex)}.
-                                    {option.replace(/<[^>]*>/g, "")}
-                                    {optIndex === subQuestion.correctOption ? (
-                                      <span
-                                        className="fw-bold"
-                                        style={{ color: "#23bc23" }}
-                                      >
-                                        &nbsp;(Correct Answer)
-                                      </span>
-                                    ) : (
-                                      ""
-                                    )}
-                                  </label>
-                                </div>
-                              ))}
-                            </form>
-                            
-                          </>
-                        );
-                      }))}
-
-                  <form>
-                    {quest.options?.map((option, optIndex) => (
-                      <div className="form-check" key={optIndex}>
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          checked={quest.correctOption===optIndex?true:false}
-                          name={`question${quest.questionId}`}
-                          id={`option${optIndex}${quest.questionId}`}
-                        />
-                        <label className="form-check-label">
-                          {String.fromCharCode(65 + optIndex)}.{option}
-                          {optIndex === quest.correctOption ? (
-                            <span
-                              className="fw-bold"
-                              style={{ color: "#23bc23" }}
-                            >
-                              &nbsp;(Correct Answer)
-                            </span> 
-                          )
-                          :""}
-                        </label>
+                      <div className="fw-bold">
+                        {parse(quest.question, options)}
                       </div>
-                    ))}
-                  </form>
 
-                  <button className="btn btn-link text-decoration-none mt-2 fw-bold text-dark">
-                    <IoBulbSharp
-                      className="fw-bold"
-                      style={{ color: "#F6821F" }}
-                    />
-                    &nbsp; Solution &nbsp;{" "}
-                    <a
-                      className="btn text-decoration-none fw-bold fst-italic"
-                      data-bs-toggle="collapse"
-                      href={`#collapseExample${index}`}
-                      role="button"
-                      aria-expanded="false"
-                      aria-controls={`collapseExample${index}`}
-                      style={{ color: "#F6821F" }}
-                    >
-                      Show
-                    </a>
-                  </button>
+                      {loader ? (
+                        <div className="d-flex justify-content-center align-content-center align-items-center">
+                          <CirclesWithBar
+                            height="100"
+                            width="200"
+                            color="#4fa94d"
+                            outerCircleColor="#4fa94d"
+                            innerCircleColor="#4fa94d"
+                            barColor="#4fa94d"
+                            ariaLabel="circles-with-bar-loading"
+                            wrapperStyle={{}}
+                          />
+                        </div>
+                      ) : (
+                        quest.subQuestions?.map((subQuestion, optIndex) => {
+                          return (
+                            <>
+                              <p>
+                                <strong>
+                                <br />
 
-                  <div className="collapse" id={`collapseExample${index}`}>
-                    <div className="card card-body">
-                      {quest.solution || "No solution provided."}
+                                  Question {optIndex + 1}
+                                  {subQuestion.length ? (
+                                    ""
+                                  ) : subQuestion.selectedOption !== null ? (
+                                    subQuestion.correctOption ===
+                                    subQuestion.selectedOption ? (
+                                      <label
+                                        className="ps-1"
+                                        style={{ color: "rgb(84 231 86)" }}
+                                      >
+                                        (+2 Marks)
+                                      </label>
+                                    ) : (
+                                      <label className=" text-danger ps-1">
+                                        {" "}
+                                        (0.5 Marks)
+                                      </label>
+                                    )
+                                  ) : (
+                                    <label className=" text-danger ps-1">
+                                      {" "}
+                                      Not Answered
+                                    </label>
+                                  )}
+                                </strong>
+
+                                {/* subQuestion  */}
+                              </p>{" "}
+                              <p className="fw-bold">
+                                {parse(subQuestion.question, options)}
+                              </p>
+                              <form>
+                                {subQuestion.options?.map(
+                                  (option, optIndex) => (
+                                    <div className="form-check" key={optIndex}>
+                                      {/* {/ correct Answer /} */}
+                                      <label className="checkbox-wrapper ">
+                                        {subQuestion.correctOption ===
+                                        optIndex ? (
+                                          <input
+                                            className="custom-icon-checkbox"
+                                            type="checkbox"
+                                            checked={true}
+                                            name={`question${subQuestion.questionId}`}
+                                            id={`option${optIndex}${subQuestion.questionId}`}
+                                          />
+                                        ) : (
+                                          ""
+                                        )}
+                                        {subQuestion.correctOption !==
+                                          optIndex &&
+                                        optIndex ===
+                                          subQuestion.selectedOption ? (
+                                          <input
+                                            className="custom-icon-checkbox"
+                                            type="checkbox"
+                                            checked={false}
+                                            name={`question${subQuestion.questionId}`}
+                                            id={`option${optIndex}${subQuestion.questionId}`}
+                                          />
+                                        ) : (
+                                          ""
+                                        )}
+                                        {subQuestion.correctOption !==
+                                          optIndex &&
+                                        optIndex ===
+                                          subQuestion.selectedOption ? (
+                                          <span className="checkbox-icon"></span>
+                                        ) : subQuestion.correctOption ===
+                                          optIndex ? (
+                                          <span className="checkbox-icon"></span>
+                                        ) : (
+                                          <span className="empty"></span>
+                                        )}
+                                      </label>
+
+                                      <label className="form-check-label">
+                                        {String.fromCharCode(65 + optIndex)}.
+                                        &nbsp;
+                                        {option.replace(/<[^>]*>/g, "")}
+                                        <span className="fw-bold">
+                                          {optIndex ===
+                                            subQuestion.correctOption &&
+                                          optIndex ===
+                                            subQuestion.selectedOption ? (
+                                            <span style={{ color: "#23bc23" }}>
+                                              &nbsp;(Correct Answer)
+                                            </span>
+                                          ) : optIndex ===
+                                            subQuestion.correctOption ? (
+                                            <span style={{ color: "#23bc23" }}>
+                                              &nbsp;(Correct Answer)
+                                            </span>
+                                          ) : optIndex ===
+                                            subQuestion.selectedOption ? (
+                                            <span style={{ color: "red" }}>
+                                              &nbsp;(Incorrect Answer)
+                                            </span>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </span>
+                                      </label>
+                                    </div>
+                                  )
+                                )}
+                              </form>
+                    {subQuestion.solution  ? (
+                        <>
+                          <button className="btn btn-link text-decoration-none mt-2 fw-bold text-dark">
+                            <IoBulbSharp
+                              className="fw-bold"
+                              style={{ color: "#F6821F" }}
+                            />
+                            &nbsp; Solution &nbsp;{" "}
+                            <a
+                              className="btn text-decoration-none fw-bold fst-italic"
+                              data-bs-toggle="collapse"
+                              href={`#collapseExample${quest.subQuestionId}`}
+                              role="button"
+                              aria-expanded="false"
+                              aria-controls={`collapseExample${quest.subQuestionId}`}
+                              style={{ color: "#F6821F" }}
+                              
+                            >
+                              Show
+                            </a>
+                          </button>
+
+                          <div
+                            className="collapse"
+                            id={`collapseExample${quest.subQuestionId}`}
+                          >
+                            <div className="card card-body">
+                              {parse(subQuestion.solution,options) || "No solution provided."}
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                              
+                            </>
+                          );
+                        })
+                      )}
+
+                      <form>
+                        {quest.options?.map((option, optIndex) => (
+                          <div className="form-check" key={optIndex}>
+                            <label className="form-check-label d-flex">
+                              <label className="checkbox-wrapper ">
+                                {quest.correctOption === optIndex ? (
+                                  <input
+                                    className="custom-icon-checkbox"
+                                    type="checkbox"
+                                    checked={true}
+                                    name={`question${quest.questionId}`}
+                                    id={`option${optIndex}${quest.questionId}`}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                                {quest.correctOption !== optIndex &&
+                                optIndex === quest.selectedOption ? (
+                                  <input
+                                    className="custom-icon-checkbox"
+                                    type="checkbox"
+                                    checked={false}
+                                    name={`question${quest.questionId}`}
+                                    id={`option${optIndex}${quest.questionId}`}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                                {quest.correctOption !== optIndex &&
+                                optIndex === quest.selectedOption ? (
+                                  <span className="checkbox-icon"></span>
+                                ) : quest.correctOption === optIndex ? (
+                                  <span className="checkbox-icon"></span>
+                                ) : (
+                                  <span className="empty"></span>
+                                )}
+                              </label>
+                              {String.fromCharCode(65 + optIndex)}. &nbsp;
+                              {option.replace(/<[^>]*>/g, "")}
+                              <span className="fw-bold">
+                                {optIndex === quest.correctOption &&
+                                optIndex === quest.selectedOption ? (
+                                  <span style={{ color: "#23bc23" }}>
+                                    &nbsp;(Correct Answer)
+                                  </span>
+                                ) : optIndex === quest.correctOption ? (
+                                  <span style={{ color: "#23bc23" }}>
+                                    &nbsp;(Correct Answer)
+                                  </span>
+                                ) : optIndex === quest.selectedOption ? (
+                                  <span style={{ color: "red" }}>
+                                    &nbsp;(Incorrect Answer)
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                              </span>
+                            </label>
+                          </div>
+                        ))}
+                      </form>
+
+                      {quest.typeOfQuestion === "General" ? (
+                        <>
+                          <button className="btn btn-link text-decoration-none mt-2 fw-bold text-dark">
+                            <IoBulbSharp
+                              className="fw-bold"
+                              style={{ color: "#F6821F" }}
+                            />
+                            &nbsp; Solution &nbsp;{" "}
+                            <a
+                              className="btn text-decoration-none fw-bold fst-italic"
+                              data-bs-toggle="collapse"
+                              href={`#collapseExample${index}`}
+                              role="button"
+                              aria-expanded="false"
+                              aria-controls={`collapseExample${index}`}
+                              style={{ color: "#F6821F" }}
+                            >
+                              Show
+                            </a>
+                          </button>
+
+                          <div
+                            className="collapse"
+                            id={`collapseExample${index}`}
+                          >
+                            <div className="card card-body">
+                              {parse(quest.solution) || "No solution provided."}
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
                     </div>
+                    <hr />
                   </div>
-                </div>
-              </div>
-            );
-          })}
-
-       
+                );
+              })}
+            </>
+          )}
         </div>
       </MainLayout>
     </div>

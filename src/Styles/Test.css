@@ -1,0 +1,20 @@
+.right-side{
+
+    position: sticky !important;
+    top: 20% !important;
+}
+.card-body-style{
+   background-color:#07284B !important;
+}
+
+   
+@media (max-width: 900px) {
+    .position-media {
+      position: relative !important;
+      width: 100% !important;
+      right: 0; /* Reset any right positioning */
+      top: 0 !important; /* Adjust top position for normal flow */
+      height: auto; /* Let the height adjust naturally */
+    }
+  }
+  
