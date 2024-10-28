@@ -7,9 +7,12 @@ import { MdDeleteOutline } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import { FaEye } from "react-icons/fa";
 import "../Styles/Agency.css";
+import CryptoJS from "crypto-js";
+
+
 // import logo from "../images/dcb55e.jpg";
 import { toast, ToastContainer } from "react-toastify";
-// import Pdf from "../Resume/SohelFinalResume.59787e8e065e9c9dfc2c.pdf";
+  // import Pdf from "../Resume/SohelFinalResume.59787e8e065e9c9dfc2c.pdf";
 import { CirclesWithBar } from "react-loader-spinner";
 
 const AgencyRoom = () => {
@@ -33,11 +36,11 @@ const AgencyRoom = () => {
   const [totalPages, setTotalPages] = useState(1);
   console.log([...Array(totalPages)]);
   const baseUrl = process.env.REACT_APP_BASE_URL
-
-
-  // const totalPages  = [1,2,3,4,5,6];
-
-  // console.log(page);
+  // const secretKey = "your-secret-key"
+  // const bytes = CryptoJS.AES.decrypt(userInfo.password, secretKey);
+  // const decrypt = bytes.toString(CryptoJS.enc.Utf8);
+  // console.log(decrypt+"decrypt password");
+  
 
   const handleShow = (id) => {
     setShowUser(false);
@@ -197,7 +200,7 @@ const AgencyRoom = () => {
         image !== ""
       ) {
         const response = await axios.post(
-          `${baseUrl}/user/register`,
+          `http://127.0.0.1:8000/user/register`,
           {
             name: name,
             email: email,
@@ -882,8 +885,8 @@ const AgencyRoom = () => {
                         <p>
                           Email : <strong>{userInfo.email}</strong>
                         </p>
-                        <p>
-                          Password: <strong>123@gmail.com</strong>
+                        <p className="text-truncate">
+                          Password: <strong>{userInfo.password}</strong>
                         </p>
                       </div>
                       <div className="col-6">

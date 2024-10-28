@@ -131,3 +131,130 @@ console.log(baseUrl);
 };
 
 export default Userdata;
+// import React, { useState } from "react";
+
+// const totalQuestions = 17; // Example total questions
+
+// const ExamInterface = () => {
+//   const [selectedOptions, setSelectedOptions] = useState({});
+//   const [questionStatus, setQuestionStatus] = useState(
+//     Array(totalQuestions).fill("notVisited")
+//   );
+//   const [currentQuestion, setCurrentQuestion] = useState(0); // Active question index
+
+//   const questionData = [
+//     {
+//       id: 1,
+//       question: "Sample Question 1",
+//       options: [
+//         "Option Number 1",
+//         "Option Number 2",
+//         "Option Number 3",
+//         "Option Number 4",
+//       ],
+//     },
+//     // Add more question objects here
+//   ];
+
+//   // Handle answer selection
+//   const handleOptionSelect = (index) => {
+//     setSelectedOptions((prev) => ({
+//       ...prev,
+//       [currentQuestion]: index, // Store selected option for current question
+//     }));
+//     // Update question status to "answered"
+//     setQuestionStatus((prevStatus) =>
+//       prevStatus.map((status, idx) =>
+//         idx === currentQuestion ? "answered" : status
+//       )
+//     );
+//   };
+
+//   // Handle navigation
+//   const handleNext = () => {
+//     setCurrentQuestion((prev) => (prev + 1) % totalQuestions);
+//     updateQuestionStatus("notAnswered"); // Mark as "Not Answered" if not selected
+//   };
+
+//   const handleMarkForReview = () => {
+//     updateQuestionStatus("marked");
+//     setCurrentQuestion((prev) => (prev + 1) % totalQuestions);
+//   };
+
+//   const handleSkip = () => {
+//     setCurrentQuestion((prev) => (prev + 1) % totalQuestions);
+//   };
+
+//   // Update the status of the question
+//   const updateQuestionStatus = (status) => {
+//     setQuestionStatus((prevStatus) =>
+//       prevStatus.map((s, idx) => (idx === currentQuestion ? status : s))
+//     );
+//   };
+
+//   return (
+//     <div className="exam-container">
+//       {/* Question Area */}
+//       <div className="question-section">
+//         <h3>Q. {currentQuestion + 1}</h3>
+//         <p>{questionData[currentQuestion]?.question}</p>
+//         <ul>
+//           {questionData[currentQuestion]?.options.map((option, index) => (
+//             <li key={index}>
+//               <input
+//                 type="radio"
+//                 name={`question-${currentQuestion}`}
+//                 checked={selectedOptions[currentQuestion] === index}
+//                 onChange={() => handleOptionSelect(index)}
+//               />
+//               {option}
+//             </li>
+//           ))}
+//         </ul>
+//       </div>
+
+//       {/* Question Palette */}
+//       <div className="question-palette">
+//         <h4>Choose a Question</h4>
+//         <div className="question-buttons">
+//           {questionStatus.map((status, index) => (
+//             <button
+//               key={index}
+//               className={`btn ${
+//                 status === "answered"
+//                   ? "btn-success"
+//                   : status === "notAnswered"
+//                   ? "btn-warning"
+//                   : status === "marked"
+//                   ? "btn-info"
+//                   : "btn-secondary"
+//               }`}
+//               onClick={() => setCurrentQuestion(index)}
+//             >
+//               {index + 1}
+//             </button>
+//           ))}
+//         </div>
+//       </div>
+
+//       {/* Control Buttons */}
+//       <div className="control-buttons">
+//         <button onClick={handleMarkForReview}>Mark for Review & Next</button>
+//         <button onClick={handleNext}>Save & Next</button>
+//         <button onClick={handleSkip}>Skip</button>
+//         <button
+//           onClick={() =>
+//             setSelectedOptions((prev) => ({
+//               ...prev,
+//               [currentQuestion]: null,
+//             }))
+//           }
+//         >
+//           Reset
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ExamInterface;

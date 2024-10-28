@@ -11,7 +11,7 @@ import { CirclesWithBar } from "react-loader-spinner";
 
 const Tasks = () => {
   const [data, setData] = useState([]);
-  const [select, setSelectSub]   = useState(null);
+  const [select, setSelectSub] = useState(null);
   const [question, setQuestion] = useState([]);
   const [subjectId, setSubjectId] = useState();
   const [active, setActive] = useState();
@@ -19,15 +19,15 @@ const Tasks = () => {
 
   console.log(subjectId + "subjectid");
 
-  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjZhYTJmYmI3NTNkODA1YTlhYTAzNzkwIiwiaWF0IjoxNzI5NjY2OTk5LCJleHAiOjE3Mjk3NTMzOTl9.dVv_tNg3lQle8bbJTiGIQCQ4h2y7O216McjlUXsJcwg`;
+  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcxYTUwZThmZDU0NmQ3MmNmYjhmZDhjIiwiaWF0IjoxNzMwMDkzMTQyLCJleHAiOjE3MzAxNzk1NDJ9.WqTkjIU71kbnRnk6T8H7Uq9r0FJeSIG0k0_LWTghKho`;
   const getUserTest = async () => {
     try {
       setLoader(true);
       const response = await axios.get(
-        `http://192.168.0.15:5003/mockTest/viewResult/`,
+        `http://192.168.0.13:5003/mockTest/viewResult/`,
         {
           params: {
-            mockTest_id: "66d99c5778fcecd7f027d081",
+            mockTest_id: "671b2c6f0383db0a5cdd90a7",
             mockTestSubmissions_id: "6708d56a39bd1c847d7b97f3",
             subject_id: subjectId,
           },
@@ -422,8 +422,7 @@ const Tasks = () => {
                             <>
                               <p>
                                 <strong>
-                                <br />
-
+                                  <br />
                                   Question {optIndex + 1}
                                   {subQuestion.length ? (
                                     ""
@@ -531,41 +530,40 @@ const Tasks = () => {
                                   )
                                 )}
                               </form>
-                    {subQuestion.solution  ? (
-                        <>
-                          <button className="btn btn-link text-decoration-none mt-2 fw-bold text-dark">
-                            <IoBulbSharp
-                              className="fw-bold"
-                              style={{ color: "#F6821F" }}
-                            />
-                            &nbsp; Solution &nbsp;{" "}
-                            <a
-                              className="btn text-decoration-none fw-bold fst-italic"
-                              data-bs-toggle="collapse"
-                              href={`#collapseExample${quest.subQuestionId}`}
-                              role="button"
-                              aria-expanded="false"
-                              aria-controls={`collapseExample${quest.subQuestionId}`}
-                              style={{ color: "#F6821F" }}
-                              
-                            >
-                              Show
-                            </a>
-                          </button>
+                              {subQuestion.solution ? (
+                                <>
+                                  <button className="btn btn-link text-decoration-none mt-2 fw-bold text-dark">
+                                    <IoBulbSharp
+                                      className="fw-bold"
+                                      style={{ color: "#F6821F" }}
+                                    />
+                                    &nbsp; Solution &nbsp;{" "}
+                                    <a
+                                      className="btn text-decoration-none fw-bold fst-italic"
+                                      data-bs-toggle="collapse"
+                                      href={`#collapseExample${quest.subQuestionId}`}
+                                      role="button"
+                                      aria-expanded="false"
+                                      aria-controls={`collapseExample${quest.subQuestionId}`}
+                                      style={{ color: "#F6821F" }}
+                                    >
+                                      Show
+                                    </a>
+                                  </button>
 
-                          <div
-                            className="collapse"
-                            id={`collapseExample${quest.subQuestionId}`}
-                          >
-                            <div className="card card-body">
-                              {parse(subQuestion.solution,options) || "No solution provided."}
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        ""
-                      )}
-                              
+                                  <div
+                                    className="collapse"
+                                    id={`collapseExample${quest.subQuestionId}`}
+                                  >
+                                    <div className="card card-body">
+                                      {parse(subQuestion.solution, options) ||
+                                        "No solution provided."}
+                                    </div>
+                                  </div>
+                                </>
+                              ) : (
+                                ""
+                              )}
                             </>
                           );
                         })
