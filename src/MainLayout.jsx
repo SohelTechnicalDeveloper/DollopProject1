@@ -15,7 +15,7 @@ const MainLayout = ({ children }) => {
   return (
     <div className="d-flex h-100" >
       <Sidebar />
-      <div className="contain" >
+      <div className="contain bg-body-secondary" >
         <Navbar />
         <div className="mainlayout-children">{children}</div>
       </div>

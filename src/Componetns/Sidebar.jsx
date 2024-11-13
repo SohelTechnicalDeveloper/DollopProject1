@@ -57,6 +57,14 @@ const Sidebar = () => {
         </Link>
       </li>
     </ul>
+    <ul className="nav mb-auto p-2 flex-column">
+      <li className="nav-item">
+        <Link className="text-decoration-none text-white nav-link active" to='/Blog'>
+          <HiOutlineCursorClick className="fs-2 fa me-3" />
+          <span>Blog</span>
+        </Link>
+      </li>
+    </ul>
 
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">
