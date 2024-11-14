@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainLayout from "../MainLayout";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -87,9 +87,15 @@ const Blog = () => {
   const [mainImage, SetMainImage] = useState("");
   const [error, setError] = useState(true);
   
+
+  //use ref 
+  const inputFeatureImageRef = useRef(null)
+  const inputMainImageRef = useRef(null)
+
+  
   //   console.log(categoryId,authorId,date,title,briefIntro,editorData);
 
-  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMxNDc4ODY0LCJleHAiOjE3MzE1NjUyNjR9.2qfLdDhMs_70r8q-U5LaTsTkg8sEPKGg1oAwu_GBC3o`;
+  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMxNTY1NzQxLCJleHAiOjE3MzE2NTIxNDF9.Dzggy1-1WY5wZELnfaxmduZ9PcvmFfWGUFZYwhlbDFA`;
 
   const getAllCateory = async () => {
     try {
@@ -176,14 +182,17 @@ const Blog = () => {
 
         if (response.status === 200) {
           toast.success("Data Add Success");
-          setAuthorId("");
+          setAuthorId(" ");
           setCategoryId(" ");
           setTitle(" ");
           setDate(" ");
           setBriefIntro(" ");
-          setEditiorData("");
+          setEditiorData("  ");
           setFeaturedImage(" ");
           SetMainImage(" ");
+          inputFeatureImageRef.current.value = '';
+          inputMainImageRef.current.value = '';
+
         }
       } catch (error) {
         toast.error(error.response);
@@ -200,7 +209,7 @@ const Blog = () => {
     setEditiorData(editor.getData());
   };
   return (
-    <div>
+    <div className="bg-body-secondary">
       <MainLayout>
         <div className="d-flex justify-content-between p-3">
           <div className="fw-bold">BLOG PAGE</div>
@@ -209,7 +218,7 @@ const Blog = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-1 m-4" style={{ backgroundColor: "#fff" }}>
+        <div className="p-4 rounded-1 m-4 " style={{ backgroundColor: "#fff" }}>
           <div className="fw-bold fs-3">Blog</div>
           <div className="row mt-4">
             <div className="col-md-6">
@@ -322,13 +331,15 @@ const Blog = () => {
                 <label className="form-label text-black fw-bold">
                   Featured Image{" "}
                   <span className="text-danger">
-                    *(Extenstion:jpg.jpeg.webp)Note:Dimenstion
+                    *(Extenstion:jpg.jpeg.webp)
                   </span>
                 </label>
                 <input
                   type="file"
+                  ref={inputFeatureImageRef}
                   onChange={(e) => setFeaturedImage(e.target.files[0])}
                   className="form-control"
+                  accept="image/jpeg, image/jpg, image/webp"
                 />
                 {!error
                   ? !featuredImage && (
@@ -344,13 +355,16 @@ const Blog = () => {
                 <label className="form-label text-black fw-bold">
                   Main Image{" "}
                   <span className="text-danger">
-                    *(Extenstion:jpg.jpeg.webp)Note:Dimenstion
+                    *(Extenstion:jpg.jpeg.webp)
                   </span>
                 </label>
                 <input
                   type="file"
+                  ref={inputMainImageRef}
                   onChange={(e) => SetMainImage(e.target.files[0])}
                   className="form-control"
+                  accept="image/jpeg, image/jpg, image/webp"
+
                 />
                 {!error
                   ? !mainImage && (

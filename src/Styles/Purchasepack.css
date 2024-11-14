@@ -1,0 +1,28 @@
+.card-price {
+    font-size: 1.5rem;
+    color: #007bff;
+    font-weight: bold;
+  }
+  .card-price del {
+    color: #aaa;
+    font-weight: normal;
+  }
+  .btn-add-cart {
+    background-color: #ff9900;
+    border: none;
+    color: white;
+    font-weight: bold;
+  }
+  .btn-add-cart:hover {
+    background-color: #e68a00;
+  }
+  .card-image{
+    transform-style: preserve-3d !important;
+    transition: transform 0.3s ease !important; 
+  }
+  .card-image:hover img{
+    transform: scale(1.2) !important;
+    transform: rotateX(180deg);
+
+  }
+ 

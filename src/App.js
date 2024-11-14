@@ -19,6 +19,8 @@ import Dashboard from './Componetns/Dashboard';
 import Tasks from './Componetns/Tasks';
 import Test from './Componetns/Test';
 import Blog from './Componetns/Blog';
+import PurchagePakages from './Componetns/PurchagePakages';
+import BlogDetails from './Componetns/BlogDetails';
 
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
             <Route path='/task' element={<Tasks/>}></Route>
             <Route path='/mockTest' element={<Test/>}></Route>
             <Route path='/Blog' element={<Blog/>}></Route>
+            <Route path='/package' element={<PurchagePakages/>}></Route>
+            <Route path='/blogdetails' element={<BlogDetails/>}></Route>
           </Routes>
       </Router> 
     </div>

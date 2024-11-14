@@ -34,7 +34,7 @@ const AgencyRoom = () => {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  console.log([...Array(totalPages)]);
+  // console.log([...Array(totalPages)]);
   const baseUrl = process.env.REACT_APP_BASE_URL
   // const secretKey = "your-secret-key"
   // const bytes = CryptoJS.AES.decrypt(userInfo.password, secretKey);

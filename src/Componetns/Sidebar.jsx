@@ -17,7 +17,7 @@ const Sidebar = () => {
   return (
    
     
-    <div className="mainlayout-sidebar">
+    <div className="mainlayout-sidebar ">
   <HiOutlineViewList
     className="navbar-opencross"
     style={{
@@ -31,7 +31,7 @@ const Sidebar = () => {
     onClick={() => setOpen(!Open)}
   />
   <div className={`navbar-togglercross ${Open ? "open" : ""}`}>
-    <div className="fs-3 mx-5 mt-3 p-4 text-white text-truncate">
+    <div className="fs-3 mt-3 p-4 text-white ">
       e Candidate
     </div>
 
@@ -65,6 +65,14 @@ const Sidebar = () => {
         </Link>
       </li>
     </ul>
+    <ul className="nav mb-auto p-2 flex-column">
+      <li className="nav-item">
+        <Link className="text-decoration-none text-white nav-link active" to='/blogdetails'>
+          <HiOutlineCursorClick className="fs-2 fa me-3" />
+          <span>Blog Details</span>
+        </Link>
+      </li>
+    </ul>
 
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">
@@ -74,6 +82,15 @@ const Sidebar = () => {
         </Link>
       </li>
     </ul>
+    <ul className="nav mb-auto p-2 flex-column">
+      <li className="nav-item">
+        <Link className="text-decoration-none text-white nav-link active" to='/package'>
+          <FaHome className="fs-2 me-3 fa" />
+          <span>Purchase Packages</span>
+        </Link>
+      </li>
+    </ul>
+
 
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">

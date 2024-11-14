@@ -1,0 +1,26 @@
+.blog-list{
+    font-size: 18px;
+    color: #000;
+    font-weight: 600 !important;
+}
+.blog-list:hover{
+    border-bottom: 2px solid #F6790B;
+    /* color: #F6`790B !important; */
+    font-weight: 600;
+}
+.truncate {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* For small devices */
+  @media (max-width: 576px) {
+    .truncate {
+      width: 150px;  /* Adjust width for mobile */
+    }
+  }
+  .nav-link.active {
+    color: #F6790B;
+  }
