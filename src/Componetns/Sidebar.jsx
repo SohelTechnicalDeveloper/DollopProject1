@@ -31,7 +31,7 @@ const Sidebar = () => {
     onClick={() => setOpen(!Open)}
   />
   <div className={`navbar-togglercross ${Open ? "open" : ""}`}>
-    <div className="fs-3 mt-3 p-4 text-white ">
+    <div className="fs-3 mt-3 p-4 mx-4 text-white ">
       e Candidate
     </div>
 

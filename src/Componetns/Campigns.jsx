@@ -13,7 +13,9 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const Campigns = () => {
   const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const [toDate, setToDate] = useState();
+  const[startDate,setStartDate] = useState()
+  const[endDate,setEndDate] = useState()
   const [showUser, setShowUser] = useState(false);
   const [coordinatorData, setCoordinatorData] = useState([]);
   const [withdrawData, setWithdrawData] = useState([]);
@@ -149,26 +151,8 @@ const Campigns = () => {
   const handleClose = () => {
     setShowUser(false);
   };
-  // Handle date change
-  const handleFromDateChange = (event) => {
-    setFromDate(event.target.value);
-  };
   
-
-  const handleToDateChange = (event) => {
-    setToDate(event.target.value);
-   
-  };
-   
-  const minDate = new Date(); // Set minimum date to today
-  const maxDate = new Date();
-  maxDate.setDate(maxDate.getDate() + 30);
-
-  // Format dates
-  // const formattedFromDate = fromDate
-  //   ? format(new Date(fromDate), "yyyy-MM-dd")
-  //   : "";
-  // const formattedToDate = toDate ? format(new Date(toDate), "yyyy-MM-dd") : "";
+ 
 
   return (
     <div className="bg-body-secondary ">
@@ -321,30 +305,30 @@ const Campigns = () => {
                       Date
                     </p>
                     <div className="col-md-4 col-lg-3 col-sm-6  ">
-                      <label>From:</label>
-                     
-                      <input
-                        type="date"
+                      <label>From: </label>
+                      <DatePicker
                         className="form-control"
-                        value={fromDate}
-                        onChange={handleFromDateChange}
+                        selected={fromDate}
+                        maxDate={new Date()}
+                        placeholderText="Select From Date"
+                        onChange={(fromDate)=>setFromDate(fromDate)}
+                        dateFormat="dd//mm/yyyy"
+                        
                       />
+                     
                     </div>
                     <div className="col-md-4 col-lg-3 col-sm-6  ">
                       <label>To:</label>
                       <DatePicker
                         className="form-control"
                         selected={toDate}
-                        onChange={handleToDateChange}
-                        minDate={minDate}
-                        maxDate={maxDate}
+                        placeholderText="Select To Date"
+                        maxDate={new Date()}
+                        onChange={(toDate)=>setToDate(toDate)}
+                        dateFormat="dd//mm/yyyy"
+                        
                       />
-                      {/* <input
-                        type="date"
-                        className="form-control"
-                        value={toDate}
-                        onChange={handleToDateChange}
-                      /> */}
+                     
                     </div>
                     <div className="col-md-4 col-lg-3 col-sm-6  ">
                       <select
