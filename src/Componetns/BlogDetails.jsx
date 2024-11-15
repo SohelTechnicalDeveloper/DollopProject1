@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from "../MainLayout";
 import userImage from "../images/SM596414 (1).jpg";
 import { FaRegUser } from "react-icons/fa";
@@ -6,60 +6,69 @@ import { CiCalendarDate } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { MdArrowForwardIos } from "react-icons/md";
 import '../Styles/Blogdetails.css'
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import BlogById from "./BlogById";
 
 const BlogDetails = () => {
-   const[activeLink,setactiveLink] = useState('General')
-
-   const handleClick = (link) => {
-    setactiveLink(link);
-  };
+   const[activeLink,setactiveLink] = useState('')
+   const[allBlog,setAllBlog] = useState([])
+   const[blog_category_id,setblog_category_id] = useState(null)
  
+  const AllBlog = async ()=>{
+    try {
+      
+      const response = await axios.get(`http://192.168.0.22:5003/blog/getAll`,{
+        params:{
+          blog_Category_id:blog_category_id
+        }
+      })
+      if(response.status===200)
+      {
+       
+        setAllBlog(response.data.data)
+      }
+    } catch (error) 
+    {
+       toast.error(error.response.data.error)
+    }
+  }
+  const handleClickSubName = (sub)=>{
+
+    setactiveLink(sub.categoryName);
+    setblog_category_id(sub.blog_Category_id)
+    console.log(sub.blog_Category_id);
+    
+
+  }
+ 
+  useEffect(()=>{
+    AllBlog()
+  },[blog_category_id])
    return (
     <div>
       <MainLayout>
         <div className="d-flex justify-content-center mt-5 ">
-          <ul className="nav mb-4 nav-list">
-            <li className="nav-item">
-              <Link className={`nav-link blog-list ${activeLink === "GENERAL" ? "active" : "text-black"}`} href="#" onClick={() => handleClick("GENERAL")}>
-                GENERAL
-              </Link>
+          {
+            allBlog.blogCategoryData?.map((item,index)=>{
+            return <ul className="nav mb-4 nav-list">
+             <li className="nav-item">
+               <Link className={`nav-link  blog-list ${activeLink === "GENERAL" ? "active" : "text-black"}`} href="#" onClick={()=>handleClickSubName(item)}>
+                  {item.categoryName}
+               </Link>
             </li>
           </ul>
-          <ul className="nav mb-4 nav-list">
-            <li className="nav-item">
-              <Link className={`nav-link blog-list ${activeLink === "EDUCATION" ? "active" : "text-black"}`} href="#"  onClick={() => handleClick("EDUCATION")} >
-                EDUCATION
-              </Link>
-            </li>
-          </ul>{" "}
-          <ul className="nav mb-4 nav-list">
-            <li className="nav-item">
-              <Link className="nav-link  blog-list  text-black" href="#"  >
-                BHARAT SAT
-              </Link>
-            </li>
-          </ul>{" "}
-          <ul className="nav mb-4 nav-list">
-            <li className="nav-item">
-              <Link className="nav-link  blog-list  text-black" href="#"  >
-                COURSES
-              </Link>
-            </li>
-          </ul>
-          <ul className="nav mb-4 nav-list">
-            <li className="nav-item">
-              <Link className="nav-link  blog-list  text-black" href="#"  >
-                QUESTION BANK
-              </Link>
-            </li>
-          </ul>
+            })
+          }
         </div>
 
         <div className="row mt-4 mx-3">
-          <div className="col-md-4 col-lg-3  col-sm-6 p-2 mb-4">
+         {  allBlog.BlogData?.map((data)=>{
+
+         return <div className="col-md-4 col-lg-3  col-sm-6 p-2 mb-4">
             <div className="card  border-0">
               <img
-                src={userImage}
+                src={`http://192.168.0.22:5003/uploads/`+data.mainImage}
                 className="card-img-top card-style rounded-5"
                 style={{ objectFit: "cover", height: "200px" }}
                 alt="Exam Image"
@@ -67,33 +76,35 @@ const BlogDetails = () => {
               <div className="card-body">
                 <div className="d-flex justify-content-around">
                   <p>
-                    <FaRegUser /> Sohel Khan
+                    <FaRegUser /> &nbsp; {data.name}
                   </p>
                   <p>
-                    <CiCalendarDate /> July 8, 2024
+                    <CiCalendarDate /> {data.date.slice(0,10)}
                   </p>
                 </div>
                 <h6
-                  className="card-title fw-bold mb-3 "
+                  className="card-title fw-bold mb-3  "
                   style={{ color: "#07284B",fontSize:"18px" }}
                 >
-                  Empowering Students with Free E-learning Services..
+                  {data.title}
                 </h6>
                 <p className="truncate text-black "  data-toggle="tooltip" data-placement="right" title="Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                   Labore sunt at obcaecati soluta beatae, laborum vero qui
                   inventore unde omnis!">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Labore sunt at obcaecati soluta beatae, laborum vero qui
-                  inventore unde omnis!
+                 {data.briefIntro}
                 </p>
                 <p className="card-text text-end">
-                  <Link className=" text-decoration-none text-black fw-bold">
+                  <Link className=" text-decoration-none text-black fw-bold" onClick={() => { handleClickSubName(data)}} to={`/BlogDetailsById/${data.blog_id}`}>
+                  {/* <BlogById blog_id={data.bl}/> */}
                     Read More <MdArrowForwardIos className="fw-bold" />
                   </Link>
+                  <ToastContainer/>
                 </p>
               </div>
             </div>
           </div>
+          })
+          }
           <div className="col-md-4 col-lg-3  col-sm-6 p-2 mb-4">
             <div className="card  border-0">
               <img

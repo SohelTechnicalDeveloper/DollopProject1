@@ -383,7 +383,7 @@ const Blog = () => {
               </label>
               <textarea
                 value={briefIntro}
-                className="reply-textarea"
+                className="reply-textarea textarea"
                 style={{ height: "25vh" }}
                 placeholder="File Name"
                 onChange={(e) => setBriefIntro(e.target.value)}

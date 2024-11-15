@@ -47,7 +47,26 @@ const Campigns = () => {
   const withdrawRequest = async () => {
     try {
       setError(false);
+      let errorMessage = "";
+      if (!amount) 
+        {
+          errorMessage = "Amount is required";
+        } 
+      else if(!transactionId)
+      {
+        errorMessage ="Transiction Id is Required"
+      }
+      else if(!paymentMode)
+        {
+          errorMessage = "Payment Mode is Required"
+        }
 
+      if (errorMessage) 
+        {
+          toast.error(errorMessage);
+          return;
+        } 
+    else {
       const response = await axios.post(
         `http://192.168.0.22:5003/coordinator/approve-withdraw-request`,
         {
@@ -69,6 +88,7 @@ const Campigns = () => {
         setPaymentMode(" ");
         setAmount(" ");
       }
+    }
     } catch (error) {
       toast.error("Please try again");
     }
@@ -305,7 +325,7 @@ const Campigns = () => {
                       Date
                     </p>
                     <div className="col-md-4 col-lg-3 col-sm-6  ">
-                      <label>From: </label>
+                      <label> From :&nbsp; </label>
                       <DatePicker
                         className="form-control"
                         selected={fromDate}
@@ -318,7 +338,7 @@ const Campigns = () => {
                      
                     </div>
                     <div className="col-md-4 col-lg-3 col-sm-6  ">
-                      <label>To:</label>
+                      <label> To :&nbsp; </label>
                       <DatePicker
                         className="form-control"
                         selected={toDate}

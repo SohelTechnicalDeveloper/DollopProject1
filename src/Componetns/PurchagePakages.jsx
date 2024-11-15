@@ -5,14 +5,17 @@ import { Link } from "react-router-dom";
 import { MdArrowForwardIos } from "react-icons/md";
 import "../Styles/Purchasepack.css";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const PurchagePakages = () => {
     const[allData,setAllData] = useState([])
+    const[packageDetails,setPackageDetails] = useState([])
+    const[packageId,setPackageId] = useState(null)
     console.log(allData);
     const IPAddress = 'http://192.168.0.22:5003/uploads/'
     
 
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcyYTAwMGU5ZWVhMDZhNzg5OWY0NWQ4IiwiaWF0IjoxNzMxNTYyMTM2LCJleHAiOjE3MzE2NDg1MzZ9.rWEVlFkpCuK9mNxTup6gQkMUkwvmeu3YBpmIoj93rd8`;
+    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcyYTAwMGU5ZWVhMDZhNzg5OWY0NWQ4IiwiaWF0IjoxNzMxNTg2Mzg1LCJleHAiOjE3MzE2NzI3ODV9.OHPdGTQODuwmmo0flH1MGQx5Xq_GkLzah-RlU6V79K4`;
 
    const getAllData  = async ()=>{
     try {
@@ -36,6 +39,35 @@ const PurchagePakages = () => {
         
     }
    }
+
+    const getPackageDetailsById = async (id)=>{
+      try {
+        
+        const response = await axios.get(`http://192.168.0.22:5003/package/getDetailById/`,{
+          headers:{
+            Authorization:`Bearer ${token}`
+        },
+          params:{
+            package_id:id
+          }
+        })
+        if(response.status===200)
+        {
+          setPackageDetails(response.data.data)
+          console.log(response.data.packageDetails);
+          
+        }
+      }
+       catch (error) 
+      {
+        toast.error(error.response.data.error) 
+      }
+    }
+
+    const handlePackageDetails = (sub)=>{
+      getPackageDetailsById(sub.package_id)      
+    }
+
    useEffect(()=>{
           getAllData()
    },[])
@@ -61,7 +93,7 @@ const PurchagePakages = () => {
                 </h6>
                 <p className="card-text text-end">
                   {" "}
-                  <Link className="text-decoration-none fw-bold" style={{color:"#e68a00"}}>
+                  <Link className="text-decoration-none fw-bold" style={{color:"#e68a00"}} onClick={()=>handlePackageDetails(item)}>
                     Package Details <MdArrowForwardIos className="fw-bold" />
                   </Link>
                 </p>
