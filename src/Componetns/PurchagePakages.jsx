@@ -12,15 +12,15 @@ const PurchagePakages = () => {
     const[packageDetails,setPackageDetails] = useState([])
     const[packageId,setPackageId] = useState(null)
     console.log(allData);
-    const IPAddress = 'http://192.168.0.22:5003/uploads/'
+    const IPAddress = 'http://192.168.0.27:5003/uploads/'
     
 
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcyYTAwMGU5ZWVhMDZhNzg5OWY0NWQ4IiwiaWF0IjoxNzMxNTg2Mzg1LCJleHAiOjE3MzE2NzI3ODV9.OHPdGTQODuwmmo0flH1MGQx5Xq_GkLzah-RlU6V79K4`;
+    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcyYTAwMGU5ZWVhMDZhNzg5OWY0NWQ4IiwiaWF0IjoxNzMxOTMyOTM3LCJleHAiOjE3MzIwMTkzMzd9.EAo0TmsjzVx-XIJr9NX8_OTU9PZPpGCsK5yi6AL7nzs`;
 
    const getAllData  = async ()=>{
     try {
         
-        const response = await axios.get(`http://192.168.0.22:5003/package/getAll`,{
+        const response = await axios.get(`http://192.168.0.27:5003/package/getAll`,{
             headers:{
                 Authorization:`Bearer ${token}`
             },
@@ -43,7 +43,7 @@ const PurchagePakages = () => {
     const getPackageDetailsById = async (id)=>{
       try {
         
-        const response = await axios.get(`http://192.168.0.22:5003/package/getDetailById/`,{
+        const response = await axios.get(`http://192.168.0.27:5003/package/getDetailById/`,{
           headers:{
             Authorization:`Bearer ${token}`
         },
@@ -82,7 +82,7 @@ const PurchagePakages = () => {
             return <div className="col-md-4 col-lg-3  col-sm-6 p-2 mb-4">
              <div className="card  border-0">
               <img
-                src={`http://192.168.0.22:5003/uploads/`+item.mainImage}
+                src={`http://192.168.0.27:5003/uploads/`+item.mainImage}
                 className="card-img-top card-style"
                 style={{ objectFit: 'cover', height: '200px' }}
                 alt="Exam Image"
@@ -93,7 +93,7 @@ const PurchagePakages = () => {
                 </h6>
                 <p className="card-text text-end">
                   {" "}
-                  <Link className="text-decoration-none fw-bold" style={{color:"#e68a00"}} onClick={()=>handlePackageDetails(item)}>
+                  <Link className="text-decoration-none fw-bold" style={{color:"#e68a00"}} onClick={()=>handlePackageDetails(item)} to={`/packageDetails/${item.package_id}`}>
                     Package Details <MdArrowForwardIos className="fw-bold" />
                   </Link>
                 </p>

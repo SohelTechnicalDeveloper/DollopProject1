@@ -1,0 +1,14 @@
+/* Custom styles for the carousel arrows */
+.react-multiple-carousel__arrow {
+    background-color: #f6790bc5;  /* Set background color */
+    color: white;               /* Set arrow color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .react-multiple-carousel__arrow:hover {
+    background-color: #F6790B;  /* Change color on hover */
+  }
+  
+ 

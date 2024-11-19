@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import MainLayout from "../MainLayout";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import userImage from "../images/SM596414 (1).jpg";
 import { FaBackward, FaRegUser } from "react-icons/fa";
 import { IoChevronBackSharp } from "react-icons/io5";
-import { CiCalendarDate } from "react-icons/ci";
+import { CiCalendar, CiCalendarDate, CiUser } from "react-icons/ci";
+import { MdArrowForwardIos } from "react-icons/md";
+import parse from "html-react-parser";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import '../Styles/BlogById.css'
+import moment from "moment-timezone";
 
 const BlogById = () => {
   const [blogDetails, setBlogDetails] = useState([]);
+  const [relateBlogs, setRelatedBlogs] = useState([]);
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -17,7 +24,7 @@ const BlogById = () => {
   const allBlogDetailsById = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.22:5003/blog/getBlogDetailsById/`,
+        `http://192.168.0.27:5003/blog/getBlogDetailsById/`,
         {
           params: {
             blog_id: id,
@@ -26,27 +33,80 @@ const BlogById = () => {
       );
       if (response.status === 200) {
         setBlogDetails(response.data?.data?.blogCategoryData);
+        setRelatedBlogs(response.data?.data?.relatedBlogs);
+        console.log(relateBlogs + "related");
       }
     } catch (error) {
       toast.error(error.response.data?.error);
     }
   };
 
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+      slidesToSlide: 3, // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+      slidesToSlide: 2, // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1, // optional, default to 1.
+    },
+  };
+
   useEffect(() => {
     allBlogDetailsById();
-  }, []);
+  }, [id]);
+
+  const options = {
+    replace: (domNode) => {
+      // Handle <img> tags
+      if (domNode.name === "img") {
+        const { src } = domNode.attribs;
+        return (
+          <img
+            src={src}
+            width={500}
+            height={400}
+            className="img-fluid"
+            alt="Content Image"
+          />
+        );
+      }
+      // Handle <oembed> for videos
+      if (domNode.name === "oembed") {
+        const videoUrl = domNode.attribs.url;
+        const embedUrl = videoUrl.replace("youtu.be/", "youtube.com/embed/");
+        return (
+          <iframe
+            className="emded"
+            src={embedUrl}
+            title="YouTube video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        );
+      }
+    },
+  };
 
   return (
     <div>
       <MainLayout>
-        <div className="p-4">
+        <div className="p-3">
           <div className="" style={{ color: "#07284B", fontSize: "35px" }}>
             <IoChevronBackSharp
               style={{ cursor: "pointer" }}
               onClick={() => navigate("/blogdetails")}
             />
           </div>
-          <div className="container mt-4">
+          <div className="container mt-4 mx-0 mb-3">
             <h2 style={{ color: "#07284B" }}>{blogDetails.title}</h2>
             <div className="d-flex justify-content-start gap-4 text-muted">
               <span style={{ color: "#F6790B" }}> General </span>
@@ -57,7 +117,7 @@ const BlogById = () => {
               |
               <span>
                 {" "}
-                <CiCalendarDate /> &nbsp;{blogDetails.date?.slice(0, 10)}
+                <CiCalendarDate /> &nbsp; {moment(blogDetails.date).format('YYYY-MM-DD')}
               </span>
             </div>
             <p className="mt-3">{blogDetails.briefIntro}</p>
@@ -66,47 +126,97 @@ const BlogById = () => {
               <div className="d-flex justify-content-start">
                 <img
                   src={
-                    `http://192.168.0.22:5003/uploads/` + blogDetails.mainImage
+                    `http://192.168.0.27:5003/uploads/` + blogDetails.mainImage
                   }
                   className="img-fluid"
+                  height={200}
                   style={{ maxWidth: "40%" }}
                 />
               </div>
             </div>
             <p>
-              {blogDetails.details
-                ?.replace(/<[^>]*>/g, "")
-                .replace(/&nbsp;/g, "")}
+              {blogDetails.length !== 0
+                ? parse(blogDetails.details, options)
+                : ""}
             </p>
-            <h4>AI Education</h4>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              euismod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur.
-            </p>
+
             <img
               src={
-                `http://192.168.0.22:5003/uploads/` + blogDetails.featuredImage
+                `http://192.168.0.27:5003/uploads/` + blogDetails.featuredImage
               }
               className="img-fluid mb-3"
               style={{ maxWidth: "30%" }}
             />
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              euismod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur Lorem ipsum dolor, sit amet consectetur adipisicing
-              elit. Quas saepe alias, dicta atque rem totam molestiae aut
-              maxime, quae autem quod, consectetur reiciendis! Aliquid iste,
-              repellendus ipsam quas qui temporibus..
-            </p>
           </div>
-        </div>
+
+          {/* carousel for related blogs item */}
+
+          </div>
+
+          <div className="bg-body-secondary p-2 " >
+          <h2 className="text-start mb-4 mt-2 mx-3" style={{ color: "#07284B" }}>
+                Related Blogs
+              </h2>
+          <Carousel
+            showDots={true}
+            responsive={responsive}
+            infinite={true}
+            autoPlay={true}
+            autoPlaySpeed={3000}
+            customTransition="all 1.2s ease"
+            transitionDuration={500}
+            containerClass="carousel-container"
+            dotListClass="custom-dot-list-style"
+            
+          >
+            {relateBlogs.map((item) => (
+              <div key={item._id} className="p-2 mb-4 rounded-5">
+                <div className="card border-0 mx-4 rounded-5 " >
+                  <img
+                    src={`http://192.168.0.27:5003/uploads/${item.mainImage}`}
+                    className="card-img-top card-style rounded-5 mb-0"
+                    height={250}
+                    width={300}
+                    alt="Blog Image"
+                  />
+                  <div className="card-body rounded-bottom-5 rounded-top-2 ">
+                    <div className="d-flex justify-content-between text-muted small">
+                      <p>
+                        <FaRegUser /> &nbsp; { item.name}
+                      </p>
+                      <p>
+                        <CiCalendarDate /> {moment(item.date).format('YYYY-MM-DD')}
+                      </p>
+                    </div>
+                    <h6
+                      className="card-title truncate fw-bold mb-2"
+                      title={item.title}
+                      style={{ color: "#07284B", fontSize: "18px" }}
+                    >
+                      {item.title}
+                    </h6>
+                    <p
+                      className="truncate text-black small"
+                      title={item.briefIntro}
+                    >
+                      {item.briefIntro}
+                    </p>
+                    <p className="card-text text-end">
+                      <Link
+                        to={`/BlogDetailsById/${item.blog_id}`}
+                        className="text-decoration-none text-black fw-bold"
+                      >
+                        Read More <MdArrowForwardIos className="fw-bold" />
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Carousel>
+
+          </div>
+
       </MainLayout>
     </div>
   );

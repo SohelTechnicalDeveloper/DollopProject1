@@ -22,6 +22,7 @@ import Blog from './Componetns/Blog';
 import PurchagePakages from './Componetns/PurchagePakages';
 import BlogDetails from './Componetns/BlogDetails';
 import BlogById from './Componetns/BlogById';
+import PurchagePackageDetails from './Componetns/PurchagePackageDetails';
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
             <Route path='/mockTest' element={<Test/>}></Route>
             <Route path='/Blog' element={<Blog/>}></Route>
             <Route path='/package' element={<PurchagePakages/>}></Route>
+            <Route path='/packageDetails/:id' element={<PurchagePackageDetails/>}></Route>
             <Route path='/blogdetails' element={<BlogDetails/>}></Route>
             <Route path='/BlogDetailsById/:id' element={<BlogById/>}></Route>
           </Routes>

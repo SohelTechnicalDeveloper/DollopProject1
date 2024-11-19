@@ -95,12 +95,12 @@ const Blog = () => {
   
   //   console.log(categoryId,authorId,date,title,briefIntro,editorData);
 
-  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMxNTY1NzQxLCJleHAiOjE3MzE2NTIxNDF9.Dzggy1-1WY5wZELnfaxmduZ9PcvmFfWGUFZYwhlbDFA`;
+  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyMDAwNTkxLCJleHAiOjE3MzIwODY5OTF9.kJYNbDjmTqe2JzA4Z_Phq7-7r6yWnLAM3pn6k60_E2w`;
 
   const getAllCateory = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.22:5003/blogCategory/get-all-blog-category`,
+        `http://192.168.0.27:5003/blogCategory/get-all-blog-category`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -115,7 +115,7 @@ const Blog = () => {
   const getAllAuthor = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.0.22:5003/author/get-all-author`,
+        `http://192.168.0.27:5003/author/get-all-author`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -170,7 +170,7 @@ const Blog = () => {
       formData.append("details", editorData);
       try {
         const response = await axios.post(
-          `http://192.168.0.22:5003/blog/add-blog`,
+          `http://192.168.0.27:5003/blog/add-blog`,
           formData,
           {
             headers: {
@@ -280,6 +280,7 @@ const Blog = () => {
                     )
                   : ""}
               </div>
+             
             </div>
           </div>
           <div className="row">

@@ -18,7 +18,7 @@ const BlogDetails = () => {
   const AllBlog = async ()=>{
     try {
       
-      const response = await axios.get(`http://192.168.0.22:5003/blog/getAll`,{
+      const response = await axios.get(`http://192.168.0.27:5003/blog/getAll`,{
         params:{
           blog_Category_id:blog_category_id
         }
@@ -68,9 +68,9 @@ const BlogDetails = () => {
          return <div className="col-md-4 col-lg-3  col-sm-6 p-2 mb-4">
             <div className="card  border-0">
               <img
-                src={`http://192.168.0.22:5003/uploads/`+data.mainImage}
+                src={`http://192.168.0.27:5003/uploads/`+data.mainImage}
                 className="card-img-top card-style rounded-5"
-                style={{ objectFit: "cover", height: "200px" }}
+                height={200}
                 alt="Exam Image"
               />
               <div className="card-body">
@@ -83,7 +83,7 @@ const BlogDetails = () => {
                   </p>
                 </div>
                 <h6
-                  className="card-title fw-bold mb-3  "
+                  className="card-title fw-bold mb-3  truncate " title={data.title}
                   style={{ color: "#07284B",fontSize:"18px" }}
                 >
                   {data.title}
