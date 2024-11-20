@@ -4,7 +4,7 @@ import MainLayout from "../MainLayout";
 import userImage from "../images/SM596414 (1).jpg";
 import "../Styles/Userdata.css";
 import { useNavigate } from "react-router-dom";
-import Dashboard from "./Dashboard";
+// import Dashboard from "./Dashboard";
 
 const Userdata = () => {
   const [data, setData] = useState([]);
@@ -17,7 +17,7 @@ console.log(baseUrl);
  
   const getUser = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/user/getUser`, {
+      const response = await axios.get(`http://192.168.0.139:8000/user/getUser`, {
         headers: {
           Authorization: `bearer ${auth.token}`,
         },
@@ -30,12 +30,14 @@ console.log(baseUrl);
     } catch (error) {}
   };
   useEffect(() => {
-    if (auth) {
+    if (auth) 
+    {
       getUser();
-    } else {
+    } 
+    else {
       navigate("/");
     }
-  }, []);
+  },[auth, getUser, navigate]);
 
   return (
     <div>

@@ -10,7 +10,7 @@ const MainLayout = ({ children }) => {
     if (!auth) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="d-flex h-100" >

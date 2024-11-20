@@ -3,9 +3,10 @@
     color: #000;
     font-weight: 600 !important;
 }
-.blog-list:hover{
-    border-bottom: 2px solid #F6790B;
-    /* color: #F6`790B !important; */
+.blog-list .active{
+  background-color: #F6790B !important;
+    /* border-bottom: 2px solid #F6790B; */
+    color: #fff !important;
     font-weight: 600;
 }
 .truncate {

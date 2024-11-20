@@ -34,7 +34,7 @@ const EmailFunctionality = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/user/getUser`, {
+      const response = await axios.get(`http://192.168.0.139:8000/user/getUser`, {
         headers: {
           Authorization: `bearer ${auth.token}`,
         },
@@ -52,7 +52,7 @@ const EmailFunctionality = () => {
       const key = e.target.value;
       if (key) {
         const response = await axios.get(
-          `${baseUrl}/user/findUserbyName/${key}`
+          `http://192.168.0.139:8000/user/findUserbyName/${key}`
         );
         if (response.status === 200) {
           setUserData(response.data.data);

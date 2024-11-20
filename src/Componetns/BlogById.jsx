@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainLayout from "../MainLayout";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import userImage from "../images/SM596414 (1).jpg";
@@ -11,12 +11,17 @@ import { MdArrowForwardIos } from "react-icons/md";
 import parse from "html-react-parser";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import '../Styles/BlogById.css'
+import "../Styles/BlogById.css";
 import moment from "moment-timezone";
 
 const BlogById = () => {
   const [blogDetails, setBlogDetails] = useState([]);
   const [relateBlogs, setRelatedBlogs] = useState([]);
+  const location = useLocation(); // Get passed state data
+  const { allBlog } = location.state || {}; // Destructure blog data
+  const scrollRef = useRef(null); // Create a reference to the element you want to scroll to
+
+const string = 'sohelkhan'
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -34,7 +39,6 @@ const BlogById = () => {
       if (response.status === 200) {
         setBlogDetails(response.data?.data?.blogCategoryData);
         setRelatedBlogs(response.data?.data?.relatedBlogs);
-        console.log(relateBlogs + "related");
       }
     } catch (error) {
       toast.error(error.response.data?.error);
@@ -61,6 +65,11 @@ const BlogById = () => {
 
   useEffect(() => {
     allBlogDetailsById();
+    if (scrollRef.current) {
+      // Scroll the element into view
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    // window.scrollTo(0, 0);
   }, [id]);
 
   const options = {
@@ -99,7 +108,7 @@ const BlogById = () => {
   return (
     <div>
       <MainLayout>
-        <div className="p-3">
+        <div className="p-3" ref={scrollRef}>
           <div className="" style={{ color: "#07284B", fontSize: "35px" }}>
             <IoChevronBackSharp
               style={{ cursor: "pointer" }}
@@ -109,7 +118,7 @@ const BlogById = () => {
           <div className="container mt-4 mx-0 mb-3">
             <h2 style={{ color: "#07284B" }}>{blogDetails.title}</h2>
             <div className="d-flex justify-content-start gap-4 text-muted">
-              <span style={{ color: "#F6790B" }}> General </span>
+              <span style={{ color: "#F6790B" }}> {allBlog} </span>
               <span>
                 <FaRegUser />
                 &nbsp; {blogDetails.name}
@@ -117,7 +126,8 @@ const BlogById = () => {
               |
               <span>
                 {" "}
-                <CiCalendarDate /> &nbsp; {moment(blogDetails.date).format('YYYY-MM-DD')}
+                <CiCalendarDate /> &nbsp;{" "}
+                {moment(blogDetails.date).format("YYYY-MM-DD")}
               </span>
             </div>
             <p className="mt-3">{blogDetails.briefIntro}</p>
@@ -150,13 +160,15 @@ const BlogById = () => {
           </div>
 
           {/* carousel for related blogs item */}
+        </div>
 
-          </div>
-
-          <div className="bg-body-secondary p-2 " >
-          <h2 className="text-start mb-4 mt-2 mx-3" style={{ color: "#07284B" }}>
-                Related Blogs
-              </h2>
+        <div className="bg-body-secondary p-2 ">
+          <h2
+            className="text-start mb-4 mt-2 mx-3"
+            style={{ color: "#07284B" }}
+          >
+            Related Blogs
+          </h2>
           <Carousel
             showDots={true}
             responsive={responsive}
@@ -167,11 +179,10 @@ const BlogById = () => {
             transitionDuration={500}
             containerClass="carousel-container"
             dotListClass="custom-dot-list-style"
-            
           >
             {relateBlogs.map((item) => (
               <div key={item._id} className="p-2 mb-4 rounded-5">
-                <div className="card border-0 mx-4 rounded-5 " >
+                <div className="card border-0 mx-4 rounded-5 ">
                   <img
                     src={`http://192.168.0.27:5003/uploads/${item.mainImage}`}
                     className="card-img-top card-style rounded-5 mb-0"
@@ -182,10 +193,11 @@ const BlogById = () => {
                   <div className="card-body rounded-bottom-5 rounded-top-2 ">
                     <div className="d-flex justify-content-between text-muted small">
                       <p>
-                        <FaRegUser /> &nbsp; { item.name}
+                        <FaRegUser /> &nbsp; {item.name}
                       </p>
                       <p>
-                        <CiCalendarDate /> {moment(item.date).format('YYYY-MM-DD')}
+                        <CiCalendarDate />{" "}
+                        {moment(item.date).format("YYYY-MM-DD")}
                       </p>
                     </div>
                     <h6
@@ -214,9 +226,7 @@ const BlogById = () => {
               </div>
             ))}
           </Carousel>
-
-          </div>
-
+        </div>
       </MainLayout>
     </div>
   );

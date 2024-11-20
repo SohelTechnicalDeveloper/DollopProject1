@@ -68,7 +68,7 @@ const AgencyRoom = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/user/getUser`, {
+      const response = await axios.get(`http://192.168.0.139:8000/user/getUser`, {
         headers: {
           Authorization: `bearer ${auth.token}`,
         },

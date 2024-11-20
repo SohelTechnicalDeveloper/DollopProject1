@@ -24,7 +24,7 @@ const Otp = () => {
     try {
       if (OTP !== "") {
         const response = await axios.post(
-          `${baseUrl}/user/submitOtp`,
+          `http://192.168.0.139:8000/user/submitOtp`,
           {
             otp: OTP,
             email: email,

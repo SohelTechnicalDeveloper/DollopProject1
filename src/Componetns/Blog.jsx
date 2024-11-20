@@ -6,72 +6,9 @@ import { FaCheck } from "react-icons/fa";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
-// import SimpleUploadAdapter from './SimpleUploadAdapter'; // Custom upload adapter file
 
 
-// // Custom Upload Adapter to handle binary image upload
-// class UploadAdapter {
-//   constructor(loader) {
-//     this.loader = loader;
-//   }
 
-//   upload() {
-//     return this.loader.file.then(
-//       (file) =>
-//         new Promise((resolve, reject) => {
-//           // Convert the file to binary data
-//           const reader = new FileReader();
-//           reader.readAsArrayBuffer(file);
-
-//           reader.onload = () => {
-//             const binaryData = reader.result;
-
-//             // Send the binary data to your server's upload endpoint
-//             fetch("uploadEndpoint", {
-//               method: "POST",
-//               headers: {
-//                 "Content-Type": "application/octet-stream",
-//               },
-//               body: binaryData,
-//             })
-//               .then(async (response) => {
-//                 if (!response.ok) {
-//                   // If the response is not OK, throw an error with response details
-//                   const errorText = await response.text();
-//                   throw new Error(`Upload failed: ${errorText}`);
-//                 }
-//                 return response.json();
-//               })
-//               .then((data) => {
-//                 // Resolve with the URL of the uploaded image from the server response
-//                 resolve({
-//                   default: data.url, // The URL of the uploaded image returned from the server
-//                 });
-//               })
-//               .catch((error) => {
-//                 console.error("Image upload error:", error);
-//                 reject(error);
-//               });
-//           };
-
-//           reader.onerror = () => {
-//             reject(reader.error);
-//           };
-//         })
-//     );
-//   }
-
-//   abort() {
-//     // Aborts the upload process if necessary
-//   }
-// }
-
-// // Plugin to add the custom upload adapter to CKEditor
-// function CustomUploadAdapterPlugin(editor) {
-//   editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-//     return new UploadAdapter(loader);
-//   };
-// }
 
 const Blog = () => {
   const [editorData, setEditiorData] = useState("");
@@ -87,15 +24,10 @@ const Blog = () => {
   const [mainImage, SetMainImage] = useState("");
   const [error, setError] = useState(true);
   
-
-  //use ref 
   const inputFeatureImageRef = useRef(null)
   const inputMainImageRef = useRef(null)
 
-  
-  //   console.log(categoryId,authorId,date,title,briefIntro,editorData);
-
-  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyMDAwNTkxLCJleHAiOjE3MzIwODY5OTF9.kJYNbDjmTqe2JzA4Z_Phq7-7r6yWnLAM3pn6k60_E2w`;
+  const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyMDkzNTIyLCJleHAiOjE3MzIxNzk5MjJ9.R46sOwJMWhpuu7YjT0GwbfF6bVgCnbV_NiMH_UYBrX4`;
 
   const getAllCateory = async () => {
     try {
@@ -205,6 +137,32 @@ const Blog = () => {
     getAllCateory();
   }, []);
 
+  function CustomUploadAdapterPlugin(editor) {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      return {
+        upload: () => {
+          return loader.file.then((file) => {
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                const base64String = reader.result;
+                const imageElement = `<img src="${base64String}" alt="Uploaded Image" />`;
+
+                setEditiorData((prevDetails) => prevDetails + imageElement);
+
+                resolve({
+                  default: base64String,
+                });
+              };
+              reader.onerror = (error) => reject(error);
+              reader.readAsDataURL(file);
+            });
+          });
+        },
+        abort: () => {},
+      };
+    };
+  }
   const handleEditorData = (event, editor) => {
     setEditiorData(editor.getData());
   };
@@ -407,8 +365,11 @@ const Blog = () => {
                 editor={ClassicEditor}
                 data={editorData}
                 value={editorData}
-                 
+                config={{
+                  extraPlugins: [CustomUploadAdapterPlugin], // Register the plugin
+                }}
                 onChange={handleEditorData}
+                
               />
               {!error
                 ? !editorData && (

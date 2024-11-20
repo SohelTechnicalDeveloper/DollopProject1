@@ -25,7 +25,7 @@ const Authentication = () => {
       setError(!error);
       if (email !== "") {
         const response = await axios.post(
-          `${baseUrl}/user/sendOtp`,
+          `http://192.168.0.139:8000/user/sendOtp`,
           {
             email: email,
           }

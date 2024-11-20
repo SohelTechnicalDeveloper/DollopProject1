@@ -15,7 +15,7 @@ const PurchagePakages = () => {
     const IPAddress = 'http://192.168.0.27:5003/uploads/'
     
 
-    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjcyYTAwMGU5ZWVhMDZhNzg5OWY0NWQ4IiwiaWF0IjoxNzMxOTMyOTM3LCJleHAiOjE3MzIwMTkzMzd9.EAo0TmsjzVx-XIJr9NX8_OTU9PZPpGCsK5yi6AL7nzs`;
+    const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyMDkzNTIyLCJleHAiOjE3MzIxNzk5MjJ9.R46sOwJMWhpuu7YjT0GwbfF6bVgCnbV_NiMH_UYBrX4`;
 
    const getAllData  = async ()=>{
     try {

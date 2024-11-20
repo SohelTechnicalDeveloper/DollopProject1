@@ -7,7 +7,6 @@ import parse from "html-react-parser";
 import { toast, ToastContainer } from "react-toastify";
 import "../Styles/Test.css";
 import { IoMdStopwatch } from "react-icons/io";
-import { CgHello } from "react-icons/cg";
 
 const Test = () => {
   const [subjectId, setSubjectId] = useState(null);

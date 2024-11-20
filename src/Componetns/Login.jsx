@@ -14,7 +14,7 @@ const Home = () => {
   const [loader, setLoader] = useState(true);
   // const regex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/;
   // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const baseUrl = process.env.REACT_APP_BASE_URL
+  const baseUrl = process.env.REACT_AaaAPP_BASE_URL
   
 
   const userLogin = async (e) => {
@@ -23,7 +23,7 @@ const Home = () => {
     try {
       setError(!error);
       if (email !== "" && password !== "") {
-        const response = await axios.post(`${baseUrl}/user/login`, {
+        const response = await axios.post(`http://192.168.0.139:8000/user/login`, {
           email: email,
           password: password,
         });
