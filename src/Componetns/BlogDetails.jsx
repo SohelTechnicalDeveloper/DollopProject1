@@ -23,7 +23,8 @@ const BlogDetails = () => {
           blog_Category_id: blog_category_id,
         },
       });
-      if (response.status === 200) {
+      if(response.status === 200) 
+      {
         setAllBlog(response.data.data);
         setName(name?name:response.data.data.blogCategoryData[0].categoryName)
       }

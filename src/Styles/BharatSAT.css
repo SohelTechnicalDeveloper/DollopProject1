@@ -1,0 +1,16 @@
+.progress-bar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50% !important;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    
+
+}
+.addMore-btn:hover{
+    background-color: #07284B;
+    color: #fff !important;
+}

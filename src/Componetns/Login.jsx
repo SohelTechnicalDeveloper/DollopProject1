@@ -23,7 +23,7 @@ const Home = () => {
     try {
       setError(!error);
       if (email !== "" && password !== "") {
-        const response = await axios.post(`http://192.168.0.139:8000/user/login`, {
+        const response = await axios.post(`http://127.0.0.1:8000/user/login`, {
           email: email,
           password: password,
         });

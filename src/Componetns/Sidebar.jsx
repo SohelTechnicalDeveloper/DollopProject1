@@ -121,9 +121,9 @@ const Sidebar = () => {
 
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">
-        <Link className="text-decoration-none text-white nav-link active">
+        <Link className="text-decoration-none text-white nav-link active" to="/BharatSAT">
           <LuGitBranchPlus className="fs-2 me-3 fa" />
-          <span>Branches</span>
+          <span>Bharat SAT </span>
         </Link>
       </li>
     </ul>

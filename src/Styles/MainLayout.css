@@ -1,13 +1,12 @@
 .mainlayout-sidebar{
     z-index: 100;
     width: calc(100% - 80%) !important;
-   
     /* border: 2px solid red !important; */
 
 }
 .contain{
     width: calc(100% - 20%) !important;
-    position: sticky !important;
+    /* position: sticky !important; */
 
 }
 .mainlayout-children{

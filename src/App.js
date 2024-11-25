@@ -23,6 +23,7 @@ import PurchagePakages from './Componetns/PurchagePakages';
 import BlogDetails from './Componetns/BlogDetails';
 import BlogById from './Componetns/BlogById';
 import PurchagePackageDetails from './Componetns/PurchagePackageDetails';
+import BharatSAT from './Componetns/BharatSAT';
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
             <Route path='/packageDetails/:id' element={<PurchagePackageDetails/>}></Route>
             <Route path='/blogdetails' element={<BlogDetails/>}></Route>
             <Route path='/BlogDetailsById/:id' element={<BlogById/>}></Route>
+            <Route path='/BharatSAT' element={<BharatSAT/>}></Route>
           </Routes>
       </Router> 
     </div>
