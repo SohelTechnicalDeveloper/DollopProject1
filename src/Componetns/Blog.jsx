@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import MainLayout from "../MainLayout";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import { FaCheck } from "react-icons/fa";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -19,7 +18,6 @@ const Blog = () => {
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
   const [briefIntro, setBriefIntro] = useState("");
-  const [selectFile, setSelectFile] = useState("");
   const [featuredImage, setFeaturedImage] = useState("");
   const [mainImage, SetMainImage] = useState("");
   const [error, setError] = useState(true);
@@ -130,12 +128,12 @@ const Blog = () => {
         toast.error(error.response);
       }
     }
-  };
+    };
 
   useEffect(() => {
     getAllAuthor();
     getAllCateory();
-  }, []);
+  },);
 
   function CustomUploadAdapterPlugin(editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {

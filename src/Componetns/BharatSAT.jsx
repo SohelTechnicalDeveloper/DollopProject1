@@ -9,7 +9,6 @@ import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 import welldone from "../images/congratulations-well-done.gif";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { DatePicker } from "@mui/x-date-pickers";
 
 const BharatSAT = () => {
   const [error, setError] = useState(true);
@@ -26,11 +25,11 @@ const BharatSAT = () => {
   const [totalQuestions, setTotalQuestion] = useState("");
   const [allClass, setAllClass] = useState([]);
   const [allSubjectsById, setAllSubjectsById] = useState([]);
-  console.log(selectClass);
-  
+  const [subjectDataById, setSubjectDataById] = useState("");
+  console.log(durationTime,'durationetime',startTime,'starttime',endTime,"endTime");
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyNTM4MTM3LCJleHAiOjE3MzI2MjQ1Mzd9.hrR8aIEAOLeec1NmHNGwE481YzGaJpvzUjUjN71z-tc";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyNjAwODU1LCJleHAiOjE3MzI2ODcyNTV9.cWnpMYizV_3cT_WMzWESkViY9ocY3No8qvmiZQp6HTY";
 
   const getAllClasses = async () => {
     try {
@@ -44,9 +43,10 @@ const BharatSAT = () => {
       toast.error(error.response.data.error);
     }
   };
-
-  const getAllSubjects = async () => {
+  const getAllSubjects = async (classId) => {
     try {
+      console.log(classId + "classId");
+
       const response = await axios.get(
         `http://192.168.0.27:5003/subject/getAllSubjects/`,
         {
@@ -54,7 +54,7 @@ const BharatSAT = () => {
             Authorization: `Bearer ${token}`,
           },
           params: {
-            class_id:selectClass,
+            class_id: classId,
           },
         }
       );
@@ -67,45 +67,152 @@ const BharatSAT = () => {
   };
 
 
+  
+  const calculateTimeDifference = (start, end) => 
+  {
+    /* ye descutring method hai hour and minute ke liye*/
+
+    const [startHour, startMinute] = start.split(":").map(Number);
+    const [endHour, endMinute] = end.split(":").map(Number);
+
+    // Convert hours and minutes to total minutes
+    const startInMinutes = startHour * 60 + startMinute;
+    const endInMinutes = endHour * 60 + endMinute;
+
+    // console.log(startInMinutes,"startInMinutes",endInMinutes,"endInMinutes");
+    
+    return endInMinutes - startInMinutes;
+  };
+
+  // Handler for endTime
+
+  const handleEndTimeChange = (value) => {
+    setEndTime(value);
+  // console.log(value,"endTime");
+  
+    if (startTime && value) 
+      {
+      const timeDifference = calculateTimeDifference(startTime, value);
+
+      console.log(timeDifference,"timedifference");
+      
+console.log(timeDifference===durationTime);
+
+      if (timeDifference === durationTime) {
+        toast.success("Time match success")
+        // setError(""); // Clear error if times match
+      } else {
+        toast.error("End time does not match the duration time.");
+      }
+    }
+  };
+
+
   const createExam = async () => {
-    try {
+    let errorMessage = "";
+
+    if (!selectSubject) {
+      errorMessage = "selectSubject is required";
+    } else if (!questionBank) {
+      errorMessage = "questionBank is required";
+    } else if (!totalQuestions) {
+      errorMessage = "totalQuestions  is required";
+    }
+    if (errorMessage) {
+      setError(false);
+      toast.error(errorMessage);
+      return;
+    } else {
       const response = await axios.post(
         `http://192.168.0.27:5003/bharatSat/create-exam`,
+        {
+          bharatSatExamId: "",
+          bharatSatExamName: examName,
+          medium: Medium,
+          class_id: selectClass,
+          durationInMinutes: durationTime,
+          bharatSatExamDate: examinationDate,
+          examStartTime: startTime,
+          examEndTime: endTime,
+          subjectId: selectSubject,
+          numberOfQuestionsBank: questionBank,
+          numberOfQuestionsBharatSat: totalQuestions,
+          subjectData: [
+            {
+              subjectId: selectSubject,
+              numberOfQuestionsBank: questionBank,
+              numberOfQuestionsBharatSat: totalQuestions,
+            },
+          ],
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
-        {
-          examName,
-          Medium,
-          selectClass,
-          durationTime,
-          examinationDate,
-          startTime,
-          endTime,
-          selectSubject,
-          questionBank,
-          totalQuestions,
         }
       );
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast.success("Exam Create Success");
+        setTimeout(() => {
+           setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+        }, 2000);
+
+          setExamName("");
+          setMedium("");
+          setSelectClass("");
+          setdurationTime("");
+          setExaminationDate("");
+          setStartTime("");
+          setEndTime("");
+          setSelectSubject("");
+          setQuestionBank("");
+          setTotalQuestion("");
       }
-    } catch (error) {}
+    }
   };
 
+  const SubjectData = (e) => {
+    setSelectSubject(e.target.value);
+    const data = allSubjectsById.find((item) => item._id === e.target.value);
+    setSubjectDataById(data);
+  };
   useEffect(() => {
     getAllClasses();
-    getAllSubjects();
-  }, []);
+    if (selectClass) {
+      getAllSubjects(selectClass);
+    }
+  }, [selectClass]);
 
   const handleClick = () => {
-    setError(false);
-    setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+    let errorMessage = "";
+
+    if (!examName) {
+      errorMessage = "Exam Name is required";
+    } else if (!Medium) {
+      errorMessage = "Medium is required";
+    } else if (!selectClass) {
+      errorMessage = "Class  is required";
+    } else if (!durationTime) {
+      errorMessage = "Duration time  is required";
+    } else if (!examinationDate) {
+      errorMessage = "examination Date is required";
+    } else if (!startTime) {
+      errorMessage = "start time is required";
+    } else if (!endTime) {
+      errorMessage = "End time is required";
+    }
+    if (errorMessage) {
+      setError(false);
+      toast.error(errorMessage);
+      return;
+    } else {
+      setError(true);
+
+      setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+    }
   };
-  const handleBack = () => {
-    setPercent((prev) => Math.max(prev - 50, 0)); // Decrement percentage by 25, min at 0
+  const handleBack = (decrementValue) => {
+    setPercent((prev) => Math.max(prev - decrementValue, 0)); // Decrement percentage by 50, min at 0
   };
 
   return (
@@ -139,7 +246,7 @@ const BharatSAT = () => {
                       height: 40,
                     }}
                     className="progress-bar"
-                    onClick={() => handleBack()}
+                    onClick={() => handleBack(50)}
                   >
                     01
                   </div>
@@ -156,7 +263,7 @@ const BharatSAT = () => {
                       height: 40,
                     }}
                     className="progress-bar"
-                    onClick={percent === 50 ? null : () => handleBack()}
+                    onClick={percent === 50 ? null : () => handleBack(50)}
                   >
                     02
                   </div>
@@ -193,6 +300,7 @@ const BharatSAT = () => {
                     </label>
                     <input
                       type="text"
+                      value={examName}
                       className="form-control"
                       placeholder="Bharat SAT Exam Name"
                       onChange={(e) => setExamName(e.target.value)}
@@ -219,6 +327,9 @@ const BharatSAT = () => {
                       value={Medium}
                       onChange={(e) => setMedium(e.target.value)}
                     >
+                      <option className="fw-bold" value="">
+                        Select Medium
+                      </option>
                       <option value="English">English</option>
                       <option value="Hindi">Hindi</option>
                       <option value="Marathi">Marathi</option>
@@ -246,7 +357,9 @@ const BharatSAT = () => {
                       value={selectClass}
                       onChange={(e) => setSelectClass(e.target.value)}
                     >
-                      <option className="fw-bold text-black">Select Class</option>
+                      <option value="" className="fw-bold text-black">
+                        Select Class
+                      </option>
 
                       {allClass.map((item) => {
                         return (
@@ -272,18 +385,26 @@ const BharatSAT = () => {
                       Duration In Mins<span className="text-danger">*</span>
                     </label>
                     <input
-                      type="text"
+                      type="number"
+                      value={durationTime}
                       className="form-control"
                       placeholder="Duration In Mins"
-                      onChange={(e) => setdurationTime(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value >= 0 || value === "") {
+                          setdurationTime(value); //
+                        }
+                      }}
                     />
                     {!error
-                      ? !durationTime && (
+                      ? (!durationTime || durationTime < 0) && (
                           <label
                             htmlFor=""
                             className=" position-absolute  mb-1 text-danger fw-bolder"
                           >
-                            Fields Can't Select
+                            {durationTime < 0
+                              ? "Please  enter  positive number"
+                              : "Fields Can't Select"}
                           </label>
                         )
                       : ""}
@@ -298,18 +419,13 @@ const BharatSAT = () => {
                     <input
                       type="date"
                       className="form-control"
+                      value={examinationDate}
                       min={new Date().toISOString().split("T")[0]} // Set min date as today
-                    //   minDate={new Date()}
+                      //   minDate={new Date()}
                       placeholder="Bharat SAT Exam Name"
-                        onChange={(e) => setExaminationDate(e.target.value)}
-                      />
-                      {/* <DatePicker
-                        className="form-control"
-                        selected={examinationDate}
-                        placeholderText="Select From Date"
-                        dateFormat="dd//mm/yyyy"
-                        
-                      /> */}
+                      onChange={(e) => setExaminationDate(e.target.value)}
+                    />
+
                     {!error
                       ? !examinationDate && (
                           <label
@@ -323,53 +439,78 @@ const BharatSAT = () => {
                   </div>
                 </div>
                 <div className="col-md-3 mb-3">
-                  {/* <label className="form-label text-black fw-bold">
-                    Exam Timings<span className="text-danger">*</span>
-                  </label> */}
                   <label htmlFor="" className="form-label text-black fw-bold">
-                    Start Time
+                   Start Time
                   </label>
                   <input
                     type="time"
                     id="startTime"
+                    value={startTime}
                     name="startTime"
                     className="form-control"
                     placeholder="Start Time"
                     onChange={(e) => setStartTime(e.target.value)}
                   />
+                  {!error
+                    ? !startTime && (
+                        <label
+                          htmlFor=""
+                          className=" position-absolute  mb-1 text-danger fw-bolder"
+                        >
+                          Fields Can't Empty
+                        </label>
+                      )
+                    : ""}
                 </div>
 
                 <div className="col-md-3 mb-3 ">
                   <label className="form-label text-black fw-bold">
-                    End Time
+                   End Time
                   </label>
+
                   <input
                     type="time"
                     id="endTime"
+                    value={endTime}
                     name="endTime"
                     className="form-control"
                     placeholder="End Time"
-                    onChange={(e) => setEndTime(e.target.value)}
+                    onChange={(e) => handleEndTimeChange(e.target.value)}
                   />
+                  {!error
+                    ? !endTime && (
+                        <label
+                          htmlFor=""
+                          className=" position-absolute  mb-1 text-danger fw-bolder"
+                        >
+                          Fields Can't Empty
+                        </label>
+                      )
+                    : ""}
                 </div>
               </div>
 
-              <div className="d-flex justify-content-end">
-                <button
-                  type="submit"
-                  className="btn mt-3"
-                  onClick={() => handleClick()}
-                  style={{ backgroundColor: "#07284B", color: "#fff" }}
-                >
-                  Next <MdArrowRightAlt style={{ fontSize: "22px" }} />
-                </button>
-                <ToastContainer/>
-
+              <div className="d-flex justify-content-end mt-3 ">
+                <div className="btn-group " onClick={() => handleClick()}>
+                  <button
+                    type="submit"
+                    className="btn "
+                    style={{ backgroundColor: "#07284B", color: "#fff" }}
+                  >
+                    Next
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn rounded-end-3  w-50  bg-primary text-white"
+                  >
+                    <MdArrowRightAlt style={{ fontSize: "22px" }} />
+                  </button>
+                  <ToastContainer />
+                </div>
               </div>
             </>
           ) : percent === 50 ? (
             // this template for create question paper
-
             <div>
               <div
                 className="row  mt-4 p-3 shadow rounded-3 align-items-end mb-3"
@@ -386,7 +527,7 @@ const BharatSAT = () => {
                   <select
                     name="subject"
                     className="form-select"
-                    onClick={(e) => setSelectSubject(e.target.value)}
+                    onChange={(e) => SubjectData(e)}
                   >
                     <option value="" className="fw-bold text-black">
                       Select Subject
@@ -419,21 +560,35 @@ const BharatSAT = () => {
                   </label>
                   <input
                     type="number"
-                    name="totalQuestions"
                     className="form-control"
-                    placeholder=" Total No. of Questions from Question Bank"
-                    onClick={(e) => setQuestionBank(e.target.value)}
+                    placeholder="Total No. of Questions from Question Bank"
+                    value={questionBank}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      
+                      if (value >= 0 ) 
+                      {
+                        setQuestionBank(value);
+                      }
+                    }}
                   />
-                  {!error
-                    ? !questionBank && (
-                        <label
-                          htmlFor=""
-                          className=" position-absolute  mb-1 text-danger fw-bolder"
-                        >
-                          Fields Can't Empty
+                  {!error &&
+                    (!questionBank ? (
+                      <lable className="position-absolute mb-1 text-danger fw-bolder">
+                        Field can't be empty!
+                      </lable>
+                    ) : questionBank > subjectDataById.questionBankCount ? (
+                      <label className="position-absolute mb-1 text-danger fw-bolder">
+                        Please Enter a Number Between 0 and{" "}
+                        {subjectDataById.questionBankCount}
+                      </label>
+                    ) :  (
+                      questionBank < 0 && (
+                        <label className="text-danger m-0 ">
+                          Invalid number Of Questions!
                         </label>
                       )
-                    : ""}
+                    ))}
                 </div>
 
                 <div className="col-md-6 mb-3">
@@ -444,25 +599,40 @@ const BharatSAT = () => {
                     Total No. of Questions from Bharat SAT Question Bank{" "}
                     <span className="text-danger">*</span>
                   </label>
+
                   <input
                     type="number"
-                    name="totalQuestions"
                     className="form-control"
-                    onChange={(e) => setTotalQuestion(e.target.value)}
-                    placeholder="Total No. of Questions from Bharat SAT Question Bank"
+                    placeholder="Total No. of Questions from Question Bank"
+                    value={totalQuestions} // Ensure the input reflects the state
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value >= 0 ) {
+                        setTotalQuestion(value); // Update state only for valid inputs
+                      }
+                    }}
                   />
-                  {!error
-                    ? !totalQuestions && (
-                        <label
-                          htmlFor=""
-                          className=" position-absolute  mb-1 text-danger fw-bolder"
-                        >
-                          Fields Can't Empty
+                  {/* Display validation messages */}
+                  {!error &&
+                    (!totalQuestions ? (
+                      <lable className="position-absolute mb-1 text-danger fw-bolder">
+                        Field can't be empty!
+                      </lable>
+                    ) : totalQuestions > subjectDataById.bharatSatQuestionCount ? (
+                      <label className="position-absolute mb-1 text-danger fw-bolder">
+                        Please Enter a Number Between 0 and{" "}
+                        {subjectDataById.bharatSatQuestionCount}
+                      </label>
+                    ) : (
+                      totalQuestions < 0 && (
+                        <label className="text-danger m-0 ">
+                          Invalid number Of Questions!
                         </label>
                       )
-                    : ""}
+                    ))}
                 </div>
               </div>
+
               <div
                 className="fw-bold "
                 style={{ color: "#477de8", cursor: "pointer" }}
@@ -481,20 +651,28 @@ const BharatSAT = () => {
                 Add More
               </div>
 
-              <div className="d-flex justify-content-end">
-                <button
-                  type="button"
-                  className="mt-3 btn"
-                  style={{ backgroundColor: "#07284B", color: "#fff" }}
+              <div className="d-flex justify-content-end mt-3 ">
+                <div
+                  className="btn-group "
                   onClick={() => {
-                    handleClick();
+                    createExam();
                   }}
                 >
-                  Submit <MdArrowRightAlt style={{ fontSize: "22px" }} />
-                </button>
-
-                <ToastContainer/>
-
+                  <button
+                    type="submit"
+                    className="btn "
+                    style={{ backgroundColor: "#07284B", color: "#fff" }}
+                  >
+                    Submit
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn rounded-end-3  w-50  bg-primary text-white"
+                  >
+                    <MdArrowRightAlt style={{ fontSize: "22px" }} />
+                  </button>
+                  <ToastContainer />
+                </div>
               </div>
             </div>
           ) : (
@@ -518,28 +696,25 @@ const BharatSAT = () => {
                   </p>
                 </div>
               </div>
-              <div className="d-flex justify-content-between mt-4">
-                <div className="text-start">
-                  <button
-                    className="btn text-primary border-0"
-                    style={{ fontSize: "18px" }}
-                    onClick={() => handleBack()}
-                  >
-                    {" "}
-                    <HiOutlineArrowNarrowLeft />
-                    &nbsp;Back
-                  </button>
-                </div>
-                <div className="text-end">
-                  <button
-                    className="btn truncate"
-                    style={{ backgroundColor: "#07284B", color: "#fff" }}
-                  >
-                    Create Bharat SAT Exam +
-                  </button>
-                </div>
-              <ToastContainer/>
+              <div className="d-flex justify-content-between  mt-4">
+                <button
+                  className="btn text-primary border-0 d-flex align-items-center"
+                  style={{ fontSize: "18px" }}
+                  onClick={() => handleBack(50)}
+                >
+                  <HiOutlineArrowNarrowLeft />
+                  &nbsp;Back
+                </button>
+                <button
+                  onClick={() => handleBack(100)}
+                  className="btn truncate w-25"
+                  style={{ backgroundColor: "#07284B", color: "#fff" }}
+                  title="Create Bharat SAT Exam +"
+                >
+                  Create Bharat SAT Exam +
+                </button>
               </div>
+              <ToastContainer />
             </div>
           )}
         </div>
