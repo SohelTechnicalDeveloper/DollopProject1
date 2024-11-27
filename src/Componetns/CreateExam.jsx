@@ -10,22 +10,23 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 const CreateExam = () => {
   const [ExamData, setExamData] = useState([]);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(2);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState("");
   const [availableDataCount, setAvialeCount] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const[singleChecked,setSingleChecked] = useState(false)
+  const[singleChecked,setSingleChecked] = useState('')
 
   const handleCheckboxChange = (e) => {
 
     setIsChecked(e.target.checked); // Update state with checkbox status
     setSingleChecked(e.target.checked ? ExamData.map(() => true) : ExamData.map(() => false));
   };
-  const handleSingleCheckbox = (e) => {
 
-    setSingleChecked(e.target.checked); // Update state with checkbox status
+  const handleSingleCheckbox = (index) => {
+
+    setSingleChecked(index); // Update state with checkbox status
 
 
 
@@ -62,6 +63,7 @@ const CreateExam = () => {
       if (response.status === 200) {
         setExamData(response.data.data);
         setAvialeCount(response.data.availableDataCount);
+        setTotalPages(Math.ceil(response.data.availableDataCount/limit))
       }
     } catch (error) {
       toast.error(error.response.data.error);
@@ -170,8 +172,8 @@ const CreateExam = () => {
                   <tr key={index}>
                     <td>
                       <input
-                        checked={singleChecked[index]}
-                        onChange={(e)=>handleSingleCheckbox(index,e)}
+                        checked={singleChecked[item.bharatSatExamId]}
+                        onChange={(e)=>handleSingleCheckbox(item.bharatSatExamId)}
                         type="checkbox"
 
                         style={{
@@ -262,7 +264,7 @@ const CreateExam = () => {
                         <Link
                           className="page-link"
                           onClick={() => {
-                            setPage(page);
+                            setPage(page-1);
                           }}
                         >
                           {page}
@@ -273,7 +275,7 @@ const CreateExam = () => {
 
                   <li
                     className={`page-item ${
-                      page === totalPages ? "disabled" : ""
+                      page === totalPages-1 ? "disabled" : ""
                     }`}
                   >
                     <Link className="page-link" aria-label="Next">
