@@ -14,3 +14,33 @@
     background-color: #07284B;
     color: #fff !important;
 }
+.UncheckedBtn{
+   
+        background-color: #efd7da;
+        color: #fff;
+        font-size: 30px;
+        color: "#fff";
+        border-radius: 3px;
+        padding: 6px;
+        cursor: "pointer";
+    
+}
+.checkedBtn{
+     color: rgb(221, 0, 0);
+     background-color: #efd7da;
+     font-size: 30px;
+     border-radius: 3px;
+     padding: 6px;
+     cursor: pointer;
+     background-color: #b3f3c966;
+}
+.partiallyCheckedBtn{
+    color: rgb(221, 0, 0);
+     background-color: #efd7da;
+     font-size: 30px;
+     border-radius: 3px;
+     padding: 6px;
+     cursor: pointer;
+     background-color: #b3f3c966;
+
+}

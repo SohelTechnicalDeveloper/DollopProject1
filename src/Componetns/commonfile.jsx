@@ -1,315 +1,471 @@
  
-        //  table header 
+//         //  table header 
  
- {/* <h2 style={{ color: "#07284B", marginLeft: "25px" }}>Users</h2>
+//  {/* <h2 style={{ color: "#07284B", marginLeft: "25px" }}>Users</h2>
 
-        <div
-          className="form-group d-flex justify-content-end mx-5 mt-4"
-          style={{ fontFamily: "Gill Sans, sans-serif" }}
-        >
-          <div className="mx-4">
-            <input
-              type="text"
-              className="form-control input-color"
-              placeholder="Search"
-              onChange={(e) => searchUser(e)}
-            />
-          </div>
-          <button
-            onClick={() => addShowModel()}
-            className="btn text-truncate"
-            style={{
-              backgroundColor: "#21b7b5",
-              color: "#fff",
-              fontSize: "18px",
-            }}
-          >
-            {" "}
+//         <div
+//           className="form-group d-flex justify-content-end mx-5 mt-4"
+//           style={{ fontFamily: "Gill Sans, sans-serif" }}
+//         >
+//           <div className="mx-4">
+//             <input
+//               type="text"
+//               className="form-control input-color"
+//               placeholder="Search"
+//               onChange={(e) => searchUser(e)}
+//             />
+//           </div>
+//           <button
+//             onClick={() => addShowModel()}
+//             className="btn text-truncate"
+//             style={{
+//               backgroundColor: "#21b7b5",
+//               color: "#fff",
+//               fontSize: "18px",
+//             }}
+//           >
+//             {" "}
            
-          </button>
-        </div> */}
+//           </button>
+//         </div> */}
 
 
-      //  button for the total question no
+//       //  button for the total question no
 
       
-        // {Array.from({ length: totalQuestions }).map((_, index) => (
-        //   <button
-        //     key={index}
-        //     className={`btn m-1  ${
-        //       questionStatus[index] === 'answered'
-        //         ? 'btn-success'
-        //         : questionStatus[index] === 'notAnswered'
-        //         ? 'btn-warning'
-        //         : 'btn-secondary'
-        //     }`}
-        //     onClick={() => handleQuestionClick(index)}
-        //   >
-        //     {index + 1}
-        //   </button>
-        // ))}
-         {/* <div className="fw-bold">
-                    {subjectsData?.subjectQuestions?.[subject]?.questions?.[
-                      currentIndex
-                    ]?.question
-                      ? parse(
-                          String(
-                            subjectsData.subjectQuestions[subject].questions[
-                              currentIndex
-                            ]?.question
-                          ),
-                          options
-                        )
-                      : "No question available"}
-                  </div> */}
+//         // {Array.from({ length: totalQuestions }).map((_, index) => (
+//         //   <button
+//         //     key={index}
+//         //     className={`btn m-1  ${
+//         //       questionStatus[index] === 'answered'
+//         //         ? 'btn-success'
+//         //         : questionStatus[index] === 'notAnswered'
+//         //         ? 'btn-warning'
+//         //         : 'btn-secondary'
+//         //     }`}
+//         //     onClick={() => handleQuestionClick(index)}
+//         //   >
+//         //     {index + 1}
+//         //   </button>
+//         // ))}
+//          {/* <div className="fw-bold">
+//                     {subjectsData?.subjectQuestions?.[subject]?.questions?.[
+//                       currentIndex
+//                     ]?.question
+//                       ? parse(
+//                           String(
+//                             subjectsData.subjectQuestions[subject].questions[
+//                               currentIndex
+//                             ]?.question
+//                           ),
+//                           options
+//                         )
+//                       : "No question available"}
+//                   </div> */}
 
 
 
 
-                   // const handleSubQuestion = (questionId, subQuestionId, index) => {
-  //   console.log(questionId, subQuestionId, index);
+//                    // const handleSubQuestion = (questionId, subQuestionId, index) => {
+//   //   console.log(questionId, subQuestionId, index);
 
-  //   setSubSelectedOptions((prevSubOptions) => {
-  //     const existingPrevSelection = prevSubOptions.findIndex(
-  //       (subOption) =>
-  //         subOption.questionId === questionId &&
-  //         subOption.subQuestionId === subQuestionId
-  //     );
-  //     console.log(existingPrevSelection !== -1);
+//   //   setSubSelectedOptions((prevSubOptions) => {
+//   //     const existingPrevSelection = prevSubOptions.findIndex(
+//   //       (subOption) =>
+//   //         subOption.questionId === questionId &&
+//   //         subOption.subQuestionId === subQuestionId
+//   //     );
+//   //     console.log(existingPrevSelection !== -1);
 
-  //     if (existingPrevSelection !== -1) {
-  //       if (prevSubOptions[existingPrevSelection]?.index === index) {
-  //         return prevSubOptions.filter(
-  //           (subOption, index) => index !== existingPrevSelection
-  //         );
-  //       } else {
-  //         return prevSubOptions.map((subOption, i) =>
-  //           i === existingPrevSelection ? { ...subOption, index } : subOption
-  //         );
-  //       }
-  //     } else {
-  //       setSubSelectedOptions([
-  //         ...prevSubOptions,
-  //         { questionId, subQuestionId, index },
-  //       ]);
-  //     }
-  //   });
-  // };
+//   //     if (existingPrevSelection !== -1) {
+//   //       if (prevSubOptions[existingPrevSelection]?.index === index) {
+//   //         return prevSubOptions.filter(
+//   //           (subOption, index) => index !== existingPrevSelection
+//   //         );
+//   //       } else {
+//   //         return prevSubOptions.map((subOption, i) =>
+//   //           i === existingPrevSelection ? { ...subOption, index } : subOption
+//   //         );
+//   //       }
+//   //     } else {
+//   //       setSubSelectedOptions([
+//   //         ...prevSubOptions,
+//   //         { questionId, subQuestionId, index },
+//   //       ]);
+//   //     }
+//   //   });
+//   // };
   
-  // const handleQuestion = (questionId, index) => {
-  //   setSelectedOptions((prevOptions) => {
-  //     const existingSelection = prevOptions.findIndex(
-  //       (option) => option.questionId === questionId
-  //     );
+//   // const handleQuestion = (questionId, index) => {
+//   //   setSelectedOptions((prevOptions) => {
+//   //     const existingSelection = prevOptions.findIndex(
+//   //       (option) => option.questionId === questionId
+//   //     );
   
-  //     if (existingSelection !== -1) {
-  //       // Toggle selection if the same option is clicked again
-  //       if (prevOptions[existingSelection]?.index === index) {
-  //         return prevOptions.filter(
-  //           (option, idx) => idx !== existingSelection
-  //         );
-  //       } else {
-  //         return prevOptions.map((option, i) =>
-  //           i === existingSelection ? { ...option, index } : option
-  //         );
-  //       }
-  //     } else {
-  //       // Add new selected option
-  //       return [...prevOptions, { questionId, index }];
-  //     }
-  //   });
+//   //     if (existingSelection !== -1) {
+//   //       // Toggle selection if the same option is clicked again
+//   //       if (prevOptions[existingSelection]?.index === index) {
+//   //         return prevOptions.filter(
+//   //           (option, idx) => idx !== existingSelection
+//   //         );
+//   //       } else {
+//   //         return prevOptions.map((option, i) =>
+//   //           i === existingSelection ? { ...option, index } : option
+//   //         );
+//   //       }
+//   //     } else {
+//   //       // Add new selected option
+//   //       return [...prevOptions, { questionId, index }];
+//   //     }
+//   //   });
   
-  //   // Update question status to "answered"
-  //   setQuestionStatus((prevStatus) =>
-  //     prevStatus.map((status, idx) =>
-  //       idx === currentQuestion ? "answered" : status
-  //     )
-  //   );
-  // };
+//   //   // Update question status to "answered"
+//   //   setQuestionStatus((prevStatus) =>
+//   //     prevStatus.map((status, idx) =>
+//   //       idx === currentQuestion ? "answered" : status
+//   //     )
+//   //   );
+//   // };
 
 
 
-   // Function to simulate a countdown timer
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setTimeLeft(prevTime => {
-  //       const { hours, minutes, seconds } = prevTime;
-  //       if (seconds > 0) {
-  //         return { ...prevTime, seconds: seconds - 1 };
-  //       } else if (minutes > 0) {
-  //         return { hours, minutes: minutes - 1, seconds: 59 };
-  //       } else if (hours > 0) {
-  //         return { hours: hours - 1, minutes: 59, seconds: 59 };
-  //       }
-  //       return prevTime;
-  //     });
-  //   }, 1000);
+//    // Function to simulate a countdown timer
+//   // useEffect(() => {
+//   //   const timer = setInterval(() => {
+//   //     setTimeLeft(prevTime => {
+//   //       const { hours, minutes, seconds } = prevTime;
+//   //       if (seconds > 0) {
+//   //         return { ...prevTime, seconds: seconds - 1 };
+//   //       } else if (minutes > 0) {
+//   //         return { hours, minutes: minutes - 1, seconds: 59 };
+//   //       } else if (hours > 0) {
+//   //         return { hours: hours - 1, minutes: 59, seconds: 59 };
+//   //       }
+//   //       return prevTime;
+//   //     });
+//   //   }, 1000);
 
-  //   return () => clearInterval(timer);
-  // }, []);
-  import React, { useState } from "react";
-import { MdArrowRightAlt } from "react-icons/md";
-import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
+//   //   return () => clearInterval(timer);
+//   // }, []);
+//   import React, { useState } from "react";
+//   import { Table, Pagination } from "react-bootstrap";
+  
+//   const ExamList = () => {
+//     const [currentPage, setCurrentPage] = useState(1);
+//     const rowsPerPage = 10;
+  
+//     // Dummy data for demonstration
+//     const examData = [
+//       { id: 1, name: "oplk;", class: "12th", medium: "English", date: "27/11/2024", startTime: "4:54 AM", endTime: "5:35 AM" },
+//       { id: 2, name: "rgvf", class: "6th", medium: "English", date: "29/11/2024", startTime: "6:59 AM", endTime: "5:59 AM" },
+//       { id: 3, name: "dhgb v", class: "12th", medium: "English", date: "29/11/2024", startTime: "11:05 PM", endTime: "11:20 PM" },
+//       { id: 4, name: "vsdvfds", class: "6th", medium: "Bangali", date: "30/11/2024", startTime: "6:50 PM", endTime: "9:50 PM" },
+//       { id: 5, name: "Create New Exam", class: "12th", medium: "Marathi", date: "27/11/2024", startTime: "6:47 PM", endTime: "7:47 PM" },
+//       { id: 6, name: "hfghfh", class: "8th", medium: "English", date: "28/11/2024", startTime: "5:47 PM", endTime: "5:49 PM" },
+//       { id: 7, name: "hjfgh", class: "8th", medium: "Hindi", date: "29/11/2024", startTime: "5:40 PM", endTime: "10:35 PM" },
+//       { id: 8, name: "sohel khan", class: "8th", medium: "Hindi", date: "06/12/2024", startTime: "5:47 PM", endTime: "5:47 PM" },
+//       { id: 9, name: "afdj", class: "8th", medium: "English", date: "05/12/2024", startTime: "5:44 PM", endTime: "5:44 PM" },
+//       { id: 10, name: "New Exam", class: "9th", medium: "Marathi", date: "29/11/2024", startTime: "10:22 PM", endTime: "10:22 PM" },
+//       // Add more rows as needed...
+//     ];
+  
+//     // Pagination logic
+//     const totalPages = Math.ceil(examData.length / rowsPerPage);
+//     const handleChangePage = (pageNumber) => {
+//       setCurrentPage(pageNumber);
+//     };
+  
+//     const startIndex = (currentPage - 1) * rowsPerPage;
+//     const paginatedData = examData.slice(startIndex, startIndex + rowsPerPage);
+  
+//     return (
+//       <div className="container mt-4">
+//         <h4>Bharat SAT Exam List</h4>
+//         <Table striped bordered hover>
+//           <thead>
+//             <tr>
+//               <th>
+//                 <input type="checkbox" />
+//               </th>
+//               <th>Sr No.</th>
+//               <th>Bharat SAT Exam Name</th>
+//               <th>Class</th>
+//               <th>Medium</th>
+//               <th>Exam Date</th>
+//               <th>Exam Start Time</th>
+//               <th>Exam End Time</th>
+//               <th>View Question Paper</th>
+//               <th>Generate E-Hall Ticket</th>
+//               <th>Current Status</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {paginatedData.map((exam, index) => (
+//               <tr key={exam.id}>
+//                 <td>
+//                   <input type="checkbox" />
+//                 </td>
+//                 <td>{startIndex + index + 1}</td>
+//                 <td>{exam.name}</td>
+//                 <td>{exam.class}</td>
+//                 <td>{exam.medium}</td>
+//                 <td>{exam.date}</td>
+//                 <td>{exam.startTime}</td>
+//                 <td>{exam.endTime}</td>
+//                 <td>
+//                   <a href="#">View</a>
+//                 </td>
+//                 <td>
+//                   <a href="#">Generate</a>
+//                 </td>
+//                 <td>
+//                   <input type="checkbox" defaultChecked />
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </Table>
+//         {/* Pagination Component */}
+//         <Pagination className="justify-content-center">
+//           {[...Array(totalPages)].map((_, index) => (
+//             <Pagination.Item
+//               key={index}
+//               active={currentPage === index + 1}
+//               onClick={() => handleChangePage(index + 1)}
+//             >
+//               {index + 1}
+//             </Pagination.Item>
+//           ))}
+//         </Pagination>
+//       </div>
+//     );
+//   };
+  
+//   export default ExamList;
+  
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import MainLayout from "../MainLayout";
+import { MdDeleteOutline } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { GoPlus } from "react-icons/go";
 
-const BharatSatExam = () => {
-  const [percent, setPercent] = useState(0); // Initial percentage
-  const [error, setError] = useState(false);
+const CreateExam = () => {
+  const [ExamData, setExamData] = useState([]);
+  const [limit] = useState(10); // Records per page
+  const [page, setPage] = useState(1); // Current page (1-indexed)
+  const [totalRecords, setTotalRecords] = useState(0); // Total records count
+  const [search, setSearch] = useState("");
 
-  const handleClick = () => {
-    setError(false);
-    setPercent((prev) => Math.min(prev + 25, 100)); // Increment percentage by 25, max at 100
+  const token = "your-auth-token-here"; // Replace with your actual token
+
+  const getAllExam = async () => {
+    try {
+      const response = await axios.get(
+        `http://192.168.0.27:5003/bharatSat/list-all-exam`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            offset: (page - 1) * limit, // Calculate offset based on current page
+            limit: limit,
+            searchQuery: search,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setExamData(response.data.data || []); // Update table data
+        setTotalRecords(response.data.totalRecords || 0); // Safely set total records
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Failed to fetch data");
+    }
   };
 
-  const handleBack = () => {
-    setPercent((prev) => Math.max(prev - 25, 0)); // Decrement percentage by 25, min at 0
-  };
+  useEffect(() => {
+    getAllExam();
+  }, [page, search]); // Re-fetch data on page or search change
+
+  const totalPages = Math.max(Math.ceil(totalRecords / limit), 1); // Ensure at least 1 page
 
   return (
-    <div className="container mt-4">
-      {percent === 0 ? (
-        // First Template
-        <div className="row mt-4 p-2">
-          <div className="col-md-6 mb-3">
-            <div className="m-1">
-              <label className="form-label text-black fw-bold">
-                Bharat SAT Exam Name<span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Bharat SAT Exam Name"
-              />
-              {!error ? (
-                <label
-                  htmlFor=""
-                  className="position-absolute mb-1 text-danger fw-bolder"
+    <div className="bg-body-secondary">
+      <MainLayout>
+        <div className="d-flex justify-content-between p-2">
+          <div className="fw-bold">BHARAT SAT</div>
+          <div>
+            <span className="fw-bold">Dashboard</span> -{" "}
+            <Link className="text-decoration-none fw-bold">BHARAT SAT</Link>
+          </div>
+        </div>
+        <div className="p-4  rounded-1 m-4" style={{ backgroundColor: "#fff" }}>
+          <div>
+            <div className="fw-bold fs-4 mb-4">Create Bharat SAT Exam</div>
+            <div className="d-flex gap-3  justify-content-between text-center">
+                <div>
+                  <MdDeleteOutline
+                    className="exam-deleteBtn"
+                    style={{
+                      backgroundColor: "#efd7da",
+                      fontSize: "35px",
+                      color: "#fff",
+                      borderRadius: "3px",
+                      padding: "3px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </div>
+                <div className="d-flex gap-4 ">
+                  <div>
+                    <input
+                      id="input1"
+                      type="search"
+                      className="form-control w-100"
+                      placeholder="Search User"
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                  </div>
+                  <div className="d-flex justify-content-end">
+                    <div className="btn-group">
+                      <button
+                        type="submit"
+                        className="btn"
+                        style={{ backgroundColor: "#07284B", color: "#fff" }}
+                      >
+                        Submit
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn rounded-end-3 w-50 bg-primary text-white"
+                      >
+                        <GoPlus style={{ fontSize: "18px" }} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <div className="mt-4 table-scroller overflow-auto ">
+            <table className="table p-3">
+              <thead className="table-primary text-center">
+                <tr>
+                  <th>
+                    <input
+                      type="checkbox"
+                      style={{
+                        width: "18px",
+                        height: "20px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </th>
+                  <th>Sr No.</th>
+                  <th>Bharat SAT Exam Name</th>
+                  <th>Class</th>
+                  <th>Medium</th>
+                  <th>Exam Date</th>
+                  <th>Exam Start Time</th>
+                  <th>Exam End Time</th>
+                  <th>View Question Paper</th>
+                  <th>Generate E-Hall Ticket</th>
+                  <th>Current Status</th>
+                </tr>
+              </thead>
+              <tbody className="mx-3 text-center">
+                {ExamData.length > 0 ? (
+                  ExamData.map((item, index) => (
+                    <tr key={item.id}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          style={{
+                            width: "18px",
+                            height: "20px",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </td>
+                      <td>{(page - 1) * limit + index + 1}</td>
+                      <td>{item.bharatSatExamName}</td>
+                      <td>{item.className}</td>
+                      <td>{item.medium}</td>
+                      <td>{item.bharatSatExamDate}</td>
+                      <td>{item.examStartTime}</td>
+                      <td>{item.examEndTime}</td>
+                      <td>
+                        <Link>View</Link>
+                      </td>
+                      <td>
+                        <Link>Generate</Link>
+                      </td>
+                      <td>
+                        <div className="form-switch d-flex justify-content-center align-items-center">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            checked={item.is_active}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">No data found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-end mt-4">
+              <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+                <button
+                  className="page-link"
+                  onClick={() => setPage(page - 1)}
+                  disabled={page === 1}
                 >
-                  Fields Can't Select
-                </label>
-              ) : (
-                ""
-              )}
-            </div>
-          </div>
-          {/* Additional Fields */}
-          <div className="d-flex justify-content-end">
-            <button
-              type="submit"
-              className="btn mt-3"
-              onClick={handleClick}
-              style={{ backgroundColor: "#07284B", color: "#fff" }}
-            >
-              Next <MdArrowRightAlt style={{ fontSize: "22px" }} />
-            </button>
-          </div>
-        </div>
-      ) : percent === 100 ? (
-        // Success Template
-        <div className="text-center my-5">
-          <div className="row justify-content-center">
-            <div className="col-md-8">
-              <img
-                src="welldone-image-url" // Replace with actual image URL
-                alt="Success Illustration"
-                className="img-fluid mb-4 rounded-5"
-                height={270}
-                width={270}
-              />
-              <h3 className="text-primary fw-bold">
-                Well Done! <span className="fs-5">🤩😎</span>
-              </h3>
-              <p className="text-black fw-bolder">
-                You have successfully created an exam.
-              </p>
-            </div>
-          </div>
-          <div className="d-flex justify-content-between mt-4">
-            <div className="text-start">
-              <button
-                className="btn text-primary border-0"
-                style={{ fontSize: "18px" }}
-                onClick={handleBack}
-              >
-                <HiOutlineArrowNarrowLeft />
-                &nbsp;Back
-              </button>
-            </div>
-            <div className="text-end">
-              <button
-                className="btn truncate"
-                style={{ backgroundColor: "#07284B", color: "#fff" }}
-              >
-                Create Bharat SAT Exam +
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        // Intermediate Template
-        <div>
-          <div
-            className="row mt-4 p-3 shadow rounded-3 align-items-end mb-3"
-            style={{ backgroundColor: "#D3E3FD" }}
-          >
-            <div className="col-md-6 mb-3">
-              <label
-                htmlFor=""
-                style={{ color: "#477de8" }}
-                className="form-label fw-bold"
-              >
-                Select Subject <span className="text-danger">*</span>
-              </label>
-              <select name="subject" className="form-select">
-                <option value="" className="fw-bold text-black">
-                  Select Subject
-                </option>
-                <option value="Math">Math</option>
-                <option value="Science">Science</option>
-                <option value="English">English</option>
-              </select>
-              {!error ? (
-                <label
-                  htmlFor=""
-                  className="position-absolute mb-2 text-danger fw-bolder"
+                  &laquo; Previous
+                </button>
+              </li>
+
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <li
+                  key={index}
+                  className={`page-item ${page === index + 1 ? "active" : ""}`}
                 >
-                  Fields Can't Select
-                </label>
-              ) : (
-                ""
-              )}
-            </div>
-          </div>
-          <div className="fw-bold" style={{ color: "#477de8", cursor: "pointer" }}>
-            <button
-              type="button"
-              className="rounded-2 fw-bold addMore-btn"
-              style={{
-                fontSize: "11px",
-                color: "#477de8",
-                border: "2px solid #477de8",
-              }}
-            >
-              +
-            </button>{" "}
-            Add More
-          </div>
-          <div className="d-flex justify-content-end">
-            <button
-              type="button"
-              className="mt-3 btn"
-              style={{ backgroundColor: "#07284B", color: "#fff" }}
-              onClick={handleClick}
-            >
-              Next <MdArrowRightAlt style={{ fontSize: "22px" }} />
-            </button>
-          </div>
+                  <button
+                    className="page-link"
+                    onClick={() => setPage(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+
+              <li className={`page-item ${page === totalPages ? "disabled" : ""}`}>
+                <button
+                  className="page-link"
+                  onClick={() => setPage(page + 1)}
+                  disabled={page === totalPages}
+                >
+                  Next &raquo;
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
-      )}
+
+        <ToastContainer />
+      </MainLayout>
     </div>
   );
 };
 
-export default BharatSatExam;
-
-
-  
+export default CreateExam;

@@ -26,10 +26,17 @@ const BharatSAT = () => {
   const [allClass, setAllClass] = useState([]);
   const [allSubjectsById, setAllSubjectsById] = useState([]);
   const [subjectDataById, setSubjectDataById] = useState("");
-  console.log(durationTime,'durationetime',startTime,'starttime',endTime,"endTime");
+  console.log(
+    durationTime,
+    "durationetime",
+    startTime,
+    "starttime",
+    endTime,
+    "endTime"
+  );
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyNjAwODU1LCJleHAiOjE3MzI2ODcyNTV9.cWnpMYizV_3cT_WMzWESkViY9ocY3No8qvmiZQp6HTY";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyNjg3Mzg2LCJleHAiOjE3MzI3NzM3ODZ9.K2cJmN3tkTrktbgm6aZakUFE9RU3DcH2Tc6WYfr_Y8U";
 
   const getAllClasses = async () => {
     try {
@@ -66,10 +73,7 @@ const BharatSAT = () => {
     }
   };
 
-
-  
-  const calculateTimeDifference = (start, end) => 
-  {
+  const calculateTimeDifference = (start, end) => {
     /* ye descutring method hai hour and minute ke liye*/
 
     const [startHour, startMinute] = start.split(":").map(Number);
@@ -80,33 +84,31 @@ const BharatSAT = () => {
     const endInMinutes = endHour * 60 + endMinute;
 
     // console.log(startInMinutes,"startInMinutes",endInMinutes,"endInMinutes");
-    
+
     return endInMinutes - startInMinutes;
   };
 
   // Handler for endTime
 
-  const handleEndTimeChange = (value) => {
-    setEndTime(value);
-  // console.log(value,"endTime");
-  
-    if (startTime && value) 
-      {
-      const timeDifference = calculateTimeDifference(startTime, value);
+  // const handleEndTimeChange = (value) => {
 
-      console.log(timeDifference,"timedifference");
-      
-console.log(timeDifference===durationTime);
+  //     if(value)
+  //     {
+  //       setEndTime(value);
+  //     }
 
-      if (timeDifference === durationTime) {
-        toast.success("Time match success")
-        // setError(""); // Clear error if times match
-      } else {
-        toast.error("End time does not match the duration time.");
-      }
-    }
-  };
-
+  //       if (startTime && value) 
+  //       {
+  //         const timeDifference = calculateTimeDifference(startTime,value)
+  //         if (timeDifference === durationTime) 
+  //           {
+  //             toast.success("Time match success");
+  //           } 
+  //         else {
+  //               toast.error("End time does not match the duration time.");
+  //           }
+  //       }
+  // };
 
   const createExam = async () => {
     let errorMessage = "";
@@ -118,7 +120,9 @@ console.log(timeDifference===durationTime);
     } else if (!totalQuestions) {
       errorMessage = "totalQuestions  is required";
     }
-    if (errorMessage) {
+
+    if (errorMessage) 
+    {
       setError(false);
       toast.error(errorMessage);
       return;
@@ -154,19 +158,19 @@ console.log(timeDifference===durationTime);
       if (response.status === 200) {
         toast.success("Exam Create Success");
         setTimeout(() => {
-           setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+          setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
         }, 2000);
 
-          setExamName("");
-          setMedium("");
-          setSelectClass("");
-          setdurationTime("");
-          setExaminationDate("");
-          setStartTime("");
-          setEndTime("");
-          setSelectSubject("");
-          setQuestionBank("");
-          setTotalQuestion("");
+        setExamName("");
+        setMedium("");
+        setSelectClass("");
+        setdurationTime("");
+        setExaminationDate("");
+        setStartTime("");
+        setEndTime("");
+        setSelectSubject("");
+        setQuestionBank("");
+        setTotalQuestion("");
       }
     }
   };
@@ -201,15 +205,29 @@ console.log(timeDifference===durationTime);
     } else if (!endTime) {
       errorMessage = "End time is required";
     }
-    if (errorMessage) {
+    if(errorMessage) 
+    {
       setError(false);
       toast.error(errorMessage);
       return;
-    } else {
-      setError(true);
-
-      setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
-    }
+    } 
+     if (startTime && endTime) 
+      {
+        const timeDifference = calculateTimeDifference(startTime,endTime)       
+        if (timeDifference == durationTime) 
+          {
+            toast.success("Time match success");
+            setError(true);
+            setTimeout(() => {
+              
+              setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+            }, 2000);
+          } 
+        else {
+              toast.error(`Exam Timing does not match the ${durationTime} duration time.`);
+          }
+      }
+   
   };
   const handleBack = (decrementValue) => {
     setPercent((prev) => Math.max(prev - decrementValue, 0)); // Decrement percentage by 50, min at 0
@@ -440,7 +458,7 @@ console.log(timeDifference===durationTime);
                 </div>
                 <div className="col-md-3 mb-3">
                   <label htmlFor="" className="form-label text-black fw-bold">
-                   Start Time
+                    Start Time
                   </label>
                   <input
                     type="time"
@@ -465,7 +483,7 @@ console.log(timeDifference===durationTime);
 
                 <div className="col-md-3 mb-3 ">
                   <label className="form-label text-black fw-bold">
-                   End Time
+                    End Time
                   </label>
 
                   <input
@@ -475,7 +493,7 @@ console.log(timeDifference===durationTime);
                     name="endTime"
                     className="form-control"
                     placeholder="End Time"
-                    onChange={(e) => handleEndTimeChange(e.target.value)}
+                    onChange={(e) => setEndTime(e.target.value)}
                   />
                   {!error
                     ? !endTime && (
@@ -565,9 +583,8 @@ console.log(timeDifference===durationTime);
                     value={questionBank}
                     onChange={(e) => {
                       const value = e.target.value;
-                      
-                      if (value >= 0 ) 
-                      {
+
+                      if (value >= 0) {
                         setQuestionBank(value);
                       }
                     }}
@@ -582,7 +599,7 @@ console.log(timeDifference===durationTime);
                         Please Enter a Number Between 0 and{" "}
                         {subjectDataById.questionBankCount}
                       </label>
-                    ) :  (
+                    ) : (
                       questionBank < 0 && (
                         <label className="text-danger m-0 ">
                           Invalid number Of Questions!
@@ -607,7 +624,7 @@ console.log(timeDifference===durationTime);
                     value={totalQuestions} // Ensure the input reflects the state
                     onChange={(e) => {
                       const value = e.target.value;
-                      if (value >= 0 ) {
+                      if (value >= 0) {
                         setTotalQuestion(value); // Update state only for valid inputs
                       }
                     }}
@@ -618,7 +635,8 @@ console.log(timeDifference===durationTime);
                       <lable className="position-absolute mb-1 text-danger fw-bolder">
                         Field can't be empty!
                       </lable>
-                    ) : totalQuestions > subjectDataById.bharatSatQuestionCount ? (
+                    ) : totalQuestions >
+                      subjectDataById.bharatSatQuestionCount ? (
                       <label className="position-absolute mb-1 text-danger fw-bolder">
                         Please Enter a Number Between 0 and{" "}
                         {subjectDataById.bharatSatQuestionCount}

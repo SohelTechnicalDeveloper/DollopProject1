@@ -469,7 +469,7 @@ const AgencyRoom = () => {
                 <th scope="col">Action</th>
               </tr>
             </thead>
-            <tbody className="mx-3 text-center">
+            <tbody className="mx-3 text-center ">
               {userData.length ? (
                 userData.map((info, index) => {
                   return (
