@@ -1,0 +1,11 @@
+.sub-list{
+    font-size: 18px;
+    color: #000;
+    font-weight: 600 !important;
+}
+.sub-list.active{
+  background-color: #0a5acc!important;
+    /* border-bottom: 2px solid #F6790B; */
+    color: #fff !important;
+    font-weight: 600;
+}

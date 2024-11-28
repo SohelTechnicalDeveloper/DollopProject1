@@ -10,25 +10,43 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 const CreateExam = () => {
   const [ExamData, setExamData] = useState([]);
-  const [limit, setLimit] = useState(2);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState("");
   const [availableDataCount, setAvialeCount] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const[singleChecked,setSingleChecked] = useState('')
+  const [singleChecked, setSingleChecked] = useState(false);
+  const [addBtn, setAddBtne] = useState(false);
+  const [activeStatus, setactiveStatus] = useState(false);
+  const [singleData, setSingleData] = useState({
+    bharatSatExamId: "",
+    is_active: "",
+  });
+
+  const addShowModel = () => {
+    setAddBtne(true);
+  };
+
+  const handleClose = () => {
+    setAddBtne(false);
+    setactiveStatus(false);
+  };
+  const handleConfirm = (data) => {
+    setAddBtne(false);
+    setSingleData(data);
+    setactiveStatus(true);
+  };
 
   const handleCheckboxChange = (e) => {
-
     setIsChecked(e.target.checked); // Update state with checkbox status
-    setSingleChecked(e.target.checked ? ExamData.map(() => true) : ExamData.map(() => false));
+    setSingleChecked(
+      e.target.checked ? ExamData.map(() => true) : ExamData.map(() => false)
+    );
   };
 
   const handleSingleCheckbox = (index) => {
-
     setSingleChecked(index); // Update state with checkbox status
-
-
 
     // const updatedChecks = [...singleChecked];
     // updatedChecks[index] = !updatedChecks[index];
@@ -38,12 +56,9 @@ const CreateExam = () => {
     // const allChecked = updatedChecks.every((checked) => checked);
     // setIsChecked(allChecked);
   };
-  
-  
-  console.log(isChecked);
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyNjg3Mzg2LCJleHAiOjE3MzI3NzM3ODZ9.K2cJmN3tkTrktbgm6aZakUFE9RU3DcH2Tc6WYfr_Y8U";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzI3ODc3OTYsImV4cCI6MTczMjg3NDE5Nn0.ykQltcVIMVTNswC11VXhX20pLXGwyH-Doin7jLMxKJ8";
 
   const getAllExam = async () => {
     try {
@@ -63,13 +78,39 @@ const CreateExam = () => {
       if (response.status === 200) {
         setExamData(response.data.data);
         setAvialeCount(response.data.availableDataCount);
-        setTotalPages(Math.ceil(response.data.availableDataCount/limit))
+        setTotalPages(Math.ceil(response.data.availableDataCount / limit));
       }
     } catch (error) {
       toast.error(error.response.data.error);
     }
   };
-  
+
+  const ChangeStatus = async () => {
+    try {
+      const response = await axios.put(
+        `http://192.168.0.27:5003/bharatSat/change-status`,
+        {
+          id: singleData.bharatSatExamId,
+          is_active: !singleData.is_active,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        getAllExam();
+
+        setactiveStatus(false);
+      }
+    } catch (error) {
+      toast.error("Failed to change status.");
+    }
+  };
+
   const getClassName = () => {
     if (isChecked && singleChecked.length > 0) {
       return "checkedBtn";
@@ -79,7 +120,7 @@ const CreateExam = () => {
     }
     return "UncheckedBtn";
   };
-  
+
   useEffect(() => {
     getAllExam();
   }, [page, limit, search]);
@@ -90,20 +131,24 @@ const CreateExam = () => {
         <div className="d-flex justify-content-between p-3">
           <div className="fw-bold">BHARAT SAT</div>
           <div className="text-center">
-            <span className="fw-bold">Dashborad</span><MdKeyboardArrowRight />
+            <span className="fw-bold">Dashborad</span>
+            <MdKeyboardArrowRight />
 
             <Link className="text-decoration-none fw-bold">BHARAT SAT</Link>
           </div>
         </div>
         <div className="p-4 rounded-1 m-4 " style={{ backgroundColor: "#fff" }}>
           <div>
-            <div className="fw-bold fs-4 mb-4 text-truncate" title="Create Bharat SAT Exam">Create Bharat SAT Exam</div>
+            <div
+              className="fw-bold fs-4 mb-4 text-truncate"
+              title="Create Bharat SAT Exam"
+            >
+              Create Bharat SAT Exam
+            </div>
             <div className=" d-flex gap-3 justify-content-between text-center ">
-                <div>
-                    <RiDeleteBinLine
-                  className={getClassName()}
-                    />
-                </div>
+              <div>
+                <RiDeleteBinLine className={getClassName()} />
+              </div>
               <div className="d-flex gap-4">
                 <div>
                   <input
@@ -141,7 +186,7 @@ const CreateExam = () => {
           >
             <table className="table p-3" style={{ minWidth: "1500px" }}>
               <thead className="table-primary text-center">
-                <tr>
+                <tr className="fw-bold">
                   <th>
                     <input
                       checked={isChecked}
@@ -169,13 +214,14 @@ const CreateExam = () => {
               </thead>
               <tbody className="text-center">
                 {ExamData.map((item, index) => (
-                  <tr key={index}>
+                  <tr key={index} style={{ fontWeight: "500" }}>
                     <td>
                       <input
-                        checked={singleChecked[item.bharatSatExamId]}
-                        onChange={(e)=>handleSingleCheckbox(item.bharatSatExamId)}
+                        checked={singleChecked[index]}
+                        onChange={(e) =>
+                          handleSingleCheckbox(item.bharatSatExamId)
+                        }
                         type="checkbox"
-
                         style={{
                           width: "18px",
                           height: "20px",
@@ -191,17 +237,28 @@ const CreateExam = () => {
                     <td>{item.examStartTime}</td>
                     <td>{item.examEndTime}</td>
                     <td>
-                      <Link>View</Link>
+                      <Link
+                      to={`/view-exam`}
+                      state={{classId:item.class_id}}
+                       
+                      >
+                          
+                        View
+                      </Link>
                     </td>
                     <td>
-                      <Link>Generate</Link>
+                      <Link onClick={addShowModel}>Generate</Link>
                     </td>
                     <td>
                       <div className="form-switch d-flex justify-content-center">
                         <input
                           className="form-check-input"
                           type="checkbox"
+                          style={{ cursor: "pointer" }}
                           checked={item.is_active}
+                          onClick={() => {
+                            handleConfirm(item);
+                          }}
                         />
                       </div>
                     </td>
@@ -264,7 +321,7 @@ const CreateExam = () => {
                         <Link
                           className="page-link"
                           onClick={() => {
-                            setPage(page-1);
+                            setPage(page - 1);
                           }}
                         >
                           {page}
@@ -275,7 +332,7 @@ const CreateExam = () => {
 
                   <li
                     className={`page-item ${
-                      page === totalPages-1 ? "disabled" : ""
+                      page === totalPages - 1 ? "disabled" : ""
                     }`}
                   >
                     <Link className="page-link" aria-label="Next">
@@ -291,6 +348,112 @@ const CreateExam = () => {
               </nav>
             </div>
           </div>
+        </div>
+
+        {/* this modal for the status is  active */}
+
+        <div className="container ">
+          {addBtn && (
+            <div
+              className="modal show  "
+              style={{ display: "block", backdropFilter: "contrast(0.3)" }}
+              id="exampleModalToggle"
+              aria-hidden="true"
+              aria-labelledby="exampleModalToggleLabel"
+            >
+              <div className="modal-dialog  modal-dialog-centered  ">
+                <div className="modal-content model-generate p-4 border-0 ">
+                  <div className="p-4 text-center">
+                    <div
+                      className="d-flex position-absolute align-items-center circel-check  justify-content-center"
+                      style={{
+                        left: "50%",
+                        top: "2%",
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    >
+                      <i className="fas fa-check-circle  "></i>
+                    </div>
+                  </div>
+                  <div className="modal-body text-center">
+                    <h4 className="mb-3 fw-bold">
+                      Are you sure you want to generate E-hall ticket ?
+                    </h4>
+                    <div className="p-4 d-flex justify-content-center gap-4 align-items-center">
+                      <button
+                        className="btn btn-secondary  px-4 p-2 fw-bold fs-6"
+                        onClick={handleClose}
+                      >
+                        No
+                      </button>
+                      <button
+                        className="btn  px-4 p-2 text-white fw-bold"
+                        style={{ backgroundColor: "#03AA11" }}
+                        onClick={handleConfirm}
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* <div className="modal-backdrop fade show" style={{ position: "fixed" }} ></div> */}
+        </div>
+
+        {/* this modal for the status is not active */}
+
+        <div className="container ">
+          {activeStatus && (
+            <div
+              className="modal show  "
+              style={{ display: "block", backdropFilter: "contrast(0.3)" }}
+              id="exampleModalToggle"
+              aria-hidden="true"
+              aria-labelledby="exampleModalToggleLabel"
+            >
+              <div className="modal-dialog  modal-dialog-centered  ">
+                <div className="modal-content model-custom p-4 px-4 border-0 ">
+                  <div className="p-3 text-center">
+                    <div
+                      className="d-flex position-absolute align-items-center check-status  justify-content-center"
+                      style={{
+                        left: "50%",
+                        top: "2%",
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    >
+                      <div className="icon-container">
+                        <span>!</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="modal-body text-center mt-3">
+                    <h4 className="mb-3 fw-bold">
+                      Are you sure want to change the status ?
+                    </h4>
+                    <div className="p-4 d-flex justify-content-center gap-4 align-items-center">
+                      <button
+                        className="btn btn-secondary  px-4 p-2 fw-bold fs-6"
+                        onClick={handleClose}
+                      >
+                        No
+                      </button>
+                      <button
+                        className="btn  px-4 p-2 text-white fw-bold"
+                        style={{ backgroundColor: "red" }}
+                        onClick={() => ChangeStatus()}
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* <div className="modal-backdrop fade show" style={{ position: "fixed" }} ></div> */}
         </div>
 
         <ToastContainer />

@@ -25,6 +25,7 @@ import BlogById from './Componetns/BlogById';
 import PurchagePackageDetails from './Componetns/PurchagePackageDetails';
 import BharatSAT from './Componetns/BharatSAT';
 import CreateExam from './Componetns/CreateExam';
+import ViewExam from './Componetns/ViewExam';
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
             <Route path='/BlogDetailsById/:id' element={<BlogById/>}></Route>
             <Route path='/BharatSAT' element={<BharatSAT/>}></Route>
             <Route path='/create-exam' element={<CreateExam/>}></Route>
+            <Route path='/view-exam' element={<ViewExam/>}></Route>
           </Routes>
       </Router> 
     </div>

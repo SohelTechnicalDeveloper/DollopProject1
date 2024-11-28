@@ -243,229 +243,344 @@
   
 //   export default ExamList;
   
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
-import MainLayout from "../MainLayout";
-import { MdDeleteOutline } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { GoPlus } from "react-icons/go";
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import { toast, ToastContainer } from "react-toastify";
+// import MainLayout from "../MainLayout";
+// import { MdDeleteOutline } from "react-icons/md";
+// import { Link } from "react-router-dom";
+// import { GoPlus } from "react-icons/go";
 
-const CreateExam = () => {
-  const [ExamData, setExamData] = useState([]);
-  const [limit] = useState(10); // Records per page
-  const [page, setPage] = useState(1); // Current page (1-indexed)
-  const [totalRecords, setTotalRecords] = useState(0); // Total records count
-  const [search, setSearch] = useState("");
+// const CreateExam = () => {
+//   const [ExamData, setExamData] = useState([]);
+//   const [limit] = useState(10); // Records per page
+//   const [page, setPage] = useState(1); // Current page (1-indexed)
+//   const [totalRecords, setTotalRecords] = useState(0); // Total records count
+//   const [search, setSearch] = useState("");
 
-  const token = "your-auth-token-here"; // Replace with your actual token
+//   const token = "your-auth-token-here"; // Replace with your actual token
 
-  const getAllExam = async () => {
-    try {
-      const response = await axios.get(
-        `http://192.168.0.27:5003/bharatSat/list-all-exam`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            offset: (page - 1) * limit, // Calculate offset based on current page
-            limit: limit,
-            searchQuery: search,
-          },
-        }
-      );
+//   const getAllExam = async () => {
+//     try {
+//       const response = await axios.get(
+//         `http://192.168.0.27:5003/bharatSat/list-all-exam`,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//           params: {
+//             offset: (page - 1) * limit, // Calculate offset based on current page
+//             limit: limit,
+//             searchQuery: search,
+//           },
+//         }
+//       );
 
-      if (response.status === 200) {
-        setExamData(response.data.data || []); // Update table data
-        setTotalRecords(response.data.totalRecords || 0); // Safely set total records
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.error || "Failed to fetch data");
-    }
+//       if (response.status === 200) {
+//         setExamData(response.data.data || []); // Update table data
+//         setTotalRecords(response.data.totalRecords || 0); // Safely set total records
+//       }
+//     } catch (error) {
+//       toast.error(error.response?.data?.error || "Failed to fetch data");
+//     }
+//   };
+
+//   useEffect(() => {
+//     getAllExam();
+//   }, [page, search]); // Re-fetch data on page or search change
+
+//   const totalPages = Math.max(Math.ceil(totalRecords / limit), 1); // Ensure at least 1 page
+
+//   return (
+//     <div className="bg-body-secondary">
+//       <MainLayout>
+//         <div className="d-flex justify-content-between p-2">
+//           <div className="fw-bold">BHARAT SAT</div>
+//           <div>
+//             <span className="fw-bold">Dashboard</span> -{" "}
+//             <Link className="text-decoration-none fw-bold">BHARAT SAT</Link>
+//           </div>
+//         </div>
+//         <div className="p-4  rounded-1 m-4" style={{ backgroundColor: "#fff" }}>
+//           <div>
+//             <div className="fw-bold fs-4 mb-4">Create Bharat SAT Exam</div>
+//             <div className="d-flex gap-3  justify-content-between text-center">
+//                 <div>
+//                   <MdDeleteOutline
+//                     className="exam-deleteBtn"
+//                     style={{
+//                       backgroundColor: "#efd7da",
+//                       fontSize: "35px",
+//                       color: "#fff",
+//                       borderRadius: "3px",
+//                       padding: "3px",
+//                       cursor: "pointer",
+//                     }}
+//                   />
+//                 </div>
+//                 <div className="d-flex gap-4 ">
+//                   <div>
+//                     <input
+//                       id="input1"
+//                       type="search"
+//                       className="form-control w-100"
+//                       placeholder="Search User"
+//                       onChange={(e) => setSearch(e.target.value)}
+//                     />
+//                   </div>
+//                   <div className="d-flex justify-content-end">
+//                     <div className="btn-group">
+//                       <button
+//                         type="submit"
+//                         className="btn"
+//                         style={{ backgroundColor: "#07284B", color: "#fff" }}
+//                       >
+//                         Submit
+//                       </button>
+//                       <button
+//                         type="submit"
+//                         className="btn rounded-end-3 w-50 bg-primary text-white"
+//                       >
+//                         <GoPlus style={{ fontSize: "18px" }} />
+//                       </button>
+//                     </div>
+//                   </div>
+//                 </div>
+//             </div>
+//           </div>
+
+//           <div className="mt-4 table-scroller overflow-auto ">
+//             <table className="table p-3">
+//               <thead className="table-primary text-center">
+//                 <tr>
+//                   <th>
+//                     <input
+//                       type="checkbox"
+//                       style={{
+//                         width: "18px",
+//                         height: "20px",
+//                         cursor: "pointer",
+//                       }}
+//                     />
+//                   </th>
+//                   <th>Sr No.</th>
+//                   <th>Bharat SAT Exam Name</th>
+//                   <th>Class</th>
+//                   <th>Medium</th>
+//                   <th>Exam Date</th>
+//                   <th>Exam Start Time</th>
+//                   <th>Exam End Time</th>
+//                   <th>View Question Paper</th>
+//                   <th>Generate E-Hall Ticket</th>
+//                   <th>Current Status</th>
+//                 </tr>
+//               </thead>
+//               <tbody className="mx-3 text-center">
+//                 {ExamData.length > 0 ? (
+//                   ExamData.map((item, index) => (
+//                     <tr key={item.id}>
+//                       <td>
+//                         <input
+//                           type="checkbox"
+//                           style={{
+//                             width: "18px",
+//                             height: "20px",
+//                             cursor: "pointer",
+//                           }}
+//                         />
+//                       </td>
+//                       <td>{(page - 1) * limit + index + 1}</td>
+//                       <td>{item.bharatSatExamName}</td>
+//                       <td>{item.className}</td>
+//                       <td>{item.medium}</td>
+//                       <td>{item.bharatSatExamDate}</td>
+//                       <td>{item.examStartTime}</td>
+//                       <td>{item.examEndTime}</td>
+//                       <td>
+//                         <Link>View</Link>
+//                       </td>
+//                       <td>
+//                         <Link>Generate</Link>
+//                       </td>
+//                       <td>
+//                         <div className="form-switch d-flex justify-content-center align-items-center">
+//                           <input
+//                             className="form-check-input"
+//                             type="checkbox"
+//                             checked={item.is_active}
+//                           />
+//                         </div>
+//                       </td>
+//                     </tr>
+//                   ))
+//                 ) : (
+//                   <tr>
+//                     <td colSpan="11">No data found</td>
+//                   </tr>
+//                 )}
+//               </tbody>
+//             </table>
+//           </div>
+
+//           {/* Pagination */}
+//           <nav aria-label="Page navigation example">
+//             <ul className="pagination justify-content-end mt-4">
+//               <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
+//                 <button
+//                   className="page-link"
+//                   onClick={() => setPage(page - 1)}
+//                   disabled={page === 1}
+//                 >
+//                   &laquo; Previous
+//                 </button>
+//               </li>
+
+//               {Array.from({ length: totalPages }).map((_, index) => (
+//                 <li
+//                   key={index}
+//                   className={`page-item ${page === index + 1 ? "active" : ""}`}
+//                 >
+//                   <button
+//                     className="page-link"
+//                     onClick={() => setPage(index + 1)}
+//                   >
+//                     {index + 1}
+//                   </button>
+//                 </li>
+//               ))}
+
+//               <li className={`page-item ${page === totalPages ? "disabled" : ""}`}>
+//                 <button
+//                   className="page-link"
+//                   onClick={() => setPage(page + 1)}
+//                   disabled={page === totalPages}
+//                 >
+//                   Next &raquo;
+//                 </button>
+//               </li>
+//             </ul>
+//           </nav>
+//         </div>
+
+//         <ToastContainer />
+//       </MainLayout>
+//     </div>
+//   );
+// };
+import React, { useState } from "react";
+
+const QuestionViewer = ({ subjectsData }) => {
+  const [activeSubjectId, setActiveSubjectId] = useState(null);
+
+  // Handle subject click and set the active subject ID
+  const handleClickSubName = (subject) => {
+    setActiveSubjectId(subject.subjectId); // Match `subjectId` from the data
   };
 
-  useEffect(() => {
-    getAllExam();
-  }, [page, search]); // Re-fetch data on page or search change
-
-  const totalPages = Math.max(Math.ceil(totalRecords / limit), 1); // Ensure at least 1 page
+  // Filter questions based on the active subject ID
+  const filteredQuestions = subjectsData.subjectQuestions.find(
+    (subject) => subject.subjectId === activeSubjectId
+  );
 
   return (
-    <div className="bg-body-secondary">
-      <MainLayout>
-        <div className="d-flex justify-content-between p-2">
-          <div className="fw-bold">BHARAT SAT</div>
-          <div>
-            <span className="fw-bold">Dashboard</span> -{" "}
-            <Link className="text-decoration-none fw-bold">BHARAT SAT</Link>
-          </div>
-        </div>
-        <div className="p-4  rounded-1 m-4" style={{ backgroundColor: "#fff" }}>
-          <div>
-            <div className="fw-bold fs-4 mb-4">Create Bharat SAT Exam</div>
-            <div className="d-flex gap-3  justify-content-between text-center">
-                <div>
-                  <MdDeleteOutline
-                    className="exam-deleteBtn"
-                    style={{
-                      backgroundColor: "#efd7da",
-                      fontSize: "35px",
-                      color: "#fff",
-                      borderRadius: "3px",
-                      padding: "3px",
-                      cursor: "pointer",
-                    }}
-                  />
-                </div>
-                <div className="d-flex gap-4 ">
-                  <div>
+    <div className="container mt-4">
+      {/* Subject Name Buttons */}
+      <div className="d-flex mb-4">
+        {subjectsData.subjectQuestions.map((subject, index) => (
+          <button
+            key={subject.subjectId}
+            className={`btn ${
+              activeSubjectId === subject.subjectId ? "btn-primary" : "btn-outline-primary"
+            } me-2`}
+            onClick={() => handleClickSubName(subject)}
+          >
+            Subject {index + 1}
+          </button>
+        ))}
+      </div>
+
+      {/* Render Questions for Selected Subject */}
+      {filteredQuestions ? (
+        filteredQuestions.questions.map((q, index) => (
+          <div className="mb-4" key={q.questionId}>
+            <h5 className="mb-3">Question {index + 1}</h5>
+            <p dangerouslySetInnerHTML={{ __html: q.question }}></p>
+
+            <div className="row">
+              {q.options.map((option, i) => (
+                <div className="col-md-6" key={i}>
+                  <div className="form-check">
                     <input
-                      id="input1"
-                      type="search"
-                      className="form-control w-100"
-                      placeholder="Search User"
-                      onChange={(e) => setSearch(e.target.value)}
+                      className="form-check-input"
+                      type="radio"
+                      name={`question-${q.questionId}`}
+                      id={`option-${q.questionId}-${i}`}
+                      disabled
+                      checked={q.correctOption === i}
                     />
+                    <label
+                      className={`form-check-label ${
+                        q.correctOption === i ? "text-success fw-bold" : ""
+                      }`}
+                      htmlFor={`option-${q.questionId}-${i}`}
+                    >
+                      <span dangerouslySetInnerHTML={{ __html: option }}></span>
+                      {q.correctOption === i && (
+                        <span className="ms-2">Correct Answer</span>
+                      )}
+                    </label>
                   </div>
-                  <div className="d-flex justify-content-end">
-                    <div className="btn-group">
-                      <button
-                        type="submit"
-                        className="btn"
-                        style={{ backgroundColor: "#07284B", color: "#fff" }}
-                      >
-                        Submit
-                      </button>
-                      <button
-                        type="submit"
-                        className="btn rounded-end-3 w-50 bg-primary text-white"
-                      >
-                        <GoPlus style={{ fontSize: "18px" }} />
-                      </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Render Subquestions if Available */}
+            {q.subQuestions.length > 0 && (
+              <div className="mt-4 ps-3 border-start">
+                {q.subQuestions.map((sub, subIndex) => (
+                  <div key={sub.subQuestionId} className="mb-3">
+                    <h6>Sub Question {subIndex + 1}</h6>
+                    <p dangerouslySetInnerHTML={{ __html: sub.question }}></p>
+                    <div className="row">
+                      {sub.options.map((option, i) => (
+                        <div className="col-md-6" key={i}>
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              name={`sub-question-${sub.subQuestionId}`}
+                              id={`sub-option-${sub.subQuestionId}-${i}`}
+                              disabled
+                              checked={sub.correctOption === i}
+                            />
+                            <label
+                              className={`form-check-label ${
+                                sub.correctOption === i ? "text-success fw-bold" : ""
+                              }`}
+                              htmlFor={`sub-option-${sub.subQuestionId}-${i}`}
+                            >
+                              <span
+                                dangerouslySetInnerHTML={{ __html: option }}
+                              ></span>
+                              {sub.correctOption === i && (
+                                <span className="ms-2">Correct Answer</span>
+                              )}
+                            </label>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </div>
-            </div>
+                ))}
+              </div>
+            )}
           </div>
-
-          <div className="mt-4 table-scroller overflow-auto ">
-            <table className="table p-3">
-              <thead className="table-primary text-center">
-                <tr>
-                  <th>
-                    <input
-                      type="checkbox"
-                      style={{
-                        width: "18px",
-                        height: "20px",
-                        cursor: "pointer",
-                      }}
-                    />
-                  </th>
-                  <th>Sr No.</th>
-                  <th>Bharat SAT Exam Name</th>
-                  <th>Class</th>
-                  <th>Medium</th>
-                  <th>Exam Date</th>
-                  <th>Exam Start Time</th>
-                  <th>Exam End Time</th>
-                  <th>View Question Paper</th>
-                  <th>Generate E-Hall Ticket</th>
-                  <th>Current Status</th>
-                </tr>
-              </thead>
-              <tbody className="mx-3 text-center">
-                {ExamData.length > 0 ? (
-                  ExamData.map((item, index) => (
-                    <tr key={item.id}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          style={{
-                            width: "18px",
-                            height: "20px",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </td>
-                      <td>{(page - 1) * limit + index + 1}</td>
-                      <td>{item.bharatSatExamName}</td>
-                      <td>{item.className}</td>
-                      <td>{item.medium}</td>
-                      <td>{item.bharatSatExamDate}</td>
-                      <td>{item.examStartTime}</td>
-                      <td>{item.examEndTime}</td>
-                      <td>
-                        <Link>View</Link>
-                      </td>
-                      <td>
-                        <Link>Generate</Link>
-                      </td>
-                      <td>
-                        <div className="form-switch d-flex justify-content-center align-items-center">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            checked={item.is_active}
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="11">No data found</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          <nav aria-label="Page navigation example">
-            <ul className="pagination justify-content-end mt-4">
-              <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
-                <button
-                  className="page-link"
-                  onClick={() => setPage(page - 1)}
-                  disabled={page === 1}
-                >
-                  &laquo; Previous
-                </button>
-              </li>
-
-              {Array.from({ length: totalPages }).map((_, index) => (
-                <li
-                  key={index}
-                  className={`page-item ${page === index + 1 ? "active" : ""}`}
-                >
-                  <button
-                    className="page-link"
-                    onClick={() => setPage(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-
-              <li className={`page-item ${page === totalPages ? "disabled" : ""}`}>
-                <button
-                  className="page-link"
-                  onClick={() => setPage(page + 1)}
-                  disabled={page === totalPages}
-                >
-                  Next &raquo;
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-
-        <ToastContainer />
-      </MainLayout>
+        ))
+      ) : (
+        <p>Please select a subject to view the questions.</p>
+      )}
     </div>
   );
 };
 
-export default CreateExam;
+export default QuestionViewer;
