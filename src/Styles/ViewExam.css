@@ -9,3 +9,19 @@
     color: #fff !important;
     font-weight: 600;
 }
+.correct-option{
+
+  color: #23bc23 !important;
+  
+}
+.page-data{
+  border: 0px !important;
+  border-radius: 50% !important;
+}
+.correct-inputBox{
+
+  color: #23bc23 !important;
+  background-color: #23bc23 !important;
+  border: 0  !important;
+  
+}

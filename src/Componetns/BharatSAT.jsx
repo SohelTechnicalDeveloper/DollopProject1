@@ -36,7 +36,7 @@ const BharatSAT = () => {
   );
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyNjg3Mzg2LCJleHAiOjE3MzI3NzM3ODZ9.K2cJmN3tkTrktbgm6aZakUFE9RU3DcH2Tc6WYfr_Y8U";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzI4NTkzNDYsImV4cCI6MTczMjk0NTc0Nn0.j368vR-b_9qiUAd3q2f_IXCfY1KmyEfBwkSspKWTaKQ";
 
   const getAllClasses = async () => {
     try {

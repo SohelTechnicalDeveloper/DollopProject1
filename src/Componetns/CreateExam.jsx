@@ -24,16 +24,23 @@ const CreateExam = () => {
     is_active: "",
   });
 
+  //this functions is generate show and close
+
   const addShowModel = () => {
     setAddBtne(true);
   };
+  const handleGenerate = () => {
+    setAddBtne(false);
+  };
 
+  // this function is close all types of model
   const handleClose = () => {
     setAddBtne(false);
     setactiveStatus(false);
   };
+
+  // this function is change status
   const handleConfirm = (data) => {
-    setAddBtne(false);
     setSingleData(data);
     setactiveStatus(true);
   };
@@ -58,7 +65,7 @@ const CreateExam = () => {
   };
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzI3ODc3OTYsImV4cCI6MTczMjg3NDE5Nn0.ykQltcVIMVTNswC11VXhX20pLXGwyH-Doin7jLMxKJ8";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzI4NzA5ODYsImV4cCI6MTczMjk1NzM4Nn0.b7zwedgmtS1e775DgIIVTc3SRlrAz9f64uM_-xcO0fI";
 
   const getAllExam = async () => {
     try {
@@ -101,13 +108,17 @@ const CreateExam = () => {
       );
 
       if (response.status === 200) {
-        toast.success(response.data.message);
+        toast.success(response.data.message, {
+          theme: "colored ",
+        });
         getAllExam();
 
         setactiveStatus(false);
       }
     } catch (error) {
-      toast.error("Failed to change status.");
+      toast.error("Failed to change status.", {
+        theme: "colored ",
+      });
     }
   };
 
@@ -181,8 +192,13 @@ const CreateExam = () => {
           </div>
 
           <div
-            className="table-responsive mt-2 "
-            style={{ maxWidth: "150%", overflowX: "auto" }}
+            className="table-responsive mt-2"
+            style={{
+              maxWidth: "150%",
+              height: "665px",
+              overflowY: "auto",
+              overflowX: "auto",
+            }}
           >
             <table className="table p-3" style={{ minWidth: "1500px" }}>
               <thead className="table-primary text-center">
@@ -230,19 +246,23 @@ const CreateExam = () => {
                       />
                     </td>
                     <td>{page * limit + index + 1}</td>
-                    <td>{item.bharatSatExamName}</td>
+                    <td>
+                      {item.bharatSatExamName.charAt(0).toUpperCase() +
+                        item.bharatSatExamName.slice(1)}
+                    </td>
                     <td>{item.className}</td>
-                    <td>{item.medium}</td>
+                    <td>
+                      {item.medium.charAt(0).toUpperCase() +
+                        item.medium.slice(1)}
+                    </td>
                     <td>{item.bharatSatExamDate}</td>
                     <td>{item.examStartTime}</td>
                     <td>{item.examEndTime}</td>
                     <td>
                       <Link
-                      to={`/view-exam`}
-                      state={{classId:item.class_id}}
-                       
+                        to={`/view-exam`}
+                        state={{ classId: item.class_id }}
                       >
-                          
                         View
                       </Link>
                     </td>
@@ -268,7 +288,7 @@ const CreateExam = () => {
                         <BiEditAlt
                           style={{
                             backgroundColor: "#b3f3c966",
-                            color: "#70FDA2",
+                            color: "#4eb171",
                             borderRadius: "3px",
                             padding: "3px",
                             cursor: "pointer",
@@ -278,7 +298,7 @@ const CreateExam = () => {
                         <RiDeleteBinLine
                           style={{
                             backgroundColor: " #efd7da",
-                            color: "#e82e44",
+                            color: "#ef6d7c",
                             borderRadius: "3px",
                             padding: "3px",
                             cursor: "pointer",
@@ -294,59 +314,56 @@ const CreateExam = () => {
 
           {/* pagination  data  */}
 
-          <div className="d-flex justify-content-between">
-            <div>
-              <p className="text-muted">
-                Showing 1 to 10 of {availableDataCount} entries
-              </p>
-            </div>
-            <div>
-              <nav aria-label="Page navigation example">
-                <ul className="pagination justify-content-end mt-4">
-                  <li className={`page-item ${page === 0 ? "disabled" : ""}`}>
-                    <Link className="page-link" aria-label="Previous">
-                      <span
-                        aria-hidden="true"
-                        onClick={() => setPage(page - 1)}
-                      >
-                        &laquo; Previous
-                      </span>
-                    </Link>
-                  </li>
+          <div className="mt-3">
+            <span className="text-muted">
+              Showing 1 to 10 of {availableDataCount} entries
+            </span>
+          </div>
+          <div className="d-flex justify-content-end mt-4">
+            <nav aria-label="Page navigation example ">
+              <ul className="pagination gap-2   list-unstyled">
+                <li className={`page-item  ${page === 0 ? "disabled" : ""}`}>
+                  <Link className="page-link  " aria-label="Previous">
+                    <span aria-hidden="true" onClick={() => setPage(page - 1)}>
+                      &laquo; Previous
+                    </span>
+                  </Link>
+                </li>
 
-                  {[...Array(totalPages)].map((_, index) => {
-                    const page = index + 1;
-                    return (
-                      <li className="page-item">
-                        <Link
-                          className="page-link"
-                          onClick={() => {
-                            setPage(page - 1);
-                          }}
-                        >
-                          {page}
-                        </Link>
-                      </li>
-                    );
-                  })}
-
-                  <li
-                    className={`page-item ${
-                      page === totalPages - 1 ? "disabled" : ""
-                    }`}
-                  >
-                    <Link className="page-link" aria-label="Next">
-                      <span
-                        aria-hidden="true"
-                        onClick={() => setPage(page + 1)}
+                {[...Array(totalPages)].map((_, index) => {
+                  const currentIndex = index + 1;
+                  return (
+                    <li
+                      key={currentIndex}
+                      className={`page-item  ${
+                        page === currentIndex - 1 ? "sub-list active" : ""
+                      }`}
+                    >
+                      <Link
+                        className="page-link "
+                        onClick={() => {
+                          setPage(currentIndex - 1);
+                        }}
                       >
-                        Next &raquo;
-                      </span>
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+                        {currentIndex}
+                      </Link>
+                    </li>
+                  );
+                })}
+
+                <li
+                  className={`page-item ${
+                    page === totalPages - 1 ? "disabled" : ""
+                  }`}
+                >
+                  <Link className="page-link" aria-label="Next">
+                    <span aria-hidden="true" onClick={() => setPage(page + 1)}>
+                      Next &raquo;
+                    </span>
+                  </Link>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
 
@@ -389,7 +406,7 @@ const CreateExam = () => {
                       <button
                         className="btn  px-4 p-2 text-white fw-bold"
                         style={{ backgroundColor: "#03AA11" }}
-                        onClick={handleConfirm}
+                        onClick={handleGenerate}
                       >
                         Yes
                       </button>

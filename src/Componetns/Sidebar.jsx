@@ -10,6 +10,12 @@ import { FaUsers } from "react-icons/fa";
 import "../Styles/Sidebar.css";
 import { RxCross1 } from "react-icons/rx";
 import { HiOutlineViewList } from "react-icons/hi";
+import { IoCreateOutline } from "react-icons/io5";
+import { TfiWrite } from "react-icons/tfi";
+import { TbPackages } from "react-icons/tb";
+
+
+
 
 const Sidebar = () => {
   const [Open, setOpen] = useState(false);
@@ -59,8 +65,16 @@ const Sidebar = () => {
     </ul>
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">
-        <Link className="text-decoration-none text-white nav-link active" to='/create-exam'>
-          <HiOutlineCursorClick className="fs-2 fa me-3" />
+        <Link className="text-decoration-none text-white nav-link active" to="/create-exam">
+          <LuGitBranchPlus className="fs-2 me-3 fa" />
+          <span>Bharat SAT </span>
+        </Link>
+      </li>
+    </ul>
+    <ul className="nav mb-auto p-2 flex-column">
+      <li className="nav-item">
+        <Link className="text-decoration-none text-white nav-link active" to='/BharatSAT'>
+          <IoCreateOutline className="fs-2 fa me-3" />
           <span>Create Exam </span>
         </Link>
       </li>
@@ -68,8 +82,8 @@ const Sidebar = () => {
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">
         <Link className="text-decoration-none text-white nav-link active" to='/Blog'>
-          <HiOutlineCursorClick className="fs-2 fa me-3" />
-          <span>Blog</span>
+          <TfiWrite  className="fs-2 fa me-3" />
+          <span>Blog Add </span>
         </Link>
       </li>
     </ul>
@@ -93,7 +107,7 @@ const Sidebar = () => {
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">
         <Link className="text-decoration-none text-white nav-link active" to='/package'>
-          <FaHome className="fs-2 me-3 fa" />
+          <TbPackages className="fs-2 me-3 fa" />
           <span>Purchase Packages</span>
         </Link>
       </li>
@@ -127,14 +141,7 @@ const Sidebar = () => {
       </li>
     </ul>
 
-    <ul className="nav mb-auto p-2 flex-column">
-      <li className="nav-item">
-        <Link className="text-decoration-none text-white nav-link active" to="/BharatSAT">
-          <LuGitBranchPlus className="fs-2 me-3 fa" />
-          <span>Bharat SAT </span>
-        </Link>
-      </li>
-    </ul>
+  
 
     <ul className="nav mb-auto p-2 flex-column">
       <li className="nav-item">

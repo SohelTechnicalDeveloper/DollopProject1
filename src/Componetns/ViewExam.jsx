@@ -12,15 +12,13 @@ const ViewExam = () => {
   const [subjectsData, setSubjectsData] = useState([]);
   const [activeLink, setactiveLink] = useState("");
   const [subjectId, setSubjectId] = useState("");
-  const navigate = useNavigate()
-  const location = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const { classId } = location.state || {};
-  console.log(classId);
-  
+  const { classId } = location.state || {}; //this are use location hooks for get state other component to other component
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MjA5NDQ0OWVlYTA2YTc4OTlmMDU1NSIsImVtYWlsIjoiZG9sbG9wLnlhc2hAZ21haWwuY29tIiwiaWF0IjoxNzMyNzczODc5LCJleHAiOjE3MzI4NjAyNzl9.A_QvoXiGvhrwUGRhDfkzHc_h6yvyPeiCNd8ByYQt38c";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzI4NzA5ODYsImV4cCI6MTczMjk1NzM4Nn0.b7zwedgmtS1e775DgIIVTc3SRlrAz9f64uM_-xcO0fI";
 
   const getAllUserSubject = async () => {
     try {
@@ -28,7 +26,7 @@ const ViewExam = () => {
         `http://192.168.0.27:5003/bharatSat/bharatSat-question-paper/`,
         {
           params: {
-            classId: classId,
+            classId,
           },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,10 +34,15 @@ const ViewExam = () => {
         }
       );
       if (response.status === 200) {
-        setSubjectsData(response.data.data);
-        console.log(response.data.data.subjectQuestions.questions);
-        setactiveLink(response.data.data.subjects[0].subject_name);
-        setactiveLink(response.data.data.subjects[0].subjectId);
+        const data = response.data;
+        setSubjectsData(data?.data || {});
+        // console.log(data?.data?.subjectQuestions?.questions?.[0], "value");
+        // console.log(data?.data?.subjects?.[0]?.subject_name || "No subject name");
+        // console.log(data?.data?.subjects?.[0]?._id || "" ,"subjectID");
+        setSubjectId(data?.data?.subjects?.[0]?._id || "");
+        setactiveLink(data?.data?.subjects?.[0]?._id || "");
+      } else {
+        console.error("Unexpected API response:", response);
       }
     } catch (error) {
       toast.error(error.response.data.error);
@@ -47,28 +50,56 @@ const ViewExam = () => {
   };
 
   const handleClickSubName = (sub) => {
-    setactiveLink(sub.subject_name);
+    setactiveLink(sub._id);
     setSubjectId(sub._id);
   };
+
+  const downloadBase64PDF = () => {
+
+    if (!subjectsData) {
+      toast.error("No PDF data available to download!");
+      return;
+    }
+    const link = document.createElement("a");
+    link.href = `data:application/pdf;base64,${subjectsData}`;
+    console.log(link.href);
+    
+    link.download = "document.pdf";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+   
+  };
+
+  //  this are find method in array subjectid mathc par result return karti hai
+
   const filteredQuestions = subjectsData?.subjectQuestions?.find(
     (subject) => subject.subjectId === subjectId
   );
 
-  
-
   useEffect(() => {
-    getAllUserSubject();
-  }, []);
+    if (classId) {
+      getAllUserSubject();
+    } else {
+      console.error("classId is not defined");
+    }
+  }, [classId]);
+
   return (
     <div className="bg-body-secondary">
       <MainLayout>
         <div className="d-flex justify-content-between p-3">
-          <div className="fw-bold">BHARAT SAT</div>
+          <div className="fw-bold fs-5">BHARAT SAT</div>
           <div className="text-center">
             <span className="fw-bold">Dashborad</span>
             <MdKeyboardArrowRight />
 
-            <Link className="text   -decoration-none fw-bold" onClick={()=>navigate('/create-exam')}>BHARAT SAT</Link>
+            <Link
+              className="text-decoration-none fw-bold"
+              onClick={() => navigate("/create-exam")}
+            >
+              BHARAT SAT
+            </Link>
           </div>
         </div>
         <div className="p-4 rounded-1 m-4 " style={{ backgroundColor: "#fff" }}>
@@ -77,12 +108,12 @@ const ViewExam = () => {
             <div class="btn-group" role="group" aria-label="Basic example">
               <button
                 className="btn btn-primary border-0"
-                style={{ backgroundColor: "#07284B" }}
+                style={{ backgroundColor: "#0a5acc" }}
               >
                 Export
               </button>
-              <button type="button" class="btn btn-primary fs-6">
-              <FaFilePdf />
+              <button type="button" class="btn btn-primary fs-6" onClick={downloadBase64PDF}>
+                <FaFilePdf />
               </button>
             </div>
           </div>
@@ -93,9 +124,7 @@ const ViewExam = () => {
                   <li className="nav-item">
                     <Link
                       className={`nav-link  sub-list ${
-                        activeLink === item.subject_name
-                          ? "active"
-                          : "text-black"
+                        activeLink === item._id ? "sub-list active" : "text-black"
                       }`}
                       href="#"
                       onClick={() => handleClickSubName(item)}
@@ -121,7 +150,7 @@ const ViewExam = () => {
                     <label className="form-check-label d-flex align-items-start">
                       <label className="checkbox-wrapper">
                         <input
-                          className="form-check-input"
+                         className={`form-check-input ${q.correctOption === index ? "correct-inputBox" : ""}`}
                           type="checkbox"
                           checked={q.correctOption === index}
                           name={`question-${q.questionId}`}
@@ -129,9 +158,16 @@ const ViewExam = () => {
                         />
                       </label>
 
-                      <li className="list-unstyled">
+                      <li  className={`list-unstyled ${q.correctOption === index ? "correct-option fw-bold" : ""}`}>
                         {String.fromCharCode(65 + index)}. &nbsp;
-                        {option.replace(/<[^>]*>/g, "")}
+                        {option.replace(/<[^>]*>|nbsp;/g, "")} &nbsp; 
+                        {q.correctOption === index ? (
+                          <span  className="fw-bold" style={{ color: "#23bc23" }}>
+                            Correct Answer
+                          </span>
+                        ) : (
+                          ""
+                        )}
                       </li>
                     </label>
                   </div>
@@ -144,8 +180,10 @@ const ViewExam = () => {
                 <div className="mt-4 ps-3 border-start">
                   {q.subQuestions.map((sub, subIndex) => (
                     <div key={sub.subQuestionId} className="mb-3">
-                      <h6 className="fw-bolder">Sub Question {subIndex + 1}</h6>
-                      <p className="fw-bold">{parse(sub.question)}</p>
+                      <p className="fw-bold d-flex gap-2">
+                        {" "}
+                        {subIndex + 1}. {parse(sub.question)}
+                      </p>
                       <ul>
                         {sub.options?.map((option, index) => (
                           <div
@@ -155,16 +193,23 @@ const ViewExam = () => {
                             <label className="form-check-label d-flex align-items-start">
                               <label className="checkbox-wrapper">
                                 <input
-                                  className="form-check-input"
+                                   className={`form-check-input ${sub.correctOption === index ? "correct-inputBox" : ""}`}
                                   type="checkbox"
                                   name={`sub-question-${sub.subQuestionId}`}
                                   id={`sub-option-${sub.subQuestionId}-${index}`}
                                   checked={sub.correctOption === index}
                                 />
                               </label>
-                              <li className="list-unstyled">
+                              <li  className={`list-unstyled ${sub.correctOption === index ? "correct-option fw-bold" : ""}`}>
                                 {String.fromCharCode(65 + index)}. &nbsp;
-                                {option.replace(/<[^>]*>/g, "")}
+                                {option.replace(/<[^>]*>|&nbsp;/g, "")}  &nbsp;
+                                {sub.correctOption === index? (
+                                  <span className="fw-bold" style={{ color: "#23bc23" }}>
+                                    Correct Answer
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
                               </li>
                             </label>
                           </div>
