@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import MainLayout from "../MainLayout";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -7,6 +7,8 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import "../Styles/ViewExam.css";
 import parse from "html-react-parser";
 import { FaFilePdf } from "react-icons/fa6";
+import generatePDF from "react-to-pdf";
+
 
 const ViewExam = () => {
   const [subjectsData, setSubjectsData] = useState([]);
@@ -14,6 +16,7 @@ const ViewExam = () => {
   const [subjectId, setSubjectId] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const target = useRef()
 
   const { classId } = location.state || {}; //this are use location hooks for get state other component to other component
 
@@ -112,12 +115,15 @@ const ViewExam = () => {
               >
                 Export
               </button>
-              <button type="button" class="btn btn-primary fs-6" onClick={downloadBase64PDF}>
-                <FaFilePdf />
-              </button>
+             
+                  <button type="button" onClick={()=>generatePDF(target, {filename:"example.pdf"})} className="btn btn-primary fs-6">
+                    <FaFilePdf />
+                  </button>
+             
             </div>
           </div>
-          <div className="d-flex justify-content-start mt-5  ">
+          <div ref={target}>
+          <div className="d-flex justify-content-start mt-5  "  >
             {subjectsData.subjects?.map((item, index) => {
               return (
                 <ul className="nav mb-4 nav-list" key={index}>
@@ -221,6 +227,8 @@ const ViewExam = () => {
               )}
             </div>
           ))}
+
+        </div>
         </div>
       </MainLayout>
     </div>
