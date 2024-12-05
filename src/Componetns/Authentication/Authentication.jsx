@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import Layout from "../Layout";
+import Layout from "../../Layout";
 import { IoIosArrowBack } from "react-icons/io";
-import "../Styles/Authentication.css";
+import "../../Styles/Authentication.css";
 import { CirclesWithBar } from "react-loader-spinner";
 const Authentication = () => {
   const [email, setEmail] = useState("");

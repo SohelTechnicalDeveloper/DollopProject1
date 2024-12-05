@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import MainLayout from "../MainLayout";
+import MainLayout from "../../MainLayout";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import axios from "axios";

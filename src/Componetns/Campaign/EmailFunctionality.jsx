@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
-import logo from "../images/dcb55e.jpg";
+import MainLayout from "../../MainLayout";
+import logo from "../../images/dcb55e.jpg";
 import axios from "axios";
 import { CiStar } from "react-icons/ci";
 import { IoIosArrowDown } from "react-icons/io";
-import "../Styles/Emailfunc.css";
+import "../../Styles/Emailfunc.css";
 import { IoArrowRedoOutline } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
 // import { CirclesWithBar } from "react-loader-spinner";

@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
+import MainLayout from "../../MainLayout";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BiEditAlt } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import { FaEye } from "react-icons/fa";
-import "../Styles/Agency.css";
-import CryptoJS from "crypto-js";
-
-
-// import logo from "../images/dcb55e.jpg";
+import "../../Styles/Agency.css";
 import { toast, ToastContainer } from "react-toastify";
-  // import Pdf from "../Resume/SohelFinalResume.59787e8e065e9c9dfc2c.pdf";
 import { CirclesWithBar } from "react-loader-spinner";
 
 const AgencyRoom = () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
+import MainLayout from "../../MainLayout";
 import { Link } from "react-router-dom";
-import "../Styles/Campigns.css";
+import "../../Styles/Campigns.css";
 import Pagination from "react-bootstrap/Pagination";
 import { format } from "date-fns";
 import { FaLongArrowAltRight } from "react-icons/fa";

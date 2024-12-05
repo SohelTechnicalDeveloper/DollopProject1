@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
-import { Link } from "react-router-dom";
+import MainLayout from "../../MainLayout";
+import { Link, useLocation } from "react-router-dom";
 import { MdArrowRightAlt } from "react-icons/md";
 import { ProgressBar, Step } from "react-step-progress-bar";
 import "react-step-progress-bar/styles.css";
-import "../Styles/BharatSAT.css";
+import "../../Styles/BharatSAT.css";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
-import welldone from "../images/congratulations-well-done.gif";
+import welldone from "../../images/congratulations-well-done.gif";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-
+import moment from "moment-timezone";
+import { RiDeleteBinLine } from "react-icons/ri";
 const BharatSAT = () => {
+  const [sections, setSections] = useState([
+    { subjectId: "", questionBank: "", totalQuestions: "" },
+  ]);
   const [error, setError] = useState(true);
   const [percent, setPercent] = useState(0);
   const [examName, setExamName] = useState("");
@@ -25,18 +29,44 @@ const BharatSAT = () => {
   const [totalQuestions, setTotalQuestion] = useState("");
   const [allClass, setAllClass] = useState([]);
   const [allSubjectsById, setAllSubjectsById] = useState([]);
-  const [subjectDataById, setSubjectDataById] = useState("");
-  console.log(
-    durationTime,
-    "durationetime",
-    startTime,
-    "starttime",
-    endTime,
-    "endTime"
-  );
+  const [bharatSatId, setBharatSatId] = useState("");
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzI4NTkzNDYsImV4cCI6MTczMjk0NTc0Nn0.j368vR-b_9qiUAd3q2f_IXCfY1KmyEfBwkSspKWTaKQ";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzMzNzc3OTgsImV4cCI6MTczMzQ2NDE5OH0.rVS3l4AavAP-Fl8JglrVfN1rJbN-N8nQHUCSyoJrUt4";
+  const location = useLocation();
+
+  const { Data } = location.state || {};
+
+  useEffect(() => {
+    if (Data) {
+      setBharatSatId(Data.bharatSatExamId);
+      setExamName(Data.bharatSatExamName);
+      setMedium(Data.medium);
+      setExaminationDate(Data.bharatSatExamDate);
+
+      setSelectClass(Data.class_id);
+      setdurationTime(Data.durationInMinutes);
+      setStartTime(Data.examStartTime);
+      setEndTime(Data.examEndTime);
+
+      // Set subject data for each section
+
+      const updatedSections = Data.subjectData.map((subjectItem) => ({
+        subjectId: subjectItem.subjectId,
+        questionBank: subjectItem.numberOfQuestionsBank,
+        totalQuestions: subjectItem.numberOfQuestionsBharatSat,
+      }));
+
+      setSections(updatedSections);
+
+      // Set initial subject, questionBank, and totalQuestions based on the first subject data
+      if (Data.subjectData.length > 0) {
+        setSelectSubject(Data.subjectData[0].subjectId);
+        setQuestionBank(Data.subjectData[0].numberOfQuestionsBank);
+        setTotalQuestion(Data.subjectData[0].numberOfQuestionsBharatSat);
+      }
+    }
+  }, [Data]);
 
   const getAllClasses = async () => {
     try {
@@ -52,8 +82,6 @@ const BharatSAT = () => {
   };
   const getAllSubjects = async (classId) => {
     try {
-      console.log(classId + "classId");
-
       const response = await axios.get(
         `http://192.168.0.27:5003/subject/getAllSubjects/`,
         {
@@ -82,104 +110,166 @@ const BharatSAT = () => {
     // Convert hours and minutes to total minutes
     const startInMinutes = startHour * 60 + startMinute;
     const endInMinutes = endHour * 60 + endMinute;
-
-    // console.log(startInMinutes,"startInMinutes",endInMinutes,"endInMinutes");
-
     return endInMinutes - startInMinutes;
   };
-
-  // Handler for endTime
-
-  // const handleEndTimeChange = (value) => {
-
-  //     if(value)
-  //     {
-  //       setEndTime(value);
-  //     }
-
-  //       if (startTime && value) 
-  //       {
-  //         const timeDifference = calculateTimeDifference(startTime,value)
-  //         if (timeDifference === durationTime) 
-  //           {
-  //             toast.success("Time match success");
-  //           } 
-  //         else {
-  //               toast.error("End time does not match the duration time.");
-  //           }
-  //       }
-  // };
-
   const createExam = async () => {
     let errorMessage = "";
 
-    if (!selectSubject) {
-      errorMessage = "selectSubject is required";
-    } else if (!questionBank) {
-      errorMessage = "questionBank is required";
-    } else if (!totalQuestions) {
-      errorMessage = "totalQuestions  is required";
-    }
-
-    if (errorMessage) 
-    {
-      setError(false);
+    // Validation for each required field
+    sections.map((section, index) => {
+      
+      if (!section.subjectId) {
+        errorMessage = `Subject is required for section ${index + 1}`;
+      } else if (!section.questionBank || section.questionBank <= 0) {
+        errorMessage = `Valid questionBank is required for section ${
+          index + 1
+        }`;
+      } else if (
+        section.questionBank > section.questionBankCount ||
+        section.questionBank < 0
+      ) {
+        errorMessage = `Question Bank should be between 0 and ${section.questionBankCount}`;
+      } else if (!section.totalQuestions || section.totalQuestions <= 0) {
+        errorMessage = `Valid totalQuestions is required for section ${
+          index + 1
+        }`;
+      } else if (
+        section.totalQuestions > section.bharatSatQuestionCount ||
+        section.totalQuestions < 0
+      ) {
+        errorMessage = `Total Questions should be between 0 and ${section.bharatSatQuestionCount}`;
+      }
+    });
+    const subjectData= sections.map((section) => ({
+      subjectId: section.subjectId,
+      numberOfQuestionsBank: section.questionBank,
+      numberOfQuestionsBharatSat: section.totalQuestions,
+  }))
+  console.log(subjectData,"subjectdata");
+  
+    if (errorMessage) {
+      setError(true);
       toast.error(errorMessage);
       return;
-    } else {
-      const response = await axios.post(
-        `http://192.168.0.27:5003/bharatSat/create-exam`,
-        {
-          bharatSatExamId: "",
-          bharatSatExamName: examName,
-          medium: Medium,
-          class_id: selectClass,
-          durationInMinutes: durationTime,
-          bharatSatExamDate: examinationDate,
-          examStartTime: startTime,
-          examEndTime: endTime,
-          subjectId: selectSubject,
-          numberOfQuestionsBank: questionBank,
-          numberOfQuestionsBharatSat: totalQuestions,
-          subjectData: [
-            {
-              subjectId: selectSubject,
-              numberOfQuestionsBank: questionBank,
-              numberOfQuestionsBharatSat: totalQuestions,
-            },
-          ],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.status === 200) {
-        toast.success("Exam Create Success");
-        setTimeout(() => {
-          setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
-        }, 2000);
+    }
 
-        setExamName("");
-        setMedium("");
-        setSelectClass("");
-        setdurationTime("");
-        setExaminationDate("");
-        setStartTime("");
-        setEndTime("");
-        setSelectSubject("");
-        setQuestionBank("");
-        setTotalQuestion("");
+    const response = await axios.post(
+      `http://192.168.0.27:5003/bharatSat/create-exam`,
+      {
+        bharatSatExamId: bharatSatId ? bharatSatId : "",
+        bharatSatExamName: examName,
+        medium: Medium,
+        class_id: selectClass,
+        durationInMinutes: durationTime,
+        bharatSatExamDate: examinationDate,
+        examStartTime: startTime,
+        examEndTime: endTime,
+        subjectData: sections.map((section) => ({
+          subjectId: section.subjectId,
+          numberOfQuestionsBank: section.questionBank,
+          numberOfQuestionsBharatSat: section.totalQuestions,
+        })),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
+
+    if (response.status === 200) {
+      console.log(response.data.data,"response");
+      
+      if (bharatSatId) {
+        toast.success(response.data.message);
+      } else {
+        toast.success("Exam Create Success");
+      }
+      setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+      setTimeout(() => {
+        setSections([{ subject: "", questionBank: "", totalQuestions: "" }]); // Reset sections
+      }, 2000);
     }
   };
 
-  const SubjectData = (e) => {
-    setSelectSubject(e.target.value);
-    const data = allSubjectsById.find((item) => item._id === e.target.value);
-    setSubjectDataById(data);
-  };
+  // const createExam = async () => {
+  //   let errorMessage = "";
+
+  //   if (!selectSubject) {
+  //     errorMessage = "selectSubject is required";
+  //   } else if (!questionBank) {
+  //     errorMessage = "questionBank is required";
+  //   } else if (!totalQuestions) {
+  //     errorMessage = "totalQuestions  is required";
+  //   }
+  //   if (selectClass === Data.class_id) {
+  //     setQuestionBank("");
+  //     setTotalQuestion("");
+  //   }
+
+  //   if (errorMessage) {
+  //     setError(false);
+  //     toast.error(errorMessage);
+  //     return;
+  //   } else {
+  //     const response = await axios.post(
+  //       `http://192.168.0.27:5003/bharatSat/create-exam`,
+  //       {
+  //         bharatSatExamId: bharatSatId ? bharatSatId : "",
+  //         bharatSatExamName: examName,
+  //         medium: Medium,
+  //         class_id: selectClass,
+  //         durationInMinutes: durationTime,
+  //         bharatSatExamDate: examinationDate,
+  //         examStartTime: startTime,
+  //         examEndTime: endTime,
+  //         subjectId: selectSubject,
+  //         numberOfQuestionsBank: questionBank,
+  //         numberOfQuestionsBharatSat: totalQuestions,
+  //         subjectData: [
+  //           {
+  //             subjectId: selectSubject,
+  //             numberOfQuestionsBank: questionBank,
+  //             numberOfQuestionsBharatSat: totalQuestions,
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     if (response.status === 200) {
+  //       if (bharatSatId) {
+  //         toast.success(response.data.message);
+  //       } else {
+  //         toast.success("Exam Create Success");
+  //       }
+
+  //       setTimeout(() => {
+  //         setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+  //       }, 2000);
+  //       setExamName("");
+  //       setMedium("");
+  //       setSelectClass("");
+  //       setdurationTime("");
+  //       setExaminationDate("");
+  //       setStartTime("");
+  //       setEndTime("");
+  //       setSelectSubject("");
+  //       setQuestionBank("");
+  //       setTotalQuestion("");
+  //     }
+  //   }
+  // };
+
+  // const SubjectData = (e) => {
+  //   setSelectSubject(e.target.value);
+  //   const data = allSubjectsById.find((item) => item._id === e.target.value);
+  //   setSubjectDataById(data);
+  // };
+
   useEffect(() => {
     getAllClasses();
     if (selectClass) {
@@ -189,7 +279,6 @@ const BharatSAT = () => {
 
   const handleClick = () => {
     let errorMessage = "";
-
     if (!examName) {
       errorMessage = "Exam Name is required";
     } else if (!Medium) {
@@ -205,32 +294,56 @@ const BharatSAT = () => {
     } else if (!endTime) {
       errorMessage = "End time is required";
     }
-    if(errorMessage) 
-    {
+    if (errorMessage) {
       setError(false);
       toast.error(errorMessage);
       return;
-    } 
-     if (startTime && endTime) 
-      {
-        const timeDifference = calculateTimeDifference(startTime,endTime)       
-        if (timeDifference == durationTime) 
-          {
-            toast.success("Time match success");
-            setError(true);
-            setTimeout(() => {
-              
-              setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
-            }, 2000);
-          } 
-        else {
-              toast.error(`Exam Timing does not match the ${durationTime} duration time.`);
-          }
+    }
+    if (startTime && endTime) {
+      const timeDifference = calculateTimeDifference(startTime, endTime);
+      if (timeDifference == durationTime) {
+        toast.success("Time match success");
+        setError(true);
+        setTimeout(() => {
+          setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+        }, 2000);
+      } else {
+        toast.error(
+          `Exam Timing does not match the ${durationTime} duration time.`
+        );
       }
-   
+    }
   };
   const handleBack = (decrementValue) => {
     setPercent((prev) => Math.max(prev - decrementValue, 0)); // Decrement percentage by 50, min at 0
+  };
+
+  const handleChange = (e) => {
+    const rawDate = e.target.value; // Get raw value (YYYY-MM-DD format)
+    if (rawDate) {
+      // Convert it to desired format (MM-DD-YYYY)
+      const formattedDate = moment(rawDate, "YYYY-MM-DD").format("MM-DD-YYYY");
+      setExaminationDate(formattedDate);
+    }
+  };
+
+  const handleAddMore = () => {
+    setSections([
+      ...sections,
+      { subjectId: "", questionBank: "", totalQuestions: "" },
+    ]);
+  };
+
+  const handleInputChange = (index, field, value) => {
+    const updatedSections = [...sections];
+    updatedSections[index] = { ...updatedSections[index], [field]: value };
+    setSections(updatedSections);
+    console.log(updatedSections,"updated section create");
+    
+  };
+
+  const handleRemoveLast = () => {
+    setSections((prevSections) => prevSections.slice(0, -1)); // Remove the last item
   };
 
   return (
@@ -434,15 +547,39 @@ const BharatSAT = () => {
                       Bharat SAT Examinaton Date
                       <span className="text-danger">*</span>
                     </label>
+                    {/* <DatePicker
+                    wrapperClassName="w-100"
+                    className="form-control"
+                    selected={examinationDate}
+                    dateFormat="MM-dd-yyyy"
+                    onChange={(e) => {
+                      setExaminationDate(moment(e).format("MM-DD-YYYY"));
+                    }}
+                    minDate={new Date()}
+                    placeholderText="MM/DD/YYYY"
+                    showMonthDropdown
+                    showYearDropdown
+                  /> */}
                     <input
                       type="date"
                       className="form-control"
-                      value={examinationDate}
-                      min={new Date().toISOString().split("T")[0]} // Set min date as today
-                      //   minDate={new Date()}
+                      value={
+                        examinationDate
+                          ? moment(examinationDate, "MM-DD-YYYY").format(
+                              "YYYY-MM-DD"
+                            ) // Convert back to YYYY-MM-DD for input display
+                          : ""
+                      }
                       placeholder="Bharat SAT Exam Name"
-                      onChange={(e) => setExaminationDate(e.target.value)}
+                      onChange={handleChange}
                     />
+                    {/* <MdOutlineDateRange
+                      style={{
+                        position: "relative",
+                        top: "-34px",
+                        left: "94%",
+                      }}
+                    /> */}
 
                     {!error
                       ? !examinationDate && (
@@ -530,166 +667,169 @@ const BharatSAT = () => {
           ) : percent === 50 ? (
             // this template for create question paper
             <div>
-              <div
-                className="row  mt-4 p-3 shadow rounded-3 align-items-end mb-3"
-                style={{ backgroundColor: "#D3E3FD" }}
-              >
-                <div className="col-md-6  mb-3 mb-3">
-                  <label
-                    htmlFor=""
-                    style={{ color: "#477de8" }}
-                    className="form-label  fw-bold"
-                  >
-                    Select Subject <span className="text-danger">*</span>
-                  </label>
-                  <select
-                    name="subject"
-                    className="form-select"
-                    onChange={(e) => SubjectData(e)}
-                  >
-                    <option value="" className="fw-bold text-black">
-                      Select Subject
-                    </option>
-                    {allSubjectsById?.map((item) => {
-                      return (
-                        <option value={item._id}>{item.subject_name}</option>
-                      );
-                    })}
-                  </select>
-                  {!error
-                    ? !selectSubject && (
-                        <label
-                          htmlFor=""
-                          className=" position-absolute  mb-2 text-danger fw-bolder"
-                        >
-                          Fields Can't Select
-                        </label>
-                      )
-                    : ""}
-                </div>
-
-                <div className="col-md-6 mb-3">
-                  <label
-                    className="form-label  fw-bold"
-                    style={{ color: "#477de8" }}
-                  >
-                    Total No. of Questions from Question Bank{" "}
-                    <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    placeholder="Total No. of Questions from Question Bank"
-                    value={questionBank}
-                    onChange={(e) => {
-                      const value = e.target.value;
-
-                      if (value >= 0) {
-                        setQuestionBank(value);
-                      }
-                    }}
-                  />
-                  {!error &&
-                    (!questionBank ? (
-                      <lable className="position-absolute mb-1 text-danger fw-bolder">
-                        Field can't be empty!
-                      </lable>
-                    ) : questionBank > subjectDataById.questionBankCount ? (
-                      <label className="position-absolute mb-1 text-danger fw-bolder">
-                        Please Enter a Number Between 0 and{" "}
-                        {subjectDataById.questionBankCount}
-                      </label>
-                    ) : (
-                      questionBank < 0 && (
-                        <label className="text-danger m-0 ">
-                          Invalid number Of Questions!
-                        </label>
-                      )
-                    ))}
-                </div>
-
-                <div className="col-md-6 mb-3">
-                  <label
-                    className="form-label  fw-bold"
-                    style={{ color: "#477de8" }}
-                  >
-                    Total No. of Questions from Bharat SAT Question Bank{" "}
-                    <span className="text-danger">*</span>
-                  </label>
-
-                  <input
-                    type="number"
-                    className="form-control"
-                    placeholder="Total No. of Questions from Question Bank"
-                    value={totalQuestions} // Ensure the input reflects the state
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value >= 0) {
-                        setTotalQuestion(value); // Update state only for valid inputs
-                      }
-                    }}
-                  />
-                  {/* Display validation messages */}
-                  {!error &&
-                    (!totalQuestions ? (
-                      <lable className="position-absolute mb-1 text-danger fw-bolder">
-                        Field can't be empty!
-                      </lable>
-                    ) : totalQuestions >
-                      subjectDataById.bharatSatQuestionCount ? (
-                      <label className="position-absolute mb-1 text-danger fw-bolder">
-                        Please Enter a Number Between 0 and{" "}
-                        {subjectDataById.bharatSatQuestionCount}
-                      </label>
-                    ) : (
-                      totalQuestions < 0 && (
-                        <label className="text-danger m-0 ">
-                          Invalid number Of Questions!
-                        </label>
-                      )
-                    ))}
-                </div>
-              </div>
-
-              <div
-                className="fw-bold "
-                style={{ color: "#477de8", cursor: "pointer" }}
-              >
-                <button
-                  type="button"
-                  className="rounded-2 fw-bold addMore-btn"
-                  style={{
-                    fontSize: "11px",
-                    color: "#477de8",
-                    border: "2px solid #477de8",
-                  }}
-                >
-                  +
-                </button>{" "}
-                Add More
-              </div>
-
-              <div className="d-flex justify-content-end mt-3 ">
+              {sections.map((section, index) => (
                 <div
-                  className="btn-group "
-                  onClick={() => {
-                    createExam();
-                  }}
+                  key={index}
+                  className="row mt-4 p-3 shadow rounded-3 align-items-end mb-3"
+                  style={{ backgroundColor: "#D3E3FD" }}
+                >
+                  <div className="col-md-6 mb-3">
+                    <label
+                      style={{ color: "#477de8" }}
+                      className="form-label fw-bold"
+                    >
+                      Select Subject <span className="text-danger">*</span>
+                    </label>
+                    <select
+                      className="form-select"
+                      value={section.subjectId} // Bind to section's subject
+                      onChange={(e) =>
+                        handleInputChange(index, "subjectId", e.target.value)
+                      }
+                    >
+                      <option value="" className="fw-bold text-black">
+                        Select Subject
+                      </option>
+                      {/* Dynamically render subjects */}
+                      {allSubjectsById?.map((item) => (
+                        <option key={item._id} value={item._id}>
+                          {item.subject_name}
+                        </option>
+                      ))}
+                    </select>
+                    { !error ? !section.subjectId && (
+                      <label className="position-absolute mb-2 text-danger fw-bolder">
+                        Subject is required
+                      </label>
+                    ):""}
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label
+                      className="form-label fw-bold"
+                      style={{ color: "#477de8" }}
+                    >
+                      Total No. of Questions from Question Bank{" "}
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Total No. of Questions from Question Bank"
+                      value={section.questionBank} // Use section's value here
+                      onChange={(e) =>
+                        handleInputChange(index, "questionBank", e.target.value)
+                      }
+                    />
+                    {!section.questionBank && (
+                      <label className="position-absolute mb-1 text-danger fw-bolder">
+                        Field can't be empty!
+                      </label>
+                    )}
+                    {section.questionBank < 0 && (
+                      <label className="position-absolute mb-1 text-danger fw-bolder">
+                        Invalid number of Questions!
+                      </label>
+                    )}
+                    {section.questionBank >
+                      section.questionBankCount && (
+                      <label className="position-absolute mb-1 text-danger fw-bolder">
+                        Please enter a number between 0 and{" "}
+                        {section.questionBankCount}
+                      </label>
+                    )}
+                  </div>
+
+                  <div className="col-md-6 mb-3">
+                    <label
+                      className="form-label fw-bold"
+                      style={{ color: "#477de8" }}
+                    >
+                      Total No. of Questions from Bharat SAT Question Bank{" "}
+                      <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Total No. of Questions from Bharat SAT Question Bank"
+                      value={section.totalQuestions} // Use section's value here
+                      onChange={(e) =>
+                        handleInputChange(
+                          index,
+                          "totalQuestions",
+                          e.target.value
+                        )
+                      }
+                    />
+                    {!section.totalQuestions && (
+                      <label className="position-absolute mb-1 text-danger fw-bolder">
+                        Field can't be empty!
+                      </label>
+                    )}
+                    {section.totalQuestions < 0 && (
+                      <label className="position-absolute mb-1 text-danger fw-bolder">
+                        Invalid number of Questions!
+                      </label>
+                    )}
+                    {section.totalQuestions >
+                      section.totalQuestionsCount && (
+                      <label className="position-absolute mb-1 text-danger fw-bolder">
+                        Please enter a number between 0 and{" "}
+                        {section.totalQuestionsCount}
+                      </label>
+                    )}
+                  </div>
+                </div>
+              ))}
+              <div className="d-flex justify-content-between mb-3">
+                <div
+                  className="fw-bold"
+                  style={{ color: "#477de8", cursor: "pointer" }}
+                  onClick={handleAddMore}
                 >
                   <button
+                    type="button"
+                    className="rounded-2 fw-bold addMore-btn"
+                    style={{
+                      fontSize: "11px",
+                      color: "#477de8",
+                      border: "2px solid #477de8",
+                    }}
+                  >
+                    +
+                  </button>{" "}
+                  Add More
+                </div>
+                <div>
+                  {sections.length !== 1 ? (
+                    <RiDeleteBinLine
+                      style={{
+                        color: "red",
+                        fontWeight: "bold",
+                        borderRadius: "3px",
+                        padding: "3px",
+                        cursor: "pointer",
+                        fontSize: "38px",
+                      }}
+                      onClick={handleRemoveLast}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+
+              <div className="d-flex justify-content-end mt-3">
+                <ToastContainer/>
+                <div className="btn-group">
+                  <button
                     type="submit"
-                    className="btn "
+                    className="btn"
                     style={{ backgroundColor: "#07284B", color: "#fff" }}
+                    onClick={() => createExam()}
                   >
                     Submit
                   </button>
-                  <button
-                    type="submit"
-                    className="btn rounded-end-3  w-50  bg-primary text-white"
-                  >
-                    <MdArrowRightAlt style={{ fontSize: "22px" }} />
-                  </button>
-                  <ToastContainer />
                 </div>
               </div>
             </div>
@@ -710,7 +850,9 @@ const BharatSAT = () => {
                     Well Done! <span className="fs-5">🤩😎</span>
                   </h3>
                   <p className="text-black fw-bolder">
-                    You have successfully created exam
+                    {!bharatSatId
+                      ? `You have successfully created exam`
+                      : `You have successfully Updated exam`}
                   </p>
                 </div>
               </div>

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import logo from "../images/team.jpg";
+import logo from "../../images/team.jpg";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
-import "../Styles/Navbar.css";
+import "../../Styles/Navbar.css";
 import { IoMdLogOut } from "react-icons/io";
 import { RxCross1 } from "react-icons/rx";
 
@@ -14,12 +14,15 @@ const Navbar = () => {
 
   const logout = () => {
     localStorage.removeItem("user");
+    alert('user')
     navigate("/");
   };
 
   return (
     <div className="navbar-container p-2  ">
+     
       <nav className="d-flex align-items-center justify-content-end  gap-4 mx-5 ">
+       
         <img src={logo} width="30" height="30" alt="" />
         <span className="fw-bold" style={{ fontSize: "1rem", color: "#fff" }}>
           {auth ? auth.result.name : " "}

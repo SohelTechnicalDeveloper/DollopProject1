@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import MainLayout from '../MainLayout'
+import MainLayout from '../../MainLayout'
 import { IoChevronBackSharp } from 'react-icons/io5'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import axios from 'axios'

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import Layout from "../Layout";
+import Layout from "../../Layout";
 import { IoIosArrowBack } from "react-icons/io";
 import OtpInput from "react-otp-input";
 import { CirclesWithBar } from "react-loader-spinner";

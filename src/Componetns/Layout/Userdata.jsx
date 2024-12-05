@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
-import userImage from "../images/SM596414 (1).jpg";
-import "../Styles/Userdata.css";
+import MainLayout from "../../MainLayout";
+import userImage from "../../images/SM596414 (1).jpg";
+import "../../Styles/Userdata.css";
 import { useNavigate } from "react-router-dom";
-// import Dashboard from "./Dashboard";
 
 const Userdata = () => {
   const [data, setData] = useState([]);

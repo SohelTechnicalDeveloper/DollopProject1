@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import MainLayout from "../MainLayout";
+import MainLayout from "../../MainLayout";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import "../Styles/ViewExam.css";
 import parse from "html-react-parser";
 import { FaFilePdf } from "react-icons/fa6";
 import generatePDF from "react-to-pdf";
+import '../../Styles/ViewExam.css'
 
 
 const ViewExam = () => {
@@ -21,7 +21,7 @@ const ViewExam = () => {
   const { classId } = location.state || {}; //this are use location hooks for get state other component to other component
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzI4NzA5ODYsImV4cCI6MTczMjk1NzM4Nn0.b7zwedgmtS1e775DgIIVTc3SRlrAz9f64uM_-xcO0fI";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzMzNzc3OTgsImV4cCI6MTczMzQ2NDE5OH0.rVS3l4AavAP-Fl8JglrVfN1rJbN-N8nQHUCSyoJrUt4";
 
   const getAllUserSubject = async () => {
     try {
@@ -57,22 +57,7 @@ const ViewExam = () => {
     setSubjectId(sub._id);
   };
 
-  const downloadBase64PDF = () => {
-
-    if (!subjectsData) {
-      toast.error("No PDF data available to download!");
-      return;
-    }
-    const link = document.createElement("a");
-    link.href = `data:application/pdf;base64,${subjectsData}`;
-    console.log(link.href);
-    
-    link.download = "document.pdf";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-   
-  };
+ 
 
   //  this are find method in array subjectid mathc par result return karti hai
 
@@ -86,7 +71,7 @@ const ViewExam = () => {
     } else {
       console.error("classId is not defined");
     }
-  }, [classId]);
+  },[classId]);
 
   return (
     <div className="bg-body-secondary">

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import "../Styles/Login.css";
-import Layout from "../Layout";
+import "../../Styles/Login.css";
+import Layout from "../../Layout";
 import { CirclesWithBar } from "react-loader-spinner";
 
 const Home = () => {
@@ -54,13 +54,13 @@ const Home = () => {
   return (
     <Layout>
      <div className="container-fluid d-flex flex-column vh-100">
-  <div className="row flex-grow-1">
+  <div className="row flex-grow-1 ">
     {/* Left side (empty on small screens) */}
     <div className="col-12 col-md-6 d-none d-md-block"></div>
 
     {/* Right side (login form) */}
     <div className="col-12 col-md-6 d-flex align-items-center justify-content-end p-5  ">
-      <div className="p-3 p-md-5" style={{ backgroundColor: "#07284B", maxWidth: "100%" }}>
+      <div className="p-3 p-md-5 rounded-2" style={{ backgroundColor: "#07284B", maxWidth: "100%" }}>
         <form className="px-4 py-5" onSubmit={userLogin}>
           <p className="text-white fw-bold" style={{ fontSize: "4vh" }}>
             Login to your account
@@ -116,13 +116,13 @@ const Home = () => {
           {loader ? (
             <button
               type="submit"
-              className="btn rounded-0 "
+              className="btn rounded-1   "
               style={{ backgroundColor: "#49a8bf", color: "#fff" }}
             >
               Sign In
             </button>
           ) : (
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-start">
               <CirclesWithBar
                 height="40"
                 width="90"

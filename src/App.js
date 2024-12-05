@@ -1,31 +1,31 @@
 
-import Authentication from './Componetns/Authentication';
-import Login from './Componetns/Login';
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom'
-import Register from './Componetns/Register';
+import Authentication from './Componetns/Authentication/Authentication';
+import Login from './Componetns/Authentication/Login';
+import Register from './Componetns/Authentication/Register';
 import './Styles/Layout.css'
-import Otp from './Componetns/Otp';
-import ForgetPass from './Componetns/ForgetPass';
+import Otp from './Componetns/Authentication/Otp';
+import ForgetPass from './Componetns/Authentication/ForgetPass';
 import './App.css'
 // import Navbar from './Componetns/Navbar';
 import MainLayout from './MainLayout';
 import Home from './Componetns/Home';
 // import Sidebar from './Componetns/Sidebar';
-import Userdata from './Componetns/Userdata';
-import AgencyRoom from './Componetns/AgencyRoom';
-import EmailFunctionality from './Componetns/EmailFunctionality';
-import Campigns from './Componetns/Campigns';
-import Dashboard from './Componetns/Dashboard';
-import Tasks from './Componetns/Tasks';
-import Test from './Componetns/Test';
-import Blog from './Componetns/Blog';
-import PurchagePakages from './Componetns/PurchagePakages';
-import BlogDetails from './Componetns/BlogDetails';
-import BlogById from './Componetns/BlogById';
-import PurchagePackageDetails from './Componetns/PurchagePackageDetails';
-import BharatSAT from './Componetns/BharatSAT';
-import CreateExam from './Componetns/CreateExam';
-import ViewExam from './Componetns/ViewExam';
+import Userdata from './Componetns/Layout/Userdata';
+import AgencyRoom from './Componetns/Agency/AgencyRoom';
+import EmailFunctionality from './Componetns/Campaign/EmailFunctionality';
+import Campigns from './Componetns/Campaign/Campigns';
+import Dashboard from './Componetns/Layout/Dashboard';
+import Tasks from './Componetns/Tasks/Tasks';
+import Test from './Componetns/Tasks/Test';
+import Blog from './Componetns/Blog/Blog';
+import PurchagePakages from './Componetns/Packages/PurchagePakages';
+import BlogDetails from './Componetns/Blog/BlogDetails';
+import BlogById from './Componetns/Blog/BlogById';
+import PurchagePackageDetails from './Componetns/Packages/PurchagePackageDetails';
+import BharatSAT from './Componetns/BharatSAT/BharatSAT';
+import CreateExam from './Componetns/BharatSAT/CreateExam';
+import ViewExam from './Componetns/BharatSAT/ViewExam';
 
 
 function App() {

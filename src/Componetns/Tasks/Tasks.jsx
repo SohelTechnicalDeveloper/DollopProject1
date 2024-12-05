@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
+import MainLayout from "../../MainLayout";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../Styles/Tasks.css";
-import stopWatch from "../images/stopwatch.png";
+import "../../Styles/Tasks.css";
+import stopWatch from "../../images/stopwatch.png";
 import { IoBulbSharp } from "react-icons/io5";
 import { IoMdArrowDropright } from "react-icons/io";
 import parse from "html-react-parser";

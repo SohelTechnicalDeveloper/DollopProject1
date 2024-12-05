@@ -72,6 +72,7 @@ box-shadow: 1px 43px 0px -16px #03AA11;
     /* boxShadow: "rgba(162, 233, 180, 0.559) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px", */
 
 }
+
 .model-custom{
     -webkit-box-shadow: 1px 43px 0px -16px #f4b402(0,0,0,0.75);
 -moz-box-shadow: 1px 43px 0px -16px #f4b402;
@@ -92,4 +93,21 @@ border-bottom-right-radius: 25px !important;
     box-shadow:  0 0 0 20px #fbbd0564;
 
   }
- 
+  .check-deleteIcon{
+    font-size: 70px;
+    background-color:#FF0033 !important;
+    border-radius: 50%;
+    color: #fff;
+    box-shadow:  0 0 0 20px #e50f0f64 !important;
+
+    /* boxShadow: "rgba(162, 233, 180, 0.559) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px", */
+
+}
+.model-delete{
+    -webkit-box-shadow: 1px 43px 0px -16px #FF0033(0,0,0,0.75);
+-moz-box-shadow: 1px 43px 0px -16px #FF0033;
+box-shadow: 1px 43px 0px -16px #FF0033;
+border-bottom-left-radius: 25px !important;
+border-bottom-right-radius: 25px !important;
+}
+

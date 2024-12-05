@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
+import MainLayout from "../../MainLayout";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { IoMdArrowDropright } from "react-icons/io";
 import parse from "html-react-parser";
 import { toast, ToastContainer } from "react-toastify";
-import "../Styles/Test.css";
+import "../../Styles/Test.css";
 import { IoMdStopwatch } from "react-icons/io";
 
 const Test = () => {

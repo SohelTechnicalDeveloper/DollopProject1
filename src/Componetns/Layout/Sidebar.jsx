@@ -7,7 +7,7 @@ import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { FaRocketchat } from "react-icons/fa";
 import { LuGitBranchPlus } from "react-icons/lu";
 import { FaUsers } from "react-icons/fa";
-import "../Styles/Sidebar.css";
+import "../../Styles/Sidebar.css";
 import { RxCross1 } from "react-icons/rx";
 import { HiOutlineViewList } from "react-icons/hi";
 import { IoCreateOutline } from "react-icons/io5";

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import MainLayout from "../MainLayout";
+import MainLayout from "../../MainLayout";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import userImage from "../images/SM596414 (1).jpg";
+import userImage from "../../images/SM596414 (1).jpg";
 import { FaBackward, FaRegUser } from "react-icons/fa";
 import { IoChevronBackSharp } from "react-icons/io5";
 import { CiCalendar, CiCalendarDate, CiUser } from "react-icons/ci";
@@ -11,7 +11,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 import parse from "html-react-parser";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import "../Styles/BlogById.css";
+import '../../Styles/BlogById.css'
 import moment from "moment-timezone";
 
 const BlogById = () => {

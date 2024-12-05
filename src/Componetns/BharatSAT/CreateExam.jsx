@@ -1,13 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import MainLayout from "../MainLayout";
+import MainLayout from "../../MainLayout";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { BiEditAlt } from "react-icons/bi";
 import { MdKeyboardArrowRight } from "react-icons/md";
-
+import generatePDF from "react-to-pdf";
+import { jsPDF } from "jspdf"; // Importing jsPDF
 
 const CreateExam = () => {
   const [ExamData, setExamData] = useState([]);
@@ -17,27 +18,55 @@ const CreateExam = () => {
   const [search, setSearch] = useState("");
   const [availableDataCount, setAvialeCount] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const [singleChecked, setSingleChecked] = useState(false);
+  const [singleChecked, setSingleChecked] = useState(
+    new Array(ExamData.length).fill(false)
+  );
   const [addBtn, setAddBtne] = useState(false);
   const [activeStatus, setactiveStatus] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [deleteData, setDeleteData] = useState({});
+  const [deleteIds, setDeleteIds] = useState([]);
   const [singleData, setSingleData] = useState({
     bharatSatExamId: "",
     is_active: "",
   });
+  const [generateId, setGeneratorId] = useState({
+    bharatSatExamId: "",
+  });
+  const [generateData, setGenerateData] = useState([]);
+  const navigate = useNavigate();
+  // const token = process.env.REACT_APP_TOKEN;
+  // console.log('Token:', Token);
+  
+
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzMzNzc3OTgsImV4cCI6MTczMzQ2NDE5OH0.rVS3l4AavAP-Fl8JglrVfN1rJbN-N8nQHUCSyoJrUt4";
 
   //this functions is generate show and close
 
-  const addShowModel = () => {
+  const addShowModel = (item) => {
     setAddBtne(true);
+    setGeneratorId(item);
   };
   const handleGenerate = () => {
     setAddBtne(false);
   };
 
   // this function is close all types of model
+
   const handleClose = () => {
     setAddBtne(false);
     setactiveStatus(false);
+    setDeleteConfirm(false);
+  };
+
+  const showDeleteModal = (data) => {
+    if(ExamData.length !==0)
+    {
+      setDeleteData(data);
+      setDeleteConfirm(true);
+
+    }
   };
 
   // this function is change status
@@ -47,26 +76,41 @@ const CreateExam = () => {
   };
 
   const handleCheckboxChange = (e) => {
+
+    setDeleteIds(...deleteIds,ExamData.map((item)=>{
+      return item.bharatSatExamId
+    }))
+    
     setIsChecked(e.target.checked); // Update state with checkbox status
     setSingleChecked(
       e.target.checked ? ExamData.map(() => true) : ExamData.map(() => false)
     );
   };
 
-  const handleSingleCheckbox = (index) => {
+  const handleSingleCheckbox = (index, e, item) => {
+    const checked = e.target.checked;
+    console.log([...deleteIds, item.bharatSatExamId]);
+    
+
+    setDeleteIds((prevDeleteIds) => {
+      if (checked) {
+        return [...prevDeleteIds, item.bharatSatExamId];
+      } else {
+        // Remove the ID from the array if the checkbox is unchecked
+        return prevDeleteIds.filter((id) => id !== item.bharatSatExamId);
+      }
+    });
+    console.log(deleteIds, "deleteids");
+
     setSingleChecked(index); // Update state with checkbox status
 
-    // const updatedChecks = [...singleChecked];
-    // updatedChecks[index] = !updatedChecks[index];
-    // setSingleChecked(updatedChecks);
+    const updatedChecks = [...singleChecked];
+    updatedChecks[index] = !updatedChecks[index];
 
-    // // If all individual checkboxes are checked, check the master checkbox
+    setSingleChecked(updatedChecks);
     // const allChecked = updatedChecks.every((checked) => checked);
-    // setIsChecked(allChecked);
+    // console.log(allChecked,'allcheckd');
   };
-
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzI4NzA5ODYsImV4cCI6MTczMjk1NzM4Nn0.b7zwedgmtS1e775DgIIVTc3SRlrAz9f64uM_-xcO0fI";
 
   const getAllExam = async () => {
     try {
@@ -123,7 +167,61 @@ const CreateExam = () => {
     }
   };
 
+  const deleteExamData = async () => {
+    try {
+      
+      const response = await axios.post(
+        `http://192.168.0.27:5003/bharatSat/delete-exam`,
+        {
+          id:deleteIds,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        toast.success("Exam Delete Success");
+        getAllExam();
+        setDeleteConfirm(false);
+
+      }
+    } catch (error) {
+      toast.error(error.response.error);
+    }
+  };
+
+  const generateExamTicket = async () => {
+    try {
+      const response = await axios.get(
+        `http://192.168.0.27:5003/bharatSat/generate-e-hall-ticket-bharatSat`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            bharatSatExamId: generateId.bharatSatExamId,
+          },
+          responseType: "blob",
+        }
+      );
+      if (response.status === 200) {
+          setGenerateData(response.data);
+        toast.success("Ticket is generator");
+        const pdfUrl = URL.createObjectURL(response.data); // Create a URL for the Blob
+        const newWindow = window.open(pdfUrl);
+
+        setAddBtne(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
+  // Handle button click to generate PDF
+
   const getClassName = () => {
+
     if (isChecked && singleChecked.length > 0) {
       return "checkedBtn";
     }
@@ -159,7 +257,15 @@ const CreateExam = () => {
             </div>
             <div className=" d-flex gap-3 justify-content-between text-center ">
               <div>
-                <RiDeleteBinLine className={getClassName()} />
+                <RiDeleteBinLine
+                  disabled={ExamData.length === 0}
+                  className={getClassName()}
+                  onClick={() => {
+                    if (ExamData.length !== 0) {
+                      showDeleteModal();
+                    }
+                  }}
+                />
               </div>
               <div className="d-flex gap-4">
                 <div>
@@ -206,6 +312,7 @@ const CreateExam = () => {
                 <tr className="fw-bold">
                   <th>
                     <input
+                      disabled={ExamData.length === 0}
                       checked={isChecked}
                       onChange={handleCheckboxChange}
                       type="checkbox"
@@ -235,9 +342,7 @@ const CreateExam = () => {
                     <td>
                       <input
                         checked={singleChecked[index]}
-                        onChange={(e) =>
-                          handleSingleCheckbox(item.bharatSatExamId)
-                        }
+                        onChange={(e) => handleSingleCheckbox(index, e, item)}
                         type="checkbox"
                         style={{
                           width: "18px",
@@ -268,7 +373,7 @@ const CreateExam = () => {
                       </Link>
                     </td>
                     <td>
-                      <Link onClick={addShowModel}>Generate</Link>
+                      <Link onClick={() => addShowModel(item)}>Generate</Link>
                     </td>
                     <td>
                       <div className="form-switch d-flex justify-content-center">
@@ -294,6 +399,7 @@ const CreateExam = () => {
                             padding: "3px",
                             cursor: "pointer",
                           }}
+                          onClick={() => navigate("/BharatSAT", { state: { Data: item } } )}
                         />
                         &nbsp;
                         <RiDeleteBinLine
@@ -304,6 +410,7 @@ const CreateExam = () => {
                             padding: "3px",
                             cursor: "pointer",
                           }}
+                          onClick={() => showDeleteModal(item)}
                         />
                       </div>
                     </td>
@@ -407,7 +514,9 @@ const CreateExam = () => {
                       <button
                         className="btn  px-4 p-2 text-white fw-bold"
                         style={{ backgroundColor: "#03AA11" }}
-                        onClick={handleGenerate}
+                        // onClick={() => {
+                        //   generateExamTicket();
+                        // }}
                       >
                         Yes
                       </button>
@@ -462,6 +571,62 @@ const CreateExam = () => {
                         className="btn  px-4 p-2 text-white fw-bold"
                         style={{ backgroundColor: "red" }}
                         onClick={() => ChangeStatus()}
+                      >
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* <div className="modal-backdrop fade show" style={{ position: "fixed" }} ></div> */}
+        </div>
+
+        {/* this modal for the delete data by id  */}
+        <div className="container ">
+          {deleteConfirm && (
+            <div
+              className="modal show  "
+              style={{ display: "block", backdropFilter: "contrast(0.3)" }}
+              id="exampleModalToggle"
+              aria-hidden="true"
+              aria-labelledby="exampleModalToggleLabel"
+            >
+              <div className="modal-dialog  modal-dialog-centered  ">
+                <div className="modal-content model-delete p-4 px-4 border-0 ">
+                  <div className="p-3 text-center">
+                    <div
+                      className="d-flex position-absolute align-items-center check-deleteIcon  justify-content-center"
+                      style={{
+                        left: "50%",
+                        top: "2%",
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    >
+                      {/* <div className="p-2"> */}
+                      <RiDeleteBinLine
+                        style={{ fontSize: "75px", padding: "15px" }}
+                      />
+                      {/* <span><i class="fa-regular fa-trash-can"></i></span> */}
+                      {/* </div> */}
+                    </div>
+                  </div>
+                  <div className="modal-body text-center mt-3">
+                    <h4 className="mb-3 fw-bold">
+                      Are you sure want to delete BharatSat Exam ?
+                    </h4>
+                    <div className="p-4 d-flex justify-content-center gap-4 align-items-center">
+                      <button
+                        className="btn btn-secondary  px-4 p-2 fw-bold fs-6"
+                        onClick={handleClose}
+                      >
+                        No
+                      </button>
+                      <button
+                        className="btn  px-4 p-2 text-white fw-bold"
+                        style={{ backgroundColor: "#FF0033" }}
+                        onClick={() => deleteExamData()}
                       >
                         Yes
                       </button>

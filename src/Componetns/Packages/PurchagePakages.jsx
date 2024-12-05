@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
-import userImage from "../images/SM596414 (1).jpg";
+import MainLayout from "../../MainLayout";
+import userImage from "../../images/SM596414 (1).jpg";
 import { Link } from "react-router-dom";
 import { MdArrowForwardIos } from "react-icons/md";
-import "../Styles/Purchasepack.css";
+import "../../Styles/Purchasepack.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 

@@ -467,120 +467,291 @@
 //     </div>
 //   );
 // };
-import React, { useState } from "react";
+// import React, { useState } from "react";
 
-const QuestionViewer = ({ subjectsData }) => {
-  const [activeSubjectId, setActiveSubjectId] = useState(null);
+// const QuestionViewer = ({ subjectsData }) => {
+//   const [activeSubjectId, setActiveSubjectId] = useState(null);
 
-  // Handle subject click and set the active subject ID
-  const handleClickSubName = (subject) => {
-    setActiveSubjectId(subject.subjectId); // Match `subjectId` from the data
-  };
+//   // Handle subject click and set the active subject ID
+//   const handleClickSubName = (subject) => {
+//     setActiveSubjectId(subject.subjectId); // Match `subjectId` from the data
+//   };
 
-  // Filter questions based on the active subject ID
-  const filteredQuestions = subjectsData.subjectQuestions.find(
-    (subject) => subject.subjectId === activeSubjectId
-  );
+//   // Filter questions based on the active subject ID
+//   const filteredQuestions = subjectsData.subjectQuestions.find(
+//     (subject) => subject.subjectId === activeSubjectId
+//   );
 
-  return (
-    <div className="container mt-4">
-      {/* Subject Name Buttons */}
-      <div className="d-flex mb-4">
-        {subjectsData.subjectQuestions.map((subject, index) => (
-          <button
-            key={subject.subjectId}
-            className={`btn ${
-              activeSubjectId === subject.subjectId ? "btn-primary" : "btn-outline-primary"
-            } me-2`}
-            onClick={() => handleClickSubName(subject)}
+//   return (
+//     <div className="container mt-4">
+//       {/* Subject Name Buttons */}
+//       <div className="d-flex mb-4">
+//         {subjectsData.subjectQuestions.map((subject, index) => (
+//           <button
+//             key={subject.subjectId}
+//             className={`btn ${
+//               activeSubjectId === subject.subjectId ? "btn-primary" : "btn-outline-primary"
+//             } me-2`}
+//             onClick={() => handleClickSubName(subject)}
+//           >
+//             Subject {index + 1}
+//           </button>
+//         ))}
+//       </div>
+
+//       {/* Render Questions for Selected Subject */}
+//       {filteredQuestions ? (
+//         filteredQuestions.questions.map((q, index) => (
+//           <div className="mb-4" key={q.questionId}>
+//             <h5 className="mb-3">Question {index + 1}</h5>
+//             <p dangerouslySetInnerHTML={{ __html: q.question }}></p>
+
+//             <div className="row">
+//               {q.options.map((option, i) => (
+//                 <div className="col-md-6" key={i}>
+//                   <div className="form-check">
+//                     <input
+//                       className="form-check-input"
+//                       type="radio"
+//                       name={`question-${q.questionId}`}
+//                       id={`option-${q.questionId}-${i}`}
+//                       disabled
+//                       checked={q.correctOption === i}
+//                     />
+//                     <label
+//                       className={`form-check-label ${
+//                         q.correctOption === i ? "text-success fw-bold" : ""
+//                       }`}
+//                       htmlFor={`option-${q.questionId}-${i}`}
+//                     >
+//                       <span dangerouslySetInnerHTML={{ __html: option }}></span>
+//                       {q.correctOption === i && (
+//                         <span className="ms-2">Correct Answer</span>
+//                       )}
+//                     </label>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+
+//             {/* Render Subquestions if Available */}
+//             {q.subQuestions.length > 0 && (
+//               <div className="mt-4 ps-3 border-start">
+//                 {q.subQuestions.map((sub, subIndex) => (
+//                   <div key={sub.subQuestionId} className="mb-3">
+//                     <h6>Sub Question {subIndex + 1}</h6>
+//                     <p dangerouslySetInnerHTML={{ __html: sub.question }}></p>
+//                     <div className="row">
+//                       {sub.options.map((option, i) => (
+//                         <div className="col-md-6" key={i}>
+//                           <div className="form-check">
+//                             <input
+//                               className="form-check-input"
+//                               type="radio"
+//                               name={`sub-question-${sub.subQuestionId}`}
+//                               id={`sub-option-${sub.subQuestionId}-${i}`}
+//                               disabled
+//                               checked={sub.correctOption === i}
+//                             />
+//                             <label
+//                               className={`form-check-label ${
+//                                 sub.correctOption === i ? "text-success fw-bold" : ""
+//                               }`}
+//                               htmlFor={`sub-option-${sub.subQuestionId}-${i}`}
+//                             >
+//                               <span
+//                                 dangerouslySetInnerHTML={{ __html: option }}
+//                               ></span>
+//                               {sub.correctOption === i && (
+//                                 <span className="ms-2">Correct Answer</span>
+//                               )}
+//                             </label>
+//                           </div>
+//                         </div>
+//                       ))}
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             )}
+//           </div>
+//         ))
+//       ) : (
+//         <p>Please select a subject to view the questions.</p>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default QuestionViewer;
+
+<div>
+<div
+  className="row  mt-4 p-3 shadow rounded-3 align-items-end mb-3"
+  style={{ backgroundColor: "#D3E3FD" }}
+>
+  <div className="col-md-6  mb-3 mb-3">
+    <label
+      htmlFor=""
+      style={{ color: "#477de8" }}
+      className="form-label  fw-bold"
+    >
+      Select Subject <span className="text-danger">*</span>
+    </label>
+    <select
+      name="subject"
+      className="form-select"
+      value={selectSubject}
+      onChange={(e) => SubjectData(e)}
+    >
+      <option value="" className="fw-bold text-black">
+        Select Subject
+      </option>
+      {allSubjectsById?.map((item) => {
+        return (
+          <option value={item._id}>{item.subject_name}</option>
+        );
+      })}
+    </select>
+    {!error
+      ? !selectSubject && (
+          <label
+            htmlFor=""
+            className=" position-absolute  mb-2 text-danger fw-bolder"
           >
-            Subject {index + 1}
-          </button>
-        ))}
-      </div>
+            Fields Can't Select
+          </label>
+        )
+      : ""}
+  </div>
 
-      {/* Render Questions for Selected Subject */}
-      {filteredQuestions ? (
-        filteredQuestions.questions.map((q, index) => (
-          <div className="mb-4" key={q.questionId}>
-            <h5 className="mb-3">Question {index + 1}</h5>
-            <p dangerouslySetInnerHTML={{ __html: q.question }}></p>
+  <div className="col-md-6 mb-3">
+    <label
+      className="form-label  fw-bold"
+      style={{ color: "#477de8" }}
+    >
+      Total No. of Questions from Question Bank{" "}
+      <span className="text-danger">*</span>
+    </label>
+    <input
+      type="number"
+      className="form-control"
+      placeholder="Total No. of Questions from Question Bank"
+      value={questionBank}
+      onChange={(e) => {
+        const value = e.target.value;
 
-            <div className="row">
-              {q.options.map((option, i) => (
-                <div className="col-md-6" key={i}>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name={`question-${q.questionId}`}
-                      id={`option-${q.questionId}-${i}`}
-                      disabled
-                      checked={q.correctOption === i}
-                    />
-                    <label
-                      className={`form-check-label ${
-                        q.correctOption === i ? "text-success fw-bold" : ""
-                      }`}
-                      htmlFor={`option-${q.questionId}-${i}`}
-                    >
-                      <span dangerouslySetInnerHTML={{ __html: option }}></span>
-                      {q.correctOption === i && (
-                        <span className="ms-2">Correct Answer</span>
-                      )}
-                    </label>
-                  </div>
-                </div>
-              ))}
-            </div>
+        if (value >= 0) {
+          setQuestionBank(value);
+        }
+        else{
+          setQuestionBank(value);
 
-            {/* Render Subquestions if Available */}
-            {q.subQuestions.length > 0 && (
-              <div className="mt-4 ps-3 border-start">
-                {q.subQuestions.map((sub, subIndex) => (
-                  <div key={sub.subQuestionId} className="mb-3">
-                    <h6>Sub Question {subIndex + 1}</h6>
-                    <p dangerouslySetInnerHTML={{ __html: sub.question }}></p>
-                    <div className="row">
-                      {sub.options.map((option, i) => (
-                        <div className="col-md-6" key={i}>
-                          <div className="form-check">
-                            <input
-                              className="form-check-input"
-                              type="radio"
-                              name={`sub-question-${sub.subQuestionId}`}
-                              id={`sub-option-${sub.subQuestionId}-${i}`}
-                              disabled
-                              checked={sub.correctOption === i}
-                            />
-                            <label
-                              className={`form-check-label ${
-                                sub.correctOption === i ? "text-success fw-bold" : ""
-                              }`}
-                              htmlFor={`sub-option-${sub.subQuestionId}-${i}`}
-                            >
-                              <span
-                                dangerouslySetInnerHTML={{ __html: option }}
-                              ></span>
-                              {sub.correctOption === i && (
-                                <span className="ms-2">Correct Answer</span>
-                              )}
-                            </label>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))
+        }
+                             
+      }}
+    />
+    {!error &&
+      (!questionBank ? (
+        <lable className="position-absolute mb-1 text-danger fw-bolder">
+          Field can't be empty!
+        </lable>
+      ) : questionBank > subjectDataById.questionBankCount ? (
+        <label className="position-absolute mb-1 text-danger fw-bolder">
+          Please Enter a Number Between 0 and{" "}
+          {subjectDataById.questionBankCount}
+        </label>
       ) : (
-        <p>Please select a subject to view the questions.</p>
-      )}
-    </div>
-  );
-};
+        questionBank >= 0 && (
+          <label className="text-danger m-0 ">
+            Invalid number Of Questions!
+          </label>
+        )
+      ))}
+  </div>
 
-export default QuestionViewer;
+  <div className="col-md-6 mb-3">
+    <label
+      className="form-label  fw-bold"
+      style={{ color: "#477de8" }}
+    >
+      Total No. of Questions from Bharat SAT Question Bank{" "}
+      <span className="text-danger">*</span>
+    </label>
+
+    <input
+      type="number"
+      className="form-control"
+      placeholder="Total No. of Questions from Question Bank"
+      value={totalQuestions} // Ensure the input reflects the state
+      onChange={(e) => {
+        const value = e.target.value;
+        if (value >= 0) {
+          setTotalQuestion(value); // Update state only for valid inputs
+        }
+      }}
+    />
+    {/* Display validation messages */}
+    {!error &&
+      (!totalQuestions ? (
+        <lable className="position-absolute mb-1 text-danger fw-bolder">
+          Field can't be empty!
+        </lable>
+      ) : totalQuestions >
+        subjectDataById.bharatSatQuestionCount ? (
+        <label className="position-absolute mb-1 text-danger fw-bolder">
+          Please Enter a Number Between 0 and{" "}
+          {subjectDataById.bharatSatQuestionCount}
+        </label>
+      ) : (
+        totalQuestions < 0 && (
+          <label className="text-danger m-0 ">
+            Invalid number Of Questions!
+          </label>
+        )
+      ))}
+  </div>
+</div>
+
+<div
+  className="fw-bold "
+  style={{ color: "#477de8", cursor: "pointer" }}
+>
+  <button
+    type="button"
+    className="rounded-2 fw-bold addMore-btn"
+    style={{
+      fontSize: "11px",
+      color: "#477de8",
+      border: "2px solid #477de8",
+    }}
+  >
+    +
+  </button>{" "}
+  Add More
+</div>
+
+<div className="d-flex justify-content-end mt-3 ">
+  <div
+    className="btn-group "
+    onClick={() => {
+      createExam();
+    }}
+  >
+    <button
+      type="submit"
+      className="btn "
+      style={{ backgroundColor: "#07284B", color: "#fff" }}
+    >
+      Submit
+    </button>
+    <button
+      type="submit"
+      className="btn rounded-end-3  w-50  bg-primary text-white"
+    >
+      <MdArrowRightAlt style={{ fontSize: "22px" }} />
+    </button>
+    <ToastContainer />
+  </div>
+</div>
+</div>

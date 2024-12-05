@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../Layout";
+import Layout from "../../Layout";
 import { toast, ToastContainer } from "react-toastify";
 import { IoIosArrowBack } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";

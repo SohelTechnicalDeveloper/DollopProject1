@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../MainLayout";
-import userImage from "../images/SM596414 (1).jpg";
+import MainLayout from "../../MainLayout";
 import { FaRegUser } from "react-icons/fa";
 import { CiCalendarDate } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { MdArrowForwardIos } from "react-icons/md";
-import "../Styles/Blogdetails.css";
+import "../../Styles/Blogdetails.css";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import BlogById from "./BlogById";
 
 const BlogDetails = () => {
   const [activeLink, setactiveLink] = useState("Education");
@@ -23,18 +21,20 @@ const BlogDetails = () => {
           blog_Category_id: blog_category_id,
         },
       });
-      if(response.status === 200) 
-      {
+      if (response.status === 200) {
         setAllBlog(response.data.data);
-        setName(name?name:response.data.data.blogCategoryData[0].categoryName)
+        setName(
+          name ? name : response.data.data.blogCategoryData[0].categoryName
+        );
       }
     } catch (error) {
       toast.error(error.response.data.error);
     }
   };
+
   const handleClickSubName = (sub) => {
     setactiveLink(sub.categoryName);
-    setName(sub.categoryName)
+    setName(sub.categoryName);
     setblog_category_id(sub.blog_Category_id);
   };
 
@@ -108,7 +108,7 @@ const BlogDetails = () => {
                           handleClickSubName(data);
                         }}
                         to={`/BlogDetailsById/${data.blog_id}`}
-                        state={{allBlog:name}}
+                        state={{ allBlog: name }}
                       >
                         Read More <MdArrowForwardIos className="fw-bold" />
                       </Link>

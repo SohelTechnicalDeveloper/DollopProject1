@@ -1,9 +1,6 @@
 import React from "react";
-import MainLayout from "../MainLayout";
-import logo1 from '../images/team.jpg'
-import logo2 from '../images/SM596414 (1).jpg'
-import logo3 from '../images/dcb55e.jpg'
-import '../Styles/Dashboard.css'
+import MainLayout from "../../MainLayout";
+import '../../Styles/Dashboard.css'
 const Dashboard = () => {
   return (
     <div>

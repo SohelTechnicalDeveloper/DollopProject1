@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Sidebar from "./Componetns/Sidebar";
-import Navbar from "./Componetns/Navbar";
+import Sidebar from "./Componetns/Layout/Sidebar";
+import Navbar from "./Componetns/Layout/Navbar";
 import "../src/Styles/MainLayout.css";
 import { useNavigate } from "react-router-dom";
 const MainLayout = ({ children }) => {
