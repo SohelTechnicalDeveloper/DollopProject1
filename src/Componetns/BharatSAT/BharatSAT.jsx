@@ -183,11 +183,17 @@ const BharatSAT = () => {
       console.log(response.data.data, "response");
 
       if (bharatSatId) {
-        toast.success(response.data.message);
+        alert(bharatSatId)
+        setTimeout(() => {
+          toast.success(response.data.message);
+          
+        }, 1000);
+      setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
+
       } else {
         toast.success("Exam Create Success");
+        setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
       }
-      setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
       setTimeout(() => {
         setSections([
           { subject: "", questionBank: "", numberOfQuestionsBharatSat: "" },
@@ -696,11 +702,11 @@ const BharatSAT = () => {
                         handleInputChange(index, "subjectId", e.target.value)
                       }
                     >
-                      <option value="" className="fw-bold text-black">
+                      <option value="" className="fw-bold text-black d-none">
                         Select Subject
                       </option>
                       {allSubjectsById?.map((item) => (
-                        <option key={item._id} value={item._id}>
+                        <option className={sections?.some((sub)=>sub.subjectId===item._id)&&'d-none'} key={item._id} value={item._id}>
                           {item.subject_name}
                         </option>
                       ))}
@@ -827,8 +833,7 @@ const BharatSAT = () => {
                       }}
                       onClick={handleRemoveLast}
                     >
-                      <RiDeleteBinLine  />{" "}
-                      <span className="fs-6">Delete</span>
+                      <RiDeleteBinLine /> <span className="fs-6">Delete</span>
                     </div>
                   ) : (
                     ""
@@ -837,7 +842,7 @@ const BharatSAT = () => {
               </div>
 
               <div className="d-flex justify-content-end mt-3">
-                <ToastContainer />
+                <ToastContainer  />
                 <div className="btn-group">
                   <button
                     type="submit"

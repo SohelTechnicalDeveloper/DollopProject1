@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { RxDashboard } from "react-icons/rx";
 import { HiOutlineCursorClick } from "react-icons/hi";
@@ -19,6 +19,8 @@ import { TbPackages } from "react-icons/tb";
 
 const Sidebar = () => {
   const [Open, setOpen] = useState(false);
+     const {pathname} = useLocation()
+     
 
   return (
    
@@ -63,19 +65,26 @@ const Sidebar = () => {
         </Link>
       </li>
     </ul>
-    <ul className="nav mb-auto p-2 flex-column">
-      <li className="nav-item">
-        <Link className="text-decoration-none text-white nav-link active" to="/create-exam">
+    <ul className="nav mb-auto p-2 flex-column" data-bs-toggle="collapse" data-bs-target="#demo">
+    <li className="nav-item">
+        <Link   className="text-decoration-none text-white nav-link active">
           <LuGitBranchPlus className="fs-2 me-3 fa" />
           <span>Bharat SAT </span>
         </Link>
       </li>
+     
     </ul>
-    <ul className="nav mb-auto p-2 flex-column">
-      <li className="nav-item">
-        <Link className="text-decoration-none text-white nav-link active" to='/BharatSAT'>
-          <IoCreateOutline className="fs-2 fa me-3" />
-          <span>Create Exam </span>
+    <ul className="flex-column mx-5  py-2  me-1 collapse"  id="demo" style={{borderLeft:"2px solid gray"}}>
+    <li className="nav-item mb-2" >
+        <Link   className="text-decoration-none text-white nav-link active" to="/create-exam">
+         <span className="fs-5 position-relative" style={{paddingRight:"0px",top:"-7px",left:"-30px",right:"-30px"}}>___</span>
+          <span  className={(pathname ==='/create-exam')?'text-warning':""} >View</span>
+        </Link>
+      </li>
+      <li className="nav-item" >
+        <Link  className="text-decoration-none text-white nav-link active" to='/BharatSAT'>
+        <span className="fs-5 position-relative" style={{paddingLeft:"0px",top:"-7px",left:"-30px"}}>___</span>
+          <span className={(pathname ==='/BharatSAT')?'text-warning':""} > Add </span>
         </Link>
       </li>
     </ul>

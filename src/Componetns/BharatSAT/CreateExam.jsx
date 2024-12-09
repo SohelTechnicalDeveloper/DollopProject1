@@ -367,7 +367,7 @@ const CreateExam = () => {
                     <td>
                       <Link
                         to={`/view-exam`}
-                        state={{ classId: item.class_id }}
+                        state={{ classId: item.bharatSatExamId }}
                       >
                         View
                       </Link>

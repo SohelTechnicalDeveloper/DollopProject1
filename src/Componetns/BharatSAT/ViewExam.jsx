@@ -21,7 +21,7 @@ const ViewExam = () => {
   const { classId } = location.state || {}; //this are use location hooks for get state other component to other component
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzMzNzc3OTgsImV4cCI6MTczMzQ2NDE5OH0.rVS3l4AavAP-Fl8JglrVfN1rJbN-N8nQHUCSyoJrUt4";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzM3Mjk0NjAsImV4cCI6MTczMzgxNTg2MH0.ZQSe-mHO83fDXiWy0W2dF8FZSNDs98dLlHCxHOXTCSE";
 
   const getAllUserSubject = async () => {
     try {
@@ -29,7 +29,7 @@ const ViewExam = () => {
         `http://192.168.0.27:5003/bharatSat/bharatSat-question-paper/`,
         {
           params: {
-            classId,
+            bharatSatExamId:classId,
           },
           headers: {
             Authorization: `Bearer ${token}`,
@@ -42,8 +42,8 @@ const ViewExam = () => {
         // console.log(data?.data?.subjectQuestions?.questions?.[0], "value");
         // console.log(data?.data?.subjects?.[0]?.subject_name || "No subject name");
         // console.log(data?.data?.subjects?.[0]?._id || "" ,"subjectID");
-        setSubjectId(data?.data?.subjects?.[0]?._id || "");
-        setactiveLink(data?.data?.subjects?.[0]?._id || "");
+        setSubjectId(data?.data?.subjects?.[0]?.subjectId || "");
+        setactiveLink(data?.data?.subjects?.[0]?.subjectId || "");
       } else {
         console.error("Unexpected API response:", response);
       }
@@ -53,8 +53,8 @@ const ViewExam = () => {
   };
 
   const handleClickSubName = (sub) => {
-    setactiveLink(sub._id);
-    setSubjectId(sub._id);
+    setactiveLink(sub.subjectId);
+    setSubjectId(sub.subjectId);
   };
 
  
@@ -115,12 +115,12 @@ const ViewExam = () => {
                   <li className="nav-item">
                     <Link
                       className={`nav-link  sub-list ${
-                        activeLink === item._id ? "sub-list active" : "text-black"
+                        activeLink === item.subjectId ? "sub-list active" : "text-black"
                       }`}
                       href="#"
                       onClick={() => handleClickSubName(item)}
                     >
-                      {item.subject_name}
+                      {item.subjectName}
                     </Link>
                   </li>
                 </ul>
