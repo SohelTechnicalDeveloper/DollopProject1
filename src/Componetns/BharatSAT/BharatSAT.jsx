@@ -32,7 +32,7 @@ const BharatSAT = () => {
   const [bharatSatId, setBharatSatId] = useState("");
 
   const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzMzNzc3OTgsImV4cCI6MTczMzQ2NDE5OH0.rVS3l4AavAP-Fl8JglrVfN1rJbN-N8nQHUCSyoJrUt4";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbl9pZCI6IjY3MmI2MTNhYzQ2ZWEyN2EzNzBhYmVhMyIsImVtYWlsIjoiYW5raXRjaG91aGFuLmRvbGxvcEBnbWFpbC5jb20iLCJpYXQiOjE3MzM3Mjk0NjAsImV4cCI6MTczMzgxNTg2MH0.ZQSe-mHO83fDXiWy0W2dF8FZSNDs98dLlHCxHOXTCSE";
   const location = useLocation();
 
   const { Data } = location.state || {};
@@ -57,7 +57,8 @@ const BharatSAT = () => {
         totalQuestions: subjectItem.numberOfQuestionsBharatSat,
       }));
 
-      setSections(updatedSections);
+      setSections(Data.subjectData, "updated dat");
+      console.log(Data.subjectData, "yufdtrv");
 
       // Set initial subject, questionBank, and totalQuestions based on the first subject data
       if (Data.subjectData.length > 0) {
@@ -117,36 +118,41 @@ const BharatSAT = () => {
 
     // Validation for each required field
     sections.map((section, index) => {
-      
       if (!section.subjectId) {
         errorMessage = `Subject is required for section ${index + 1}`;
-      } else if (!section.questionBank || section.questionBank <= 0) {
+      } else if (
+        !section.numberOfQuestionsBank ||
+        section.numberOfQuestionsBank <= 0
+      ) {
         errorMessage = `Valid questionBank is required for section ${
           index + 1
         }`;
       } else if (
-        section.questionBank > section.questionBankCount ||
-        section.questionBank < 0
+        section.numberOfQuestionsBank > section.numberOfQuestionsBank ||
+        section.numberOfQuestionsBank < 0
       ) {
-        errorMessage = `Question Bank should be between 0 and ${section.questionBankCount}`;
-      } else if (!section.totalQuestions || section.totalQuestions <= 0) {
-        errorMessage = `Valid totalQuestions is required for section ${
+        errorMessage = `Question Bank should be between 0 and ${section.numberOfQuestionsBank}`;
+      } else if (
+        !section.numberOfQuestionsBharatSat ||
+        section.numberOfQuestionsBharatSat <= 0
+      ) {
+        errorMessage = `Valid numberOfQuestionsBharatSat is required for section ${
           index + 1
         }`;
       } else if (
-        section.totalQuestions > section.bharatSatQuestionCount ||
-        section.totalQuestions < 0
+        section.numberOfQuestionsBharatSat > section.bharatSatQuestionCount ||
+        section.numberOfQuestionsBharatSat < 0
       ) {
         errorMessage = `Total Questions should be between 0 and ${section.bharatSatQuestionCount}`;
       }
     });
-    const subjectData= sections.map((section) => ({
+    const subjectData = sections.map((section) => ({
       subjectId: section.subjectId,
       numberOfQuestionsBank: section.questionBank,
-      numberOfQuestionsBharatSat: section.totalQuestions,
-  }))
-  console.log(subjectData,"subjectdata");
-  
+      numberOfQuestionsBharatSat: section.numberOfQuestionsBharatSat,
+    }));
+    console.log(subjectData, "subjectdata");
+
     if (errorMessage) {
       setError(true);
       toast.error(errorMessage);
@@ -164,11 +170,7 @@ const BharatSAT = () => {
         bharatSatExamDate: examinationDate,
         examStartTime: startTime,
         examEndTime: endTime,
-        subjectData: sections.map((section) => ({
-          subjectId: section.subjectId,
-          numberOfQuestionsBank: section.questionBank,
-          numberOfQuestionsBharatSat: section.totalQuestions,
-        })),
+        subjectData: sections,
       },
       {
         headers: {
@@ -178,8 +180,8 @@ const BharatSAT = () => {
     );
 
     if (response.status === 200) {
-      console.log(response.data.data,"response");
-      
+      console.log(response.data.data, "response");
+
       if (bharatSatId) {
         toast.success(response.data.message);
       } else {
@@ -187,7 +189,9 @@ const BharatSAT = () => {
       }
       setPercent((prevPercent) => Math.min(prevPercent + 50, 100));
       setTimeout(() => {
-        setSections([{ subject: "", questionBank: "", totalQuestions: "" }]); // Reset sections
+        setSections([
+          { subject: "", questionBank: "", numberOfQuestionsBharatSat: "" },
+        ]); // Reset sections
       }, 2000);
     }
   };
@@ -199,8 +203,8 @@ const BharatSAT = () => {
   //     errorMessage = "selectSubject is required";
   //   } else if (!questionBank) {
   //     errorMessage = "questionBank is required";
-  //   } else if (!totalQuestions) {
-  //     errorMessage = "totalQuestions  is required";
+  //   } else if (!numberOfQuestionsBharatSat) {
+  //     errorMessage = "numberOfQuestionsBharatSat  is required";
   //   }
   //   if (selectClass === Data.class_id) {
   //     setQuestionBank("");
@@ -225,12 +229,12 @@ const BharatSAT = () => {
   //         examEndTime: endTime,
   //         subjectId: selectSubject,
   //         numberOfQuestionsBank: questionBank,
-  //         numberOfQuestionsBharatSat: totalQuestions,
+  //         numberOfQuestionsBharatSat: numberOfQuestionsBharatSat,
   //         subjectData: [
   //           {
   //             subjectId: selectSubject,
   //             numberOfQuestionsBank: questionBank,
-  //             numberOfQuestionsBharatSat: totalQuestions,
+  //             numberOfQuestionsBharatSat: numberOfQuestionsBharatSat,
   //           },
   //         ],
   //       },
@@ -301,6 +305,8 @@ const BharatSAT = () => {
     }
     if (startTime && endTime) {
       const timeDifference = calculateTimeDifference(startTime, endTime);
+      console.log(timeDifference);
+      setdurationTime(timeDifference);
       if (timeDifference == durationTime) {
         toast.success("Time match success");
         setError(true);
@@ -330,7 +336,11 @@ const BharatSAT = () => {
   const handleAddMore = () => {
     setSections([
       ...sections,
-      { subjectId: "", questionBank: "", totalQuestions: "" },
+      {
+        subjectId: "",
+        numberOfQuestionsBank: "",
+        numberOfQuestionsBharatSat: "",
+      },
     ]);
   };
 
@@ -338,8 +348,7 @@ const BharatSAT = () => {
     const updatedSections = [...sections];
     updatedSections[index] = { ...updatedSections[index], [field]: value };
     setSections(updatedSections);
-    console.log(updatedSections,"updated section create");
-    
+    console.log(updatedSections, "updated section create");
   };
 
   const handleRemoveLast = () => {
@@ -690,18 +699,19 @@ const BharatSAT = () => {
                       <option value="" className="fw-bold text-black">
                         Select Subject
                       </option>
-                      {/* Dynamically render subjects */}
                       {allSubjectsById?.map((item) => (
                         <option key={item._id} value={item._id}>
                           {item.subject_name}
                         </option>
                       ))}
                     </select>
-                    { !error ? !section.subjectId && (
-                      <label className="position-absolute mb-2 text-danger fw-bolder">
-                        Subject is required
-                      </label>
-                    ):""}
+                    {!error
+                      ? !section.subjectId && (
+                          <label className="position-absolute mb-2 text-danger fw-bolder">
+                            Subject is required
+                          </label>
+                        )
+                      : ""}
                   </div>
 
                   <div className="col-md-6 mb-3">
@@ -716,26 +726,30 @@ const BharatSAT = () => {
                       type="number"
                       className="form-control"
                       placeholder="Total No. of Questions from Question Bank"
-                      value={section.questionBank} // Use section's value here
+                      value={section.numberOfQuestionsBank} // Use section's value here
                       onChange={(e) =>
-                        handleInputChange(index, "questionBank", e.target.value)
+                        handleInputChange(
+                          index,
+                          "numberOfQuestionsBank",
+                          e.target.value
+                        )
                       }
                     />
-                    {!section.questionBank && (
+                    {!section.numberOfQuestionsBank && (
                       <label className="position-absolute mb-1 text-danger fw-bolder">
                         Field can't be empty!
                       </label>
                     )}
-                    {section.questionBank < 0 && (
+                    {section.numberOfQuestionsBank < 0 && (
                       <label className="position-absolute mb-1 text-danger fw-bolder">
                         Invalid number of Questions!
                       </label>
                     )}
-                    {section.questionBank >
-                      section.questionBankCount && (
+                    {section.numberOfQuestionsBank >
+                      section.numberOfQuestionsBank && (
                       <label className="position-absolute mb-1 text-danger fw-bolder">
                         Please enter a number between 0 and{" "}
-                        {section.questionBankCount}
+                        {section.numberOfQuestionsBank}
                       </label>
                     )}
                   </div>
@@ -752,30 +766,30 @@ const BharatSAT = () => {
                       type="number"
                       className="form-control"
                       placeholder="Total No. of Questions from Bharat SAT Question Bank"
-                      value={section.totalQuestions} // Use section's value here
+                      value={section.numberOfQuestionsBharatSat} // Use section's value here
                       onChange={(e) =>
                         handleInputChange(
                           index,
-                          "totalQuestions",
+                          "numberOfQuestionsBharatSat",
                           e.target.value
                         )
                       }
                     />
-                    {!section.totalQuestions && (
+                    {!section.numberOfQuestionsBharatSat && (
                       <label className="position-absolute mb-1 text-danger fw-bolder">
                         Field can't be empty!
                       </label>
                     )}
-                    {section.totalQuestions < 0 && (
+                    {section.numberOfQuestionsBharatSat < 0 && (
                       <label className="position-absolute mb-1 text-danger fw-bolder">
                         Invalid number of Questions!
                       </label>
                     )}
-                    {section.totalQuestions >
-                      section.totalQuestionsCount && (
+                    {section.numberOfQuestionsBharatSat >
+                      section.numberOfQuestionsBharatSat && (
                       <label className="position-absolute mb-1 text-danger fw-bolder">
                         Please enter a number between 0 and{" "}
-                        {section.totalQuestionsCount}
+                        {section.numberOfQuestionsBharatSat}
                       </label>
                     )}
                   </div>
@@ -802,17 +816,20 @@ const BharatSAT = () => {
                 </div>
                 <div>
                   {sections.length !== 1 ? (
-                    <RiDeleteBinLine
+                    <div
                       style={{
                         color: "red",
                         fontWeight: "bold",
                         borderRadius: "3px",
                         padding: "3px",
                         cursor: "pointer",
-                        fontSize: "38px",
+                        fontSize: "25px",
                       }}
                       onClick={handleRemoveLast}
-                    />
+                    >
+                      <RiDeleteBinLine  />{" "}
+                      <span className="fs-6">Delete</span>
+                    </div>
                   ) : (
                     ""
                   )}
@@ -820,7 +837,7 @@ const BharatSAT = () => {
               </div>
 
               <div className="d-flex justify-content-end mt-3">
-                <ToastContainer/>
+                <ToastContainer />
                 <div className="btn-group">
                   <button
                     type="submit"
